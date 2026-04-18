@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Blueprint Template</title>
+    <style>
+      :root {
+        --bg: #07111f;
+        --bg-panel: rgba(15, 26, 44, 0.88);
+        --bg-panel-soft: rgba(12, 22, 38, 0.72);
+        --text: #e8eefc;
+        --muted: #9fb0cf;
+        --line: rgba(125, 165, 255, 0.32);
+        --stroke: rgba(151, 184, 255, 0.58);
+        --client: #38bdf8;
+        --service: #34d399;
+        --data: #c084fc;
+        --infra: #f59e0b;
+        --security: #fb7185;
+        --external: #94a3b8;
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
+        --radius-xl: 26px;
+        --radius-lg: 20px;
+        --radius-md: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(56, 189, 248, 0.10), transparent 28%),
+          radial-gradient(circle at top right, rgba(192, 132, 252, 0.12), transparent 24%),
+          linear-gradient(180deg, #091425 0%, #07111f 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        mask-image: radial-gradient(circle at center, black 52%, transparent 100%);
+      }
+
+      .page {
+        width: min(1440px, calc(100vw - 48px));
+        margin: 32px auto 56px;
+        display: grid;
+        gap: 24px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.6fr 0.9fr;
+        gap: 20px;
+      }
+
+      .panel {
+        background: var(--bg-panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .hero-main {
+        padding: 28px 30px 26px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.10);
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        color: #bcecff;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 18px 0 10px;
+        font-size: clamp(30px, 4.4vw, 54px);
+        line-height: 1.05;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.8;
+        max-width: 70ch;
+      }
+
+      .badge-row {
+        margin-top: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .badge {
+        padding: 9px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: #d7e4ff;
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 12px;
+      }
+
+      .hero-side {
+        padding: 22px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .stat-card {
+        padding: 16px 18px;
+        border-radius: var(--radius-lg);
+        background: var(--bg-panel-soft);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .stat-label {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .stat-value {
+        font-size: 26px;
+        margin: 0 0 8px;
+      }
+
+      .stat-copy {
+        margin: 0;
+        color: #c9d7f0;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .diagram-shell {
+        overflow: hidden;
+      }
+
+      .diagram-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .diagram-title {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .diagram-caption {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .legend-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--line);
+        color: #dbe7fb;
+        font-size: 12px;
+      }
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+      }
+
+      .diagram-canvas {
+        padding: 22px;
+      }
+
+      .diagram-canvas svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 24px;
+        background:
+          linear-gradient(180deg, rgba(9, 19, 36, 0.96), rgba(8, 16, 30, 0.96));
+        border: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .notes-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .note-card {
+        padding: 18px 18px 20px;
+      }
+
+      .note-title {
+        margin: 0 0 10px;
+        font-size: 15px;
+      }
+
+      .note-copy {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.75;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 0 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .footer strong {
+        color: #dbe7fb;
+      }
+
+      @media (max-width: 1120px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .notes-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(100vw - 20px, 1440px);
+          margin-top: 10px;
+        }
+
+        .hero-main,
+        .hero-side,
+        .diagram-canvas,
+        .diagram-head {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        .diagram-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <section class="hero">
+        <article class="panel hero-main">
+          <div class="eyebrow">System Blueprint</div>
+          <h1>Replace With Diagram Title</h1>
+          <p class="subtitle">
+            Replace this subtitle with a short explanation of the system, the scope of the diagram,
+            and the most important architectural point the reader should notice.
+          </p>
+          <div class="badge-row">
+            <span class="badge">Frontend</span>
+            <span class="badge">Services</span>
+            <span class="badge">Data Layer</span>
+            <span class="badge">Integrations</span>
+          </div>
+        </article>
+
+        <aside class="panel hero-side">
+          <article class="stat-card">
+            <div class="stat-label">Primary Flow</div>
+            <p class="stat-value">Request -> Plan -> Persist</p>
+            <p class="stat-copy">
+              Replace with the dominant path or execution loop that explains the system best.
+            </p>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">System Shape</div>
+            <p class="stat-value">3 Layers + Recall</p>
+            <p class="stat-copy">
+              Use this card for layers, bounded contexts, or trust boundaries.
+            </p>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-label">Key Risk / Constraint</div>
+            <p class="stat-value">Context Routing</p>
+            <p class="stat-copy">
+              Use this card for the main design tension, tradeoff, or scaling constraint.
+            </p>
+          </article>
+        </aside>
+      </section>
+
+      <section class="panel diagram-shell">
+        <div class="diagram-head">
+          <div>
+            <h2 class="diagram-title">System Overview</h2>
+            <p class="diagram-caption">
+              Replace the SVG scene below. Keep arrows behind nodes and use semantic colors.
+            </p>
+          </div>
+          <div class="legend">
+            <span class="legend-chip"><span class="legend-dot" style="background: var(--client)"></span>Client</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: var(--service)"></span>Service</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: var(--data)"></span>Data</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: var(--infra)"></span>Infra</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: var(--security)"></span>Security</span>
+          </div>
+        </div>
+
+        <div class="diagram-canvas">
+          <svg viewBox="0 0 1400 860" role="img" aria-label="Architecture diagram">
+            <defs>
+              <linearGradient id="panelGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#12223a" />
+                <stop offset="100%" stop-color="#0c1729" />
+              </linearGradient>
+              <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000000" flood-opacity="0.36" />
+              </filter>
+            </defs>
+
+            <rect x="24" y="24" width="1352" height="812" rx="28" fill="url(#panelGlow)" stroke="rgba(255,255,255,0.05)" />
+
+            <!-- Replace the example groups and nodes below with the real system -->
+            <rect x="92" y="140" width="240" height="156" rx="22" fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.36)" />
+            <text x="118" y="178" fill="#dff5ff" font-size="20" font-weight="700">Client Layer</text>
+            <text x="118" y="210" fill="#9fd7ea" font-size="14">Web App / Mobile / API Consumer</text>
+
+            <rect x="438" y="112" width="530" height="236" rx="24" fill="rgba(52,211,153,0.07)" stroke="rgba(52,211,153,0.34)" />
+            <text x="468" y="154" fill="#d7fff0" font-size="20" font-weight="700">Application Layer</text>
+            <text x="468" y="186" fill="#9fe2ca" font-size="14">API, routing, agent runtime, orchestration</text>
+
+            <rect x="1030" y="140" width="250" height="156" rx="22" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.34)" />
+            <text x="1058" y="178" fill="#ffe9c7" font-size="20" font-weight="700">Infra / External</text>
+            <text x="1058" y="210" fill="#f2cf95" font-size="14">Maps, weather, search, messaging</text>
+
+            <rect x="332" y="468" width="760" height="206" rx="24" fill="rgba(192,132,252,0.07)" stroke="rgba(192,132,252,0.34)" />
+            <text x="362" y="510" fill="#f4e7ff" font-size="20" font-weight="700">Data & Memory Layer</text>
+            <text x="362" y="542" fill="#ddc3ff" font-size="14">Session store, plan store, trips, recall, preferences</text>
+
+            <path d="M332 218 C382 218, 390 218, 438 218" stroke="rgba(125,165,255,0.7)" stroke-width="4" fill="none" />
+            <path d="M968 218 C1000 218, 1004 218, 1030 218" stroke="rgba(125,165,255,0.7)" stroke-width="4" fill="none" />
+            <path d="M698 348 C698 390, 698 418, 698 468" stroke="rgba(125,165,255,0.7)" stroke-width="4" fill="none" />
+
+            <rect x="494" y="178" width="170" height="104" rx="18" fill="#132c22" stroke="rgba(52,211,153,0.40)" filter="url(#softShadow)" />
+            <text x="520" y="218" fill="#d8fff0" font-size="18" font-weight="700">Chat API</text>
+            <text x="520" y="246" fill="#9ad9bf" font-size="13">FastAPI</text>
+
+            <rect x="706" y="178" width="206" height="104" rx="18" fill="#132c22" stroke="rgba(52,211,153,0.40)" filter="url(#softShadow)" />
+            <text x="732" y="218" fill="#d8fff0" font-size="18" font-weight="700">Agent Runtime</text>
+            <text x="732" y="246" fill="#9ad9bf" font-size="13">Routing, tools, context build</text>
+
+            <rect x="426" y="550" width="190" height="92" rx="18" fill="#2c1b3a" stroke="rgba(192,132,252,0.40)" filter="url(#softShadow)" />
+            <text x="452" y="588" fill="#f5e9ff" font-size="18" font-weight="700">Session Store</text>
+            <text x="452" y="614" fill="#d9bcf7" font-size="13">sessions / messages</text>
+
+            <rect x="646" y="550" width="190" height="92" rx="18" fill="#2c1b3a" stroke="rgba(192,132,252,0.40)" filter="url(#softShadow)" />
+            <text x="672" y="588" fill="#f5e9ff" font-size="18" font-weight="700">Plan Store</text>
+            <text x="672" y="614" fill="#d9bcf7" font-size="13">options / comparisons</text>
+
+            <rect x="866" y="550" width="180" height="92" rx="18" fill="#2c1b3a" stroke="rgba(192,132,252,0.40)" filter="url(#softShadow)" />
+            <text x="892" y="588" fill="#f5e9ff" font-size="18" font-weight="700">Recall Layer</text>
+            <text x="892" y="614" fill="#d9bcf7" font-size="13">trips / preferences</text>
+          </svg>
+        </div>
+      </section>
+
+      <section class="notes-grid">
+        <article class="panel note-card">
+          <h3 class="note-title">Scope</h3>
+          <p class="note-copy">
+            Replace with what this diagram includes and intentionally leaves out.
+          </p>
+        </article>
+        <article class="panel note-card">
+          <h3 class="note-title">Primary Decision</h3>
+          <p class="note-copy">
+            Replace with the most important architecture tradeoff or design choice.
+          </p>
+        </article>
+        <article class="panel note-card">
+          <h3 class="note-title">Operational Note</h3>
+          <p class="note-copy">
+            Replace with rollout, scaling, reliability, or governance notes that help the viewer.
+          </p>
+        </article>
+      </section>
+
+      <footer class="footer">
+        <span>Generated diagram template for architecture, topology, and system blueprint work.</span>
+        <span><strong>Output mode:</strong> standalone HTML + inline SVG</span>
+      </footer>
+    </div>
+  </body>
+</html>

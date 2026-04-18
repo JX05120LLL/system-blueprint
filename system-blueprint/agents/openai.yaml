@@ -1,0 +1,4 @@
+interface:
+  display_name: "System Blueprint"
+  short_description: "Create polished HTML/SVG system blueprints and architecture visuals"
+  default_prompt: "Create or update a polished system blueprint as a standalone HTML file with inline SVG. Use the bundled template by default, keep the file self-contained, prefer presentation-quality output over Mermaid when file output is acceptable, and use Mermaid only when the user explicitly wants Markdown-native diagrams."
