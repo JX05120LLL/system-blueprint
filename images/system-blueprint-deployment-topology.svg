@@ -28,7 +28,7 @@
 
   <g filter="url(#shadow)">
     <rect x="438" y="150" width="694" height="290" rx="32" fill="#11243E" stroke="#7CA6FF" stroke-opacity="0.28"/>
-    <text x="474" y="196" class="group-title">Cloud Edge & Application Zone</text>
+    <text x="474" y="196" class="group-title">Cloud Edge &amp; Application Zone</text>
     <text x="474" y="224" class="group-copy">Public ingress, application runtime, and orchestration layer.</text>
 
     <rect x="478" y="268" width="170" height="84" rx="20" fill="#143B57" stroke="#86DEFF" stroke-opacity="0.34"/>
@@ -46,7 +46,7 @@
 
   <g filter="url(#shadow)">
     <rect x="434" y="528" width="724" height="244" rx="32" fill="#2A183F" stroke="#D1A5FF" stroke-opacity="0.30"/>
-    <text x="470" y="574" class="group-title">Data & Memory Zone</text>
+    <text x="470" y="574" class="group-title">Data &amp; Memory Zone</text>
     <text x="470" y="602" class="group-copy">Durable state, plan store, and retrieval-aware memory layer.</text>
 
     <rect x="476" y="644" width="150" height="84" rx="20" fill="#321C4F" stroke="#DAB6FF" stroke-opacity="0.35"/>

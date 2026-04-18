@@ -26,9 +26,9 @@
   </g>
 
   <text x="100" y="176" class="lane">1. Input</text>
-  <text x="100" y="336" class="lane">2. Extract & Normalize</text>
-  <text x="100" y="496" class="lane">3. Compose & Render</text>
-  <text x="100" y="656" class="lane">4. Deliver & Iterate</text>
+  <text x="100" y="336" class="lane">2. Extract &amp; Normalize</text>
+  <text x="100" y="496" class="lane">3. Compose &amp; Render</text>
+  <text x="100" y="656" class="lane">4. Deliver &amp; Iterate</text>
 
   <g filter="url(#shadow)">
     <rect x="210" y="204" width="220" height="90" rx="22" fill="#10324B" stroke="#57CFFF" stroke-opacity="0.38"/>

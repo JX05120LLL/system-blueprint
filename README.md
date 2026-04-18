@@ -1,470 +1,461 @@
 # System Blueprint
 
-一个面向 AI Agent 的通用技能包，用于从代码库、系统说明或自然语言描述中生成高质量的系统蓝图、架构图、部署拓扑图、运行时流程图和技术总览图。
+面向 AI Agent 的通用技能包，用来生成更适合展示、评审和沉淀文档的系统蓝图与技术图示。
 
-这个项目的目标不是绑定某一个特定平台，而是尽量采用更通用的结构：
+它的目标不是再产出一份“能跑就行”的 Mermaid，而是让 Agent 在合适的时候直接生成可交付的图形资产：
 
-- `SKILL.md`
-- `assets/`
-- 可选的 agent 专属元数据
+- 独立 `HTML` 文件，内联 `SVG`，适合浏览器打开、演示和方案评审
+- 可直接嵌入 GitHub README 的 `SVG`
+- 需要投递、截图或发群时可导出 `PNG / JPG`
 
-这样它就可以更容易适配：
+这个仓库当前以 `SKILL.md + assets/ + scripts/` 的轻量结构组织，优先面向 Codex，也尽量兼容支持类似 Skill 结构的其他 Agent 工作流。
 
-- Codex
-- Claude 风格 Skills
-- OpenClaw 风格 Skills
-- 以及其他支持 `SKILL.md` 工作流的 Agent 运行时
+[查看仓库](https://github.com/JX05120LLL/system-blueprint) · [如果这个项目对你有帮助，欢迎点个 Star](https://github.com/JX05120LLL/system-blueprint/stargazers)
 
 ---
 
-## 快速预览
+## 为什么做这个项目
 
-下面这几张图可以直接嵌入 GitHub README，不需要额外的 HTML 容器。
+很多 Agent 已经可以根据代码仓库、需求文档或口头描述快速生成架构图，但常见问题也很明确：
 
-### System Blueprint 总览图
+- 图能表达结构，但展示质量一般
+- 细节很多，但层次不清
+- 适合临时说明，不适合放进 README、设计文档或汇报材料
+- 输出往往强绑定某个平台，不方便迁移和复用
 
-![System Blueprint 总览图](./images/system-blueprint-overview.svg)
+`System Blueprint` 解决的是这类中间地带的问题：
 
-### Runtime Flow 运行流程图
-
-![Runtime Flow 运行流程图](./images/system-blueprint-runtime-flow.svg)
-
-### Deployment Topology 拓扑图
-
-![Deployment Topology 拓扑图](./images/system-blueprint-deployment-topology.svg)
-
----
-
-## 这个技能是做什么的
-
-`System Blueprint` 用来解决一个很常见的问题：
-
-很多 Agent 能很快生成 Mermaid 或文本版流程图，但这些输出通常有两个问题：
-
-- 够快，但不够好看
-- 看起来精致，但强绑定某个平台，难以迁移
-
-这个技能希望在两者之间取一个平衡：
-
-- 保持足够通用，便于跨 Agent 复用
-- 保持足够有审美，能生成更适合展示的图
-- 保持足够轻量，方便你自己修改、分发、二次开发
-
-默认输出更偏向：
-
-- 独立 HTML 文件
-- 内联 SVG
-- 深色技术风格
-- 少依赖、易分享
-
-Mermaid 在这里是“兼容 Markdown 的回退方案”，不是默认主输出。
-
-更准确地说，这个 skill 现在支持三层输出：
-
-- `HTML`：主展示载体，适合浏览器打开、演示、分享
-- `SVG`：适合嵌入 README、文档、静态页面
-- `PNG / JPG`：适合投递、截图式分享、对 SVG 支持不佳的平台
+- 比纯文本图更适合展示
+- 比重型设计工具更轻量
+- 比平台私有插件更通用
 
 ---
 
-## 适合生成哪些图
+## 它能做什么
 
-这个技能主要适合以下场景：
+这个 skill 适合生成以下类型的技术图：
 
 - 系统架构图
-- 系统蓝图
+- 系统蓝图 / 分层关系图
 - 部署拓扑图
-- 组件关系图
+- 请求流 / 控制流图
 - 数据流图
-- 请求流 / 调用链图
-- Agent 运行时流程图
+- Agent Runtime 图
 - Memory / Recall 流程图
 - Before / After 架构对比图
+- 集成关系图 / 组件关系图
 
-典型输出是一份独立 HTML 文件，你可以：
+默认输出策略：
 
-- 直接浏览器打开
-- 发给同事或客户
-- 放进项目文档
-- 导出为 PDF
-- 用于演示和作品集展示
+- 优先输出独立 `HTML` 文件，内联 `SVG`
+- 需要 README 嵌入时输出 `SVG`
+- 需要位图时用脚本导出 `PNG / JPG`
+- 只有在用户明确要求 Mermaid，或者目标环境只能接受 Markdown 图时，才回退到 Mermaid
 
 ---
 
-## 示例图片
+## 预览
 
-下面这些图是基于当前仓库风格生成的 README 示例图，适合直接放在文档、仓库首页或方案说明中。
+下面这些示例图可以直接放进 GitHub README、项目文档或方案说明。
 
-### 1. System Blueprint 总览图
+### 1. System Overview
 
 ![System Blueprint 总览图](./images/system-blueprint-overview.svg)
 
-### 2. Runtime Flow 运行流程图
+### 2. Runtime Flow
 
 ![Runtime Flow 运行流程图](./images/system-blueprint-runtime-flow.svg)
 
-### 3. Memory / Recall 流程图
+### 3. Memory / Recall
 
 ![Memory / Recall 流程图](./images/system-blueprint-memory-recall.svg)
 
-### 4. Deployment Topology 拓扑图
+### 4. Deployment Topology
 
 ![Deployment Topology 拓扑图](./images/system-blueprint-deployment-topology.svg)
 
-### 5. Before / After 蓝图对比图
+### 5. Before / After
 
 ![Before / After 蓝图对比图](./images/system-blueprint-before-after.svg)
 
 ---
 
-## 兼容性说明
+## 适合谁用
 
-这个项目追求的是：
+如果你经常需要让 Agent 帮你产出“能展示”的技术图，这个 skill 会比较合适：
 
-> 尽量贴近大多数 Agent 都能接受的“公共 skill 结构”
-
-而不是只为某一个闭源平台定制。
-
-### 兼容得比较好的场景
-
-- 支持 `SKILL.md` 的 Codex 类技能系统
-- 支持 `SKILL.md + assets/` 的 Claude 风格技能系统
-- 支持同类轻量技能结构的 OpenClaw 风格系统
-
-### 需要明确的边界
-
-目前并不存在一个“所有 Agent 通吃”的全球统一 Skill 标准。
-
-所以这个仓库采用的是：
-
-- `SKILL.md` 作为通用核心
-- `assets/template.html` 作为通用资源
-- `agents/openai.yaml` 作为 Codex / OpenAI 方向的增强元数据
-
-也就是说：
-
-- 对大多数支持 `SKILL.md` 的 Agent，它可以比较自然地适配
-- 对只认自己私有插件协议的 Agent，可能还需要你额外包一层适配器
+- 想给项目仓库补一张真正能看的架构图
+- 想把已有 Mermaid 升级成更适合评审的视觉稿
+- 想给 Agent 系统、工作流系统、RAG 系统补运行时说明图
+- 想把部署关系、数据边界、外部依赖讲清楚
+- 想把设计讨论结果沉淀成可分享的产物
 
 ---
 
 ## 仓库结构
 
 ```text
-system-blueprint/
+system-blueprint-skill/
 ├── README.md
-├── SKILL.md
-├── agents/
-│   └── openai.yaml
-├── scripts/
-│   └── export_diagram.py
-└── assets/
-    └── template.html
+├── images/
+│   ├── system-blueprint-overview.svg
+│   ├── system-blueprint-runtime-flow.svg
+│   ├── system-blueprint-memory-recall.svg
+│   ├── system-blueprint-deployment-topology.svg
+│   └── system-blueprint-before-after.svg
+└── system-blueprint/
+    ├── SKILL.md
+    ├── agents/
+    │   └── openai.yaml
+    ├── assets/
+    │   └── template.html
+    └── scripts/
+        └── export_diagram.py
 ```
 
-### 各文件作用
+各目录作用：
 
-- `SKILL.md`
-  技能的核心说明文件，也是最重要的跨平台公共入口
+- `system-blueprint/SKILL.md`
+  skill 的核心说明文件，定义触发方式、工作流、输出约定和图形规则。
 
-- `assets/template.html`
-  默认的图形输出模板，用于生成更精致的 HTML + SVG 系统图
+- `system-blueprint/assets/template.html`
+  默认模板，生成独立 HTML 蓝图时优先使用。
 
-- `scripts/export_diagram.py`
-  用于把 HTML(内联 SVG) 或 SVG 导出为 PNG / JPG / JPEG
+- `system-blueprint/scripts/export_diagram.py`
+  将 `HTML / SVG` 导出为 `PNG / JPG / JPEG` 的辅助脚本。
 
-- `agents/openai.yaml`
-  面向 Codex / OpenAI 风格技能系统的增强元数据
-  不是所有 Agent 都需要它
+- `system-blueprint/agents/openai.yaml`
+  面向 Codex / OpenAI 风格环境的增强元数据。
+
+- `images/`
+  README 预览图和可直接复用的示例 SVG。
 
 ---
 
 ## 安装方式
 
-## 1. 在 Codex 中使用
+### 1. 在 Codex 中安装
 
-把整个目录复制到你的 Codex skills 目录：
+把仓库里的 `system-blueprint/` 目录复制到本地 skills 目录：
 
 ```bash
 ~/.codex/skills/system-blueprint/
 ```
 
-然后重启 Codex。
-
-之后可以这样触发：
+也就是说，最终结构应该类似这样：
 
 ```text
-使用 system-blueprint skill 为这个项目生成系统架构图。
+~/.codex/skills/system-blueprint/
+├── SKILL.md
+├── agents/
+├── assets/
+└── scripts/
 ```
 
-或者：
-
-```text
-使用 system-blueprint，把这个 Mermaid 图升级成更精美的 HTML 架构图。
-```
-
-## 2. 在 Claude / Claude Code 风格技能系统中使用
-
-如果你的环境支持目录形式的 skill，就直接导入这个目录。
-
-如果支持 zip 上传，就把整个 `system-blueprint/` 目录打包后上传。
-
-对这类系统来说，最关键的是：
+如果你是从当前仓库安装，复制的是这个目录：
 
 ```text
 system-blueprint/
-├── SKILL.md
-└── assets/
-    └── template.html
 ```
 
-## 3. 在 OpenClaw 风格技能系统中使用
+而不是整个仓库根目录。
 
-如果你的运行时支持 `SKILL.md` 驱动的 skill，就可以直接导入这个目录。
+### 2. 通过 zip / 文件夹分发
 
-如果它还要求额外 manifest 或注册文件，那就保留这个目录作为主 skill 包，在外层再补一层适配即可。
+如果你的 Agent 环境支持上传 zip 或导入本地目录，也可以直接打包 `system-blueprint/` 这个目录进行安装。
+
+### 3. 兼容其他支持 `SKILL.md` 的 Agent
+
+这个项目刻意采用较轻的 Skill 结构：
+
+- `SKILL.md`
+- `assets/`
+- 可选的 agent 元数据
+
+因此它通常比较容易适配到支持相似约定的 Agent 系统里。  
+需要注意的是，不同平台对 Skill 元数据、触发词和资源目录的约定并不完全一致，落地时可能需要做少量目录或配置调整。
 
 ---
 
-## 使用示例
+## 如何使用
 
-## 从代码库生成架构图
+这个仓库不是传统意义上的 Web 服务或 CLI 主程序。
+
+它的“运行方式”分成两部分：
+
+- 在 Agent 中通过 prompt 触发 skill
+- 在本地通过导出脚本把 HTML / SVG 转成 PNG / JPG
+
+### 1. 在 Agent 中触发
+
+你可以直接这样描述任务：
 
 ```text
-使用 system-blueprint，分析这个仓库并生成一份独立 HTML 架构图。
+使用 system-blueprint，为这个仓库生成一份独立 HTML 系统架构图。
 ```
 
-## 从文字描述生成系统蓝图
-
 ```text
-使用 system-blueprint，根据下面的描述生成部署拓扑图：
-
-- React 前端
-- FastAPI 后端
-- PostgreSQL
-- Redis
-- Qdrant
-- 外部天气和地图 API
+使用 system-blueprint，根据下面的系统描述生成部署拓扑图，输出为独立 HTML，并附带一个适合 README 的 SVG 版本。
 ```
 
-## 把 Mermaid 升级成更精致的图
-
 ```text
-使用 system-blueprint，把这份 Mermaid 图转换成更适合展示的 HTML + SVG 图。
+使用 system-blueprint，把这张 Mermaid 图升级成更适合展示的 HTML + SVG 架构图。
 ```
 
-## 生成 Agent Runtime 图
-
 ```text
-使用 system-blueprint，绘制这个 Agent 系统的请求流、意图路由、候选方案状态变化和 recall 流程。
+使用 system-blueprint，绘制这个 Agent 系统的请求流、意图路由、状态变化和 recall 流程。
 ```
 
-## 更新已有图
+### 2. 推荐的输入来源
+
+这个 skill 适合从以下输入构建图：
+
+- 代码仓库
+- 系统设计文档
+- PRD / 技术方案
+- Mermaid 草图
+- 自然语言描述
+
+### 3. 推荐的输出形式
+
+如果你没有特别指定，建议优先让 Agent 输出：
+
+- 一份独立 `HTML`
+- 一份 README 友好的 `SVG`
+
+这样同时兼顾：
+
+- 展示效果
+- 仓库文档嵌入
+- 后续继续迭代
+
+---
+
+## 典型提示词
+
+### 从代码仓库生成系统蓝图
 
 ```text
-使用 system-blueprint，基于现有 HTML 系统图，补上 recall 层和 plan comparison 模块。
+使用 system-blueprint，分析这个仓库并生成一份系统蓝图。
+要求：
+1. 输出独立 HTML 文件
+2. 使用内联 SVG
+3. 保持深色技术风格
+4. 重点体现入口层、应用层、数据层和外部依赖
+5. 额外输出一个适合 README 的 SVG
+```
+
+### 把 Mermaid 升级成展示版图
+
+```text
+使用 system-blueprint，把下面这份 Mermaid 图升级成更精美的 HTML 架构图。
+要求保留原始结构，但增强分组、颜色语义、标题、副标题和图例。
+```
+
+### 生成部署拓扑图
+
+```text
+使用 system-blueprint，根据下面描述生成部署拓扑图：
+- 前端运行在 Vercel
+- API 服务运行在 Railway
+- PostgreSQL 托管在 Neon
+- Redis 用于缓存
+- 外部依赖包括 OpenAI、Stripe 和邮件服务
+输出独立 HTML，并附带 SVG。
+```
+
+### 生成 Agent Runtime / Memory 图
+
+```text
+使用 system-blueprint，绘制一个 Agent 系统的运行时流程图。
+重点展示：
+- 用户请求进入
+- 意图判断
+- 工具调用
+- 记忆检索
+- 结果汇总
+- 最终响应
+输出为独立 HTML。
 ```
 
 ---
 
-## 输出设计原则
+## 输出约定
 
-这个技能在输出上有几条明确倾向。
+skill 默认遵循以下约定：
 
-### 优先输出 HTML + Inline SVG
+- 文件优先自包含，不依赖外部前端运行时
+- 视觉核心使用内联 `SVG`
+- 尽量不依赖 JavaScript
+- 默认输出适合展示的深色技术风格
+- 优先关注结构表达和层次清晰，而不是堆砌装饰
 
-原因是：
+推荐输出文件名：
 
-- 布局控制更强
-- 更适合做精美展示
-- 分享方便
-- 运行依赖少
+- `system-blueprint.html`
+- `runtime-architecture.html`
+- `deployment-topology.html`
+- `agent-memory-flow.html`
 
-### 尽量保持文件自包含
+推荐图片名：
 
-默认希望生成的文件：
-
-- CSS 内联
-- SVG 内联
-- 尽量不依赖 JS
-- 尽量不依赖外部运行时资源
-
-### 用语义化颜色区分角色
-
-默认建议至少区分：
-
-- 客户端 / 入口层
-- 应用 / 服务层
-- 数据 / 存储层
-- 基础设施 / 外部系统
-- 安全 / 身份系统
-
-### 风格要技术化，而不是装饰化
-
-目标风格是：
-
-- 清晰
-- 现代
-- 专业
-- 适合技术演示
-
-而不是：
-
-- 贴满云厂商图标
-- 过度装饰
-- 信息密度过高但可读性差
+- `system-blueprint-overview.svg`
+- `runtime-flow.svg`
+- `deployment-topology.svg`
+- `agent-memory-flow.png`
 
 ---
 
-## 如何自定义
+## 位图导出
 
-你可以从三个方向定制这个技能。
+如果你已经有生成好的 `HTML` 或 `SVG`，可以用仓库内的脚本继续导出成 `PNG / JPG / JPEG`。
 
-### 1. 修改视觉模板
+### 脚本位置
 
-编辑：
+```text
+system-blueprint/scripts/export_diagram.py
+```
 
-- [`assets/template.html`](./assets/template.html)
+### 安装依赖
 
-适合改这些内容：
-
-- 色板
-- 字体
-- 卡片样式
-- 节点样式
-- 图例风格
-- 页面整体视觉语言
-
-### 1.5 导出常用图片格式
-
-这个 skill 现在已经补上了导出脚本：
-
-- [`scripts/export_diagram.py`](./scripts/export_diagram.py)
-
-它支持：
-
-- `SVG -> PNG / JPG`
-- `HTML(内联 SVG) -> PNG / JPG`
-
-示例：
+当前脚本依赖以下 Python 包：
 
 ```bash
-python scripts/export_diagram.py ../images/system-blueprint-overview.svg --format png
-python scripts/export_diagram.py ../../docs/travel-agent-system-blueprint.html --format png
-python scripts/export_diagram.py ../../docs/travel-agent-system-blueprint.html --format jpg
+pip install cairosvg beautifulsoup4 pillow
 ```
 
 说明：
 
-- 当前脚本依赖 `cairosvg`
-- 如果你还没安装，需要先执行：
+- `cairosvg` 用于把 `SVG` 渲染成位图
+- `beautifulsoup4` 用于从 HTML 中提取内联 `svg`
+- `Pillow` 用于保存 `JPG / JPEG`
+
+### 用法示例
+
+在当前仓库根目录下：
 
 ```bash
-pip install cairosvg
+python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format png
 ```
 
-- 在 Windows 上，除了安装 `cairosvg`，还需要系统里能找到 `cairo` 动态库；如果缺少 `libcairo-2.dll`，导出会在运行时报错
-- 当前仓库已经验证：
-  - `README` 里的 `SVG` 示例图可以直接展示
-  - `export_diagram.py` 的 `PNG / JPG` 导出逻辑已经写好
-  - 但在未安装 `cairo` 运行库的 Windows 环境里，`PNG / JPG` 还不能直接导出成功
+```bash
+python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format jpg
+```
 
-所以这个 skill 现在的完整链路可以理解成：
+如果你已经有某个独立 HTML 蓝图文件：
 
-- `HTML`：高质量展示
-- `SVG`：文档嵌入
-- `PNG / JPG`：常用图片格式导出
+```bash
+python system-blueprint/scripts/export_diagram.py docs/travel-agent-system-blueprint.html --format png
+```
 
-### 2. 修改技能触发和工作流
+指定输出路径：
 
-编辑：
+```bash
+python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format png --output output/overview.png
+```
 
-- [`SKILL.md`](./SKILL.md)
+调整导出缩放倍率：
 
-适合改这些内容：
+```bash
+python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format png --scale 2.5
+```
 
-- 增加触发关键词
-- 修改默认输出形式
-- 让 Mermaid 变成主输出而不是回退输出
-- 针对特定领域做专用化，比如云架构、数据平台、Agent 系统等
+导出 JPEG 时指定背景色：
 
-### 3. 修改 Codex 元数据
+```bash
+python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format jpg --background "#08111E"
+```
 
-编辑：
+### Windows 说明
 
-- [`agents/openai.yaml`](./agents/openai.yaml)
+在部分 Windows 环境里，除了 Python 包本身，还可能需要系统可用的 Cairo 运行库。  
+如果导出时报找不到相关动态库，通常就是 Cairo 运行时缺失导致的。
 
-这部分只影响支持该元数据的运行时，不是技能本身的公共核心。
-
----
-
-## 推荐使用场景
-
-这个技能特别适合：
-
-- README 架构图
-- 内部技术文档
-- RFC / 设计方案
-- Agent 工作流图
-- 会话 / 记忆 / recall 设计图
-- 部署拓扑图
-- 面试作品集
-- 对外展示的技术总览图
+如果你当前只是想在 GitHub README 中展示图，优先直接使用 `SVG`，依赖更少，也更稳定。
 
 ---
 
-## 已知限制
+## 设计原则
 
-- 它不是一个“所有 Agent 100% 通吃”的全球统一标准
-- 某些运行时依然可能要求额外适配层
-- 第一版图的质量仍然依赖输入描述的质量
-- 对超大系统仍然需要抽象，不应该试图画出每一个实现细节
-- PNG / JPG 导出目前依赖 `cairosvg`
+这个 skill 在图形生成上遵循几条明确原则：
 
----
-
-## 建议的 GitHub Topics
-
-如果你准备公开发布仓库，这些 topics 比较合适：
-
-- `ai-agents`
-- `skills`
-- `architecture-diagram`
-- `system-design`
-- `svg`
-- `html`
-- `technical-diagram`
-- `agent-tools`
+- 先抽系统模型，再画图
+- 优先表达层次、边界和关键流
+- 第一版先克制，避免把图画得过满
+- 分组容器优先于散点堆叠
+- 语义配色优先于花哨装饰
+- 标题和副标题必须脱离上下文也能看懂
+- README 图和展示图都应该能独立成立
 
 ---
 
-## GitHub 仓库描述建议
+## 适配范围与边界
 
-你现在建远程仓库时，简介建议直接用下面这些中文版本。
+这个仓库追求的是“尽量通用”，不是“所有 Agent 无缝通吃”。
 
-### 版本 1：最稳
+目前更适合的使用场景：
 
-一个面向 AI Agent 的通用技能包，用于生成精美的系统蓝图、架构图与运行时流程图。
+- Codex 风格 skill 系统
+- 支持 `SKILL.md` 的轻量 Agent 平台
+- 允许读取本地模板与脚本资源的运行环境
 
-### 版本 2：强调跨代理
+需要注意的边界：
 
-一个可适配 Codex、Claude 风格 Skills 和 OpenClaw 的通用系统蓝图技能包。
-
-### 版本 3：强调输出形式
-
-一个将代码库和系统说明转换为高质量 HTML/SVG 架构图的通用 Agent Skill。
-
-如果你想最稳妥，我建议直接用 **版本 1**。
+- 不同 Agent 平台对 Skill 元数据支持程度不同
+- 不同平台的资源目录约定可能不同
+- Mermaid 不是默认主输出，只是兼容回退方案
+- PNG / JPG 导出依赖本地 Python 环境
 
 ---
 
-## License
+## 什么时候适合用它
 
-正式公开前建议补一个开源许可证。
+以下场景尤其适合：
 
-如果你希望：
+- 给开源项目补一张首页架构图
+- 给客户方案做一张更能讲故事的蓝图
+- 给多 Agent 系统补运行时流程图
+- 给 RAG / Memory 系统补 recall 说明图
+- 给重构方案做 before / after 对比图
+- 把原本分散在文字里的结构，收敛成一张可读的图
 
-- 最容易复用
-- 最方便别人 fork 和二次开发
+---
 
-通常可以直接使用 `MIT License`。
+## 贡献建议
+
+如果你准备继续扩展这个项目，比较值得补充的方向有：
+
+- 更多蓝图模板
+- 更多导出样式
+- 更完整的示例输入与示例输出
+- 不同 Agent 平台的适配元数据
+- 自动化测试和示例生成流程
+- 发布用的安装说明与版本管理
+
+如果你提 PR，建议尽量保持以下原则：
+
+- 结构轻量
+- 模板可复用
+- 输出尽量自包含
+- 不引入没必要的运行时依赖
+
+---
+
+## 支持项目
+
+如果这个项目对你有帮助，欢迎支持一下：
+
+- 给仓库点个 Star: <https://github.com/JX05120LLL/system-blueprint>
+- 分享给也在做 Agent、架构文档或技术可视化的朋友
+- 提 issue 或 PR，补充你希望支持的图类型和工作流
+
+---
+
+## 总结
+
+`System Blueprint` 不是为了替代所有绘图工具，而是为了补上 Agent 工作流里经常缺失的一环：
+
+让“从代码或描述到一张真正能展示的技术图”这件事，变得更快、更轻、更可复用。
+
+如果你正好也在做这类事情，这个仓库应该会有用。  
+觉得有帮助的话，欢迎点个 Star。

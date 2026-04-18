@@ -59,7 +59,7 @@
     <text x="1352" y="406" class="node-title">LLM</text>
 
     <rect x="1048" y="540" width="330" height="164" rx="26" fill="#2E1A49" stroke="#D5AAFF" stroke-opacity="0.34"/>
-    <text x="1090" y="584" class="node-title">Data & Memory</text>
+    <text x="1090" y="584" class="node-title">Data &amp; Memory</text>
     <text x="1090" y="610" class="node-copy">Plans, trips, summaries, preferences, recall</text>
 
     <path d="M1120 365H1170" stroke="#7FDBFF" stroke-width="5" stroke-linecap="round"/>

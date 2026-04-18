@@ -19,7 +19,7 @@
   </defs>
 
   <rect width="1600" height="980" rx="32" fill="url(#bg)"/>
-  <text x="92" y="92" class="title">Memory & Recall Flow</text>
+  <text x="92" y="92" class="title">Memory &amp; Recall Flow</text>
   <text x="92" y="126" class="subtitle">A session stays local, while history and preferences are recalled only when they are relevant.</text>
 
   <g opacity="0.12">
@@ -41,7 +41,7 @@
 
   <g filter="url(#shadow)">
     <rect x="552" y="150" width="496" height="282" rx="30" fill="#2E1A49" stroke="#D5AAFF" stroke-opacity="0.32"/>
-    <text x="586" y="198" class="group-title">Recall & Decision Layer</text>
+    <text x="586" y="198" class="group-title">Recall &amp; Decision Layer</text>
     <text x="586" y="226" class="group-copy">Decide when to stay local, when to inject preferences, and when to recall history.</text>
 
     <rect x="586" y="266" width="180" height="86" rx="20" fill="#3A215B" stroke="#E1BFFF" stroke-opacity="0.35"/>
@@ -110,7 +110,7 @@
   <text x="138" y="900" class="chip">Current Session</text>
   <rect x="304" y="876" width="202" height="38" rx="19" fill="#142238" stroke="#3D5E8D" stroke-opacity="0.42"/>
   <circle cx="330" cy="895" r="6" fill="#D5AAFF"/>
-  <text x="346" y="900" class="chip">Recall & Decision</text>
+  <text x="346" y="900" class="chip">Recall &amp; Decision</text>
   <rect x="526" y="876" width="188" height="38" rx="19" fill="#142238" stroke="#3D5E8D" stroke-opacity="0.42"/>
   <circle cx="552" cy="895" r="6" fill="#FFD27F"/>
   <text x="568" y="900" class="chip">History Sources</text>
