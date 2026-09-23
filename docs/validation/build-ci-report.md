@@ -30,4 +30,4 @@ ELK 来源核对：[elkjs 0.11.0 构建定义](https://raw.githubusercontent.com
 
 Linux 显式安装 Cairo、Noto CJK、固定 CairoSVG 2.8.2 / Pillow 11.3.0 与 Chromium 系统依赖，运行全部兼容测试。Windows 保留中文/空格路径、离线 file://、HTML 的 Python→Node 委派及其他浏览器测试，仅排除依赖系统 Cairo 的两个 Python SVG 专项；这两项由 Linux CI 覆盖。排除条件写在 workflow 中，没有删除测试或在实现中静默跳过。
 
-本轮没有 commit、push 或触发 GitHub Actions，因此 **Linux 和 Windows 的远程 CI 尚未实际运行**。本机绿色结果不能代替远程 runner 证据；跨 OS 字体/系统包差异须以首次 CI 结果确认。主任务另行负责完整浏览器、分发和示例的最终报告。
+首次推送后，[GitHub Actions 运行 35849383390](https://github.com/JX05120LLL/system-blueprint/actions/runs/35849383390) 在提交 `55d85de32688b32e2dc83aaddd01b156a348173e` 上完成：Ubuntu 24.04 与 Windows Server 2022 两个作业均为 success。两侧均通过预构建一致性、类型检查、单元测试、重建、浏览器验收、仓库外分发与示例检查；Linux 运行 Cairo SVG 兼容专项，Windows 运行中文路径与离线 `file://` 专项。其他浏览器与真实触控设备仍未验收。

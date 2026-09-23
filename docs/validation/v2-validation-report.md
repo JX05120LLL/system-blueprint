@@ -77,9 +77,9 @@ M1 先用真实总览模型完成浅/深视觉样板，再接通 ELK 通用布�
 
 - [性能报告](performance.md) 区分目标与本机实测：1.680 MiB、ready p95 232.2 ms、折叠 p95 50.4 ms；不是跨设备保证。100/300/20 的长链 SVG 完整，但最低位图倍率仍超尺寸限额，需拆图。
 - 自动布局不保证任意拓扑都紧凑或零交叉。图过长是明确警告，节点/标签遮挡为错误，不能靠删边、缩字号或裁切交付。
-- Linux/Windows GitHub Actions 已配置并检查 YAML，本次没有远程运行；本机完整通过不能代替远程 runner 证据。Linux CI 负责两项 Cairo SVG 专项，Windows CI保留路径/离线/HTML 委派检查。详见 [构建与CI](build-ci-report.md)。
+- [首次 GitHub Actions 运行](https://github.com/JX05120LLL/system-blueprint/actions/runs/35849383390) 在提交 `55d85de` 上通过 Ubuntu 24.04 与 Windows Server 2022 两个作业。Linux 执行 Cairo SVG 专项，Windows 执行中文路径、离线 `file://` 与 HTML 委派检查。详见 [构建与 CI](build-ci-report.md)。
 - Firefox/Safari、其他系统字体、触控硬件、屏幕阅读器与长期压力未实机验收。可用触控手势来自 d3-zoom，不能从鼠标测试宣称真实触控设备已验证。
 - 仓库外分发验证的是依赖与路径闭合，没有用操作系统权限让整个仓库物理不可访问；导出器已明确拒绝借用根目录 Playwright。
 - legacy 仅导出选定的静态内联 SVG 区域；动态页面脚本、外部资源和整页截图不在兼容范围。CairoSVG 不承诺所有浏览器滤镜效果。
 
-本轮无剩余已确认的 P1/P2 实现问题或环境阻塞。上述范围边界与未运行环境均保留，不以“编译通过”替代效果或交互验证。
+本轮无剩余已确认的 P1/P2 实现问题或环境阻塞。上述范围边界与尚未覆盖的设备和浏览器保留，不以“编译通过”替代效果或交互验证。
