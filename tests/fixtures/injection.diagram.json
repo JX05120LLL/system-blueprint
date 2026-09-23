@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "2.0", "id": "injection", "title": "纯文本 </script> & 引号验收",
+  "description": "<script>globalThis.__blueprintInjectionExecuted = true</script> 必须作为文本显示。",
+  "view": { "kind": "overview", "direction": "RIGHT", "theme": "light" },
+  "groups": [{ "id": "group-<svg/onload=alert(1)>", "label": "<b>分组</b>", "details": "</script><img src=\"https://blueprint-invalid.example/group\" onerror=\"globalThis.__blueprintInjectionExecuted=true\">" }],
+  "nodes": [
+    { "id": "node-\"quoted\"", "kind": "process", "label": "<script>文本</script>", "groupId": "group-<svg/onload=alert(1)>", "summary": "<img> & \"引号\"", "details": "</script><script>globalThis.__blueprintInjectionExecuted=true;fetch('https://blueprint-invalid.example/executed')</script>", "sources": [{ "path": "src/<img-onerror>.ts", "line": 7 }], "evidenceStatus": "confirmed" },
+    { "id": "node-</script>", "kind": "external", "label": "<svg>作为文字", "details": "<img src=\"https://blueprint-invalid.example/image\" onerror=\"globalThis.__blueprintInjectionExecuted=true\">", "evidenceStatus": "confirmed" }
+  ],
+  "edges": [{ "id": "edge-<script>", "source": "node-\"quoted\"", "target": "node-</script>", "kind": "data", "directed": true, "label": "<b>数据</b>", "details": "javascript:alert(1) 只是纯文本。" }]
+}

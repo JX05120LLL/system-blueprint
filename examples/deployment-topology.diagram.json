@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "2.0",
+  "id": "deployment-topology",
+  "title": "Deployment Topology · 示例",
+  "description": "边界与组件来自旧图；具体调用端点和方向是待核实的假设，不代表本仓库的真实部署。",
+  "view": {
+    "kind": "deployment",
+    "direction": "RIGHT",
+    "theme": "light",
+    "primaryPath": [
+      "users-edge",
+      "edge-api",
+      "api-agent"
+    ]
+  },
+  "groups": [
+    {
+      "id": "application-zone",
+      "label": "云入口与应用区",
+      "details": "公共入口、API 服务与 Agent 编排职责。部署位置来自原示例，不指定云厂商或真实主机。"
+    },
+    {
+      "id": "data-zone",
+      "label": "数据与记忆区",
+      "details": "持久状态、缓存和检索索引；不由节点位置推断真实调用。"
+    },
+    {
+      "id": "external-zone",
+      "label": "外部服务",
+      "details": "地图、天气、搜索、消息及语音等第三方能力。"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "users",
+      "kind": "external",
+      "label": "用户入口",
+      "evidenceStatus": "confirmed",
+      "summary": "浏览器 / 移动端 / 内部工具",
+      "details": "保留原 Users 所列的三种客户端。此为概念示例，不代表已上线终端。",
+      "sources": [
+        {
+          "path": "tests/fixtures/legacy/system-blueprint-deployment-topology.svg"
+        }
+      ]
+    },
+    {
+      "id": "edge",
+      "kind": "process",
+      "label": "CDN / WAF",
+      "evidenceStatus": "confirmed",
+      "groupId": "application-zone",
+      "summary": "公共边缘入口"
+    },
+    {
+      "id": "api",
+      "kind": "process",
+      "label": "FastAPI",
+      "evidenceStatus": "confirmed",
+      "groupId": "application-zone",
+      "summary": "应用 API"
+    },
+    {
+      "id": "agent",
+      "kind": "process",
+      "label": "Agent Core",
+      "evidenceStatus": "confirmed",
+      "groupId": "application-zone",
+      "summary": "路由与工具编排"
+    },
+    {
+      "id": "postgres",
+      "kind": "store",
+      "label": "PostgreSQL",
+      "evidenceStatus": "confirmed",
+      "groupId": "data-zone",
+      "summary": "会话、方案与行程",
+      "details": "保留 Sessions / plans / trips 的数据职责。具体表结构与调用方尚未核实。"
+    },
+    {
+      "id": "redis",
+      "kind": "store",
+      "label": "Redis",
+      "evidenceStatus": "confirmed",
+      "groupId": "data-zone",
+      "summary": "缓存与热点状态"
+    },
+    {
+      "id": "qdrant",
+      "kind": "store",
+      "label": "Qdrant",
+      "evidenceStatus": "confirmed",
+      "groupId": "data-zone",
+      "summary": "知识检索与召回"
+    },
+    {
+      "id": "maps",
+      "kind": "external",
+      "label": "Maps API",
+      "evidenceStatus": "confirmed",
+      "groupId": "external-zone",
+      "summary": "地图能力"
+    },
+    {
+      "id": "weather",
+      "kind": "external",
+      "label": "Weather API",
+      "evidenceStatus": "confirmed",
+      "groupId": "external-zone",
+      "summary": "天气能力"
+    },
+    {
+      "id": "search",
+      "kind": "external",
+      "label": "Search",
+      "evidenceStatus": "confirmed",
+      "groupId": "external-zone",
+      "summary": "外部搜索"
+    },
+    {
+      "id": "messaging",
+      "kind": "external",
+      "label": "Messaging / TTS",
+      "evidenceStatus": "confirmed",
+      "groupId": "external-zone",
+      "summary": "消息与语音"
+    }
+  ],
+  "edges": [
+    {
+      "id": "users-edge",
+      "source": "users",
+      "target": "edge",
+      "kind": "dependency",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "公共请求",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "edge-api",
+      "source": "edge",
+      "target": "api",
+      "kind": "dependency",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "入口转发",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "api-agent",
+      "source": "api",
+      "target": "agent",
+      "kind": "dependency",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "任务请求",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "agent-postgres",
+      "source": "agent",
+      "target": "postgres",
+      "kind": "data",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "读写业务记录",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "agent-redis",
+      "source": "agent",
+      "target": "redis",
+      "kind": "data",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "缓存与状态",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "agent-qdrant",
+      "source": "agent",
+      "target": "qdrant",
+      "kind": "data",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "检索与召回",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "agent-maps",
+      "source": "agent",
+      "target": "maps",
+      "kind": "dependency",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "地图查询",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "agent-weather",
+      "source": "agent",
+      "target": "weather",
+      "kind": "dependency",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "天气查询",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "agent-search",
+      "source": "agent",
+      "target": "search",
+      "kind": "dependency",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "信息检索",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    },
+    {
+      "id": "agent-messaging",
+      "source": "agent",
+      "target": "messaging",
+      "kind": "dependency",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "消息 / 语音",
+      "details": "根据旧示例中的区域职责推定的具体连接；原 SVG 仅连接到部分节点或区域边界，需用真实配置与调用代码核实。"
+    }
+  ]
+}

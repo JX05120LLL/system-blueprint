@@ -1,0 +1,488 @@
+{
+  "schemaVersion": "2.0",
+  "id": "narrow-long-flow",
+  "title": "375 px 窄屏长流程",
+  "description": "32 个步骤全部保留。适应画布应允许小于 25% 的总览比例，再放大时倍率必须连续。",
+  "view": {
+    "kind": "flow",
+    "direction": "DOWN",
+    "theme": "light",
+    "primaryPath": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-06",
+      "step-07",
+      "step-08",
+      "step-09",
+      "step-10",
+      "step-11",
+      "step-12",
+      "step-13",
+      "step-14",
+      "step-15",
+      "step-16",
+      "step-17",
+      "step-18",
+      "step-19",
+      "step-20",
+      "step-21",
+      "step-22",
+      "step-23",
+      "step-24",
+      "step-25",
+      "step-26",
+      "step-27",
+      "step-28",
+      "step-29",
+      "step-30",
+      "step-31"
+    ]
+  },
+  "groups": [],
+  "nodes": [
+    {
+      "id": "n01",
+      "kind": "start",
+      "label": "收到处理请求",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n02",
+      "kind": "process",
+      "label": "执行步骤 02",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n03",
+      "kind": "process",
+      "label": "执行步骤 03",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n04",
+      "kind": "process",
+      "label": "执行步骤 04",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n05",
+      "kind": "process",
+      "label": "执行步骤 05",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n06",
+      "kind": "process",
+      "label": "执行步骤 06",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n07",
+      "kind": "process",
+      "label": "执行步骤 07",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n08",
+      "kind": "process",
+      "label": "执行步骤 08",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n09",
+      "kind": "process",
+      "label": "执行步骤 09",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n10",
+      "kind": "process",
+      "label": "执行步骤 10",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n11",
+      "kind": "process",
+      "label": "执行步骤 11",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n12",
+      "kind": "process",
+      "label": "执行步骤 12",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n13",
+      "kind": "process",
+      "label": "执行步骤 13",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n14",
+      "kind": "process",
+      "label": "执行步骤 14",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n15",
+      "kind": "process",
+      "label": "执行步骤 15",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n16",
+      "kind": "process",
+      "label": "执行步骤 16",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n17",
+      "kind": "process",
+      "label": "执行步骤 17",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n18",
+      "kind": "process",
+      "label": "执行步骤 18",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n19",
+      "kind": "process",
+      "label": "执行步骤 19",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n20",
+      "kind": "process",
+      "label": "执行步骤 20",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n21",
+      "kind": "process",
+      "label": "执行步骤 21",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n22",
+      "kind": "process",
+      "label": "执行步骤 22",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n23",
+      "kind": "process",
+      "label": "执行步骤 23",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n24",
+      "kind": "process",
+      "label": "执行步骤 24",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n25",
+      "kind": "process",
+      "label": "执行步骤 25",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n26",
+      "kind": "process",
+      "label": "执行步骤 26",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n27",
+      "kind": "process",
+      "label": "执行步骤 27",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n28",
+      "kind": "process",
+      "label": "执行步骤 28",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n29",
+      "kind": "process",
+      "label": "执行步骤 29",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n30",
+      "kind": "process",
+      "label": "执行步骤 30",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n31",
+      "kind": "process",
+      "label": "执行步骤 31",
+      "summary": "此步骤必须完整保留",
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "n32",
+      "kind": "end",
+      "label": "返回完整结果",
+      "evidenceStatus": "confirmed"
+    }
+  ],
+  "edges": [
+    {
+      "id": "step-01",
+      "source": "n01",
+      "target": "n02",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-02",
+      "source": "n02",
+      "target": "n03",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-03",
+      "source": "n03",
+      "target": "n04",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-04",
+      "source": "n04",
+      "target": "n05",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-05",
+      "source": "n05",
+      "target": "n06",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-06",
+      "source": "n06",
+      "target": "n07",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-07",
+      "source": "n07",
+      "target": "n08",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-08",
+      "source": "n08",
+      "target": "n09",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-09",
+      "source": "n09",
+      "target": "n10",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-10",
+      "source": "n10",
+      "target": "n11",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-11",
+      "source": "n11",
+      "target": "n12",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-12",
+      "source": "n12",
+      "target": "n13",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-13",
+      "source": "n13",
+      "target": "n14",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-14",
+      "source": "n14",
+      "target": "n15",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-15",
+      "source": "n15",
+      "target": "n16",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-16",
+      "source": "n16",
+      "target": "n17",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-17",
+      "source": "n17",
+      "target": "n18",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-18",
+      "source": "n18",
+      "target": "n19",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-19",
+      "source": "n19",
+      "target": "n20",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-20",
+      "source": "n20",
+      "target": "n21",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-21",
+      "source": "n21",
+      "target": "n22",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-22",
+      "source": "n22",
+      "target": "n23",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-23",
+      "source": "n23",
+      "target": "n24",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-24",
+      "source": "n24",
+      "target": "n25",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-25",
+      "source": "n25",
+      "target": "n26",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-26",
+      "source": "n26",
+      "target": "n27",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-27",
+      "source": "n27",
+      "target": "n28",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-28",
+      "source": "n28",
+      "target": "n29",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-29",
+      "source": "n29",
+      "target": "n30",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-30",
+      "source": "n30",
+      "target": "n31",
+      "kind": "control",
+      "directed": true
+    },
+    {
+      "id": "step-31",
+      "source": "n31",
+      "target": "n32",
+      "kind": "control",
+      "directed": true
+    }
+  ]
+}

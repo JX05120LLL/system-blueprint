@@ -1,0 +1,33 @@
+{
+  "name": "system-blueprint-dev",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24 <25" },
+  "scripts": {
+    "generate:types": "node scripts/schema.mjs",
+    "typecheck": "npm run generate:types && tsc --noEmit",
+    "test:unit": "node --import tsx --test tests/unit/*.test.ts",
+    "build": "node scripts/build.mjs",
+    "check:build": "node scripts/check-build.mjs",
+    "test:browser": "playwright test",
+    "test:package": "node scripts/check-package.mjs",
+    "examples:generate": "node scripts/examples.mjs",
+    "examples:check": "node scripts/examples.mjs --check",
+    "test:performance": "node --import tsx scripts/performance.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "@types/d3-selection": "3.0.11",
+    "@types/d3-zoom": "3.0.8",
+    "@types/node": "24.10.1",
+    "ajv": "8.17.1",
+    "d3-selection": "3.0.0",
+    "d3-zoom": "3.0.0",
+    "elkjs": "0.11.0",
+    "esbuild": "0.25.12",
+    "json-schema-to-typescript": "15.0.4",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "2.0", "id": "single-node", "title": "单节点验收",
+  "description": "无分组、无连线的最小图，验证适应画布及完整导出。",
+  "view": { "kind": "overview", "direction": "RIGHT", "theme": "light" },
+  "groups": [],
+  "nodes": [{ "id": "only", "kind": "process", "label": "独立组件", "summary": "无需依赖其他节点", "evidenceStatus": "confirmed" }],
+  "edges": []
+}

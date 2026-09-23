@@ -1,0 +1,87 @@
+name: Verify System Blueprint
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Node 24 / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    env:
+      CI: 'true'
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            system-blueprint/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install locked Node dependencies
+        run: |
+          npm ci
+          npm ci --prefix system-blueprint
+      - name: Install Linux fonts, Cairo and browser libraries
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libcairo2 fonts-noto-cjk
+          python -m pip install cairosvg==2.8.2 pillow==11.3.0
+          node system-blueprint/node_modules/playwright/cli.js install --with-deps chromium
+      - name: Install Windows browser
+        if: runner.os == 'Windows'
+        run: node system-blueprint/node_modules/playwright/cli.js install chromium
+      - name: Verify tracked prebuilt files before any regeneration
+        run: npm run check:build
+      - name: Typecheck and unit tests
+        run: |
+          npm run typecheck
+          npm run test:unit
+      - name: Rebuild and verify deterministic output
+        run: |
+          npm run build
+          npm run check:build
+      - name: Browser acceptance including Python SVG compatibility
+        if: runner.os == 'Linux'
+        run: npm run test:browser
+      - name: Windows paths and offline browser acceptance
+        if: runner.os == 'Windows'
+        # Cairo/Pillow legacy SVG tests run on Linux. HTML delegation still runs here without them.
+        run: npm run test:browser -- --grep-invert "Python SVG|Python applies bitmap"
+      - name: Independent skill distribution and example deliveries
+        run: |
+          npm run test:package
+          npm run examples:check
+      - name: Preserve verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-${{ matrix.os }}
+          path: |
+            artifacts/build-consistency/
+            artifacts/browser-results.json
+            artifacts/test-results/
+            artifacts/package/report.json
+            artifacts/examples-report.json
+            artifacts/screenshots/
+          if-no-files-found: ignore
+          retention-days: 14

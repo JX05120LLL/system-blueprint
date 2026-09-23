@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "2.0", "id": "parallel-control", "title": "并行分叉与汇合",
+  "description": "两个控制任务并行执行后汇合。fork 与 join 使用专用符号，不替换为普通判断节点。",
+  "view": { "kind": "flow", "direction": "DOWN", "theme": "light" },
+  "groups": [],
+  "nodes": [
+    { "id": "start", "kind": "start", "label": "开始处理", "evidenceStatus": "confirmed" },
+    { "id": "fork", "kind": "fork", "label": "并行执行", "evidenceStatus": "confirmed" },
+    { "id": "left", "kind": "process", "label": "校验业务资料", "evidenceStatus": "confirmed" },
+    { "id": "right", "kind": "process", "label": "读取规则版本", "evidenceStatus": "confirmed" },
+    { "id": "join", "kind": "join", "label": "等待两个任务", "evidenceStatus": "confirmed" },
+    { "id": "end", "kind": "end", "label": "汇总返回", "evidenceStatus": "confirmed" }
+  ],
+  "edges": [
+    { "id": "enter", "source": "start", "target": "fork", "kind": "control", "directed": true },
+    { "id": "fork-left", "source": "fork", "target": "left", "kind": "control", "directed": true },
+    { "id": "fork-right", "source": "fork", "target": "right", "kind": "control", "directed": true },
+    { "id": "join-left", "source": "left", "target": "join", "kind": "control", "directed": true },
+    { "id": "join-right", "source": "right", "target": "join", "kind": "control", "directed": true },
+    { "id": "exit", "source": "join", "target": "end", "kind": "control", "directed": true }
+  ]
+}

@@ -1,0 +1,287 @@
+{
+  "mode": "check",
+  "browser": "145.0.7632.6",
+  "platform": "win32",
+  "examples": [
+    {
+      "name": "overview",
+      "model": {
+        "nodes": 5,
+        "edges": 4,
+        "groups": 0
+      },
+      "htmlBytes": 1753473,
+      "geometry": [
+        {
+          "code": "LAYOUT_ELONGATED",
+          "path": "",
+          "ids": [],
+          "message": "图较长，适应画布后文字可能过小；请考虑拆分为总览与子图。",
+          "severity": "warning"
+        }
+      ],
+      "canvasRatio": 0.7539265950520834,
+      "outputs": {
+        "svg": {
+          "width": 1632,
+          "height": 283,
+          "nodes": 5,
+          "edges": 4,
+          "titles": [
+            "输入材料仓库 / 文档 / 系统描述↗",
+            "Agent 按 Skill 建模边界、依赖与关键条件",
+            "diagram.json可校验、可持续修改",
+            "离线 HTML测量 → 布局 → 交互阅读",
+            "SVG / PNG / JPEG全展开的完整静态图"
+          ],
+          "bytes": 8065
+        },
+        "png": {
+          "width": 3264,
+          "height": 566,
+          "coloredPixels": 744,
+          "bytes": 111950
+        },
+        "jpg": {
+          "width": 3264,
+          "height": 566,
+          "coloredPixels": 752,
+          "bytes": 147027
+        }
+      }
+    },
+    {
+      "name": "runtime-flow",
+      "model": {
+        "nodes": 9,
+        "edges": 10,
+        "groups": 4
+      },
+      "htmlBytes": 1756443,
+      "geometry": [],
+      "canvasRatio": 0.7539265950520834,
+      "outputs": {
+        "svg": {
+          "width": 647,
+          "height": 2264,
+          "nodes": 9,
+          "edges": 10,
+          "titles": [
+            "收集输入材料",
+            "确定范围与格式读者、图类型与输出",
+            "提取系统模型组件、边界、方向与条件",
+            "整理关系与证据保留稳定 ID 与关键分支",
+            "生成离线阅读器校验 → 测量 → 布局",
+            "图形检查通过？规划",
+            "交付图与源数据HTML、JSON 与静态图",
+            "需要调整？规划",
+            "完成本次交付"
+          ],
+          "bytes": 15389
+        },
+        "png": {
+          "width": 1294,
+          "height": 4528,
+          "coloredPixels": 9589,
+          "bytes": 261175
+        },
+        "jpg": {
+          "width": 1294,
+          "height": 4528,
+          "coloredPixels": 10040,
+          "bytes": 386425
+        }
+      }
+    },
+    {
+      "name": "memory-recall",
+      "model": {
+        "nodes": 8,
+        "edges": 9,
+        "groups": 3
+      },
+      "htmlBytes": 1755528,
+      "geometry": [],
+      "canvasRatio": 0.7539265950520834,
+      "outputs": {
+        "svg": {
+          "width": 565,
+          "height": 2009,
+          "nodes": 8,
+          "edges": 9,
+          "titles": [
+            "读取当前会话消息与当前摘要",
+            "识别会话意图继续、新建、比较、召回",
+            "需要历史召回？",
+            "检索相关历史保留来源与相关范围",
+            "找到相关记录？假设",
+            "保留当前上下文不注入无关历史",
+            "组装相关上下文当前材料 + 必要记忆",
+            "交给后续任务"
+          ],
+          "bytes": 13447
+        },
+        "png": {
+          "width": 1130,
+          "height": 4018,
+          "coloredPixels": 10720,
+          "bytes": 217354
+        },
+        "jpg": {
+          "width": 1130,
+          "height": 4018,
+          "coloredPixels": 10955,
+          "bytes": 292410
+        }
+      }
+    },
+    {
+      "name": "deployment-topology",
+      "model": {
+        "nodes": 11,
+        "edges": 10,
+        "groups": 3
+      },
+      "htmlBytes": 1756644,
+      "geometry": [],
+      "canvasRatio": 0.7539265950520834,
+      "outputs": {
+        "svg": {
+          "width": 2104,
+          "height": 1237,
+          "nodes": 11,
+          "edges": 10,
+          "titles": [
+            "用户入口浏览器 / 移动端 / 内部工具↗",
+            "CDN / WAF公共边缘入口",
+            "FastAPI应用 API",
+            "Agent Core路由与工具编排",
+            "PostgreSQL会话、方案与行程",
+            "Redis缓存与热点状态",
+            "Qdrant知识检索与召回",
+            "Maps API地图能力↗",
+            "Weather API天气能力↗",
+            "Search外部搜索↗",
+            "Messaging / TTS消息与语音↗"
+          ],
+          "bytes": 17524
+        },
+        "png": {
+          "width": 4208,
+          "height": 2474,
+          "coloredPixels": 1046,
+          "bytes": 244165
+        },
+        "jpg": {
+          "width": 4208,
+          "height": 2474,
+          "coloredPixels": 1098,
+          "bytes": 405866
+        }
+      }
+    },
+    {
+      "name": "before",
+      "model": {
+        "nodes": 3,
+        "edges": 2,
+        "groups": 0
+      },
+      "htmlBytes": 1752086,
+      "geometry": [],
+      "canvasRatio": 0.7539265950520834,
+      "outputs": {
+        "svg": {
+          "width": 480,
+          "height": 692,
+          "nodes": 3,
+          "edges": 2,
+          "titles": [
+            "前端请求入口",
+            "API应用处理",
+            "数据库业务记录"
+          ],
+          "bytes": 5494
+        },
+        "png": {
+          "width": 960,
+          "height": 1384,
+          "coloredPixels": 4171,
+          "bytes": 68838
+        },
+        "jpg": {
+          "width": 960,
+          "height": 1384,
+          "coloredPixels": 4218,
+          "bytes": 89708
+        }
+      }
+    },
+    {
+      "name": "after",
+      "model": {
+        "nodes": 4,
+        "edges": 4,
+        "groups": 3
+      },
+      "htmlBytes": 1753094,
+      "geometry": [],
+      "canvasRatio": 0.7539265950520834,
+      "outputs": {
+        "svg": {
+          "width": 557,
+          "height": 1365,
+          "nodes": 4,
+          "edges": 4,
+          "titles": [
+            "前端请求入口",
+            "API应用处理",
+            "数据库业务记录",
+            "LLM 扩展新增模型能力规划↗"
+          ],
+          "bytes": 9138
+        },
+        "png": {
+          "width": 1114,
+          "height": 2730,
+          "coloredPixels": 6190,
+          "bytes": 124830
+        },
+        "jpg": {
+          "width": 1114,
+          "height": 2730,
+          "coloredPixels": 6399,
+          "bytes": 196563
+        }
+      }
+    }
+  ],
+  "comparison": {
+    "width": 1133,
+    "height": 1461,
+    "uniqueIds": true,
+    "missingRefs": [],
+    "sides": [
+      {
+        "side": "before",
+        "x": 32,
+        "y": 64,
+        "width": 480,
+        "height": 692,
+        "transform": null
+      },
+      {
+        "side": "after",
+        "x": 544,
+        "y": 64,
+        "width": 557,
+        "height": 1365,
+        "transform": null
+      }
+    ]
+  },
+  "errors": [],
+  "status": "passed",
+  "externalRequests": [],
+  "pageErrors": []
+}

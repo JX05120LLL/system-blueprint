@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "2.0", "id": "mixed-flow", "title": "流程与数据关系混合",
+  "description": "decision 的分支只统计流程边；上下游只遍历流程子图，数据与依赖仍在详情展示。",
+  "view": { "kind": "flow", "direction": "DOWN", "theme": "light" },
+  "groups": [],
+  "nodes": [
+    { "id": "start", "kind": "start", "label": "收到请求", "evidenceStatus": "confirmed" },
+    { "id": "check", "kind": "decision", "label": "允许执行？", "evidenceStatus": "confirmed" },
+    { "id": "done", "kind": "end", "label": "返回成功", "evidenceStatus": "confirmed" },
+    { "id": "failed", "kind": "end", "label": "返回拒绝", "evidenceStatus": "confirmed" },
+    { "id": "store", "kind": "store", "label": "判定记录", "evidenceStatus": "confirmed" },
+    { "id": "catalog", "kind": "process", "label": "规则目录", "evidenceStatus": "confirmed" },
+    { "id": "external", "kind": "external", "label": "共享规则库", "evidenceStatus": "assumed" }
+  ],
+  "edges": [
+    { "id": "enter", "source": "start", "target": "check", "kind": "control", "directed": true },
+    { "id": "allow", "source": "check", "target": "done", "kind": "control", "directed": true, "label": "允许" },
+    { "id": "deny", "source": "check", "target": "failed", "kind": "exception", "directed": true, "label": "拒绝" },
+    { "id": "record", "source": "check", "target": "store", "kind": "data", "directed": true, "label": "记录判定" },
+    { "id": "lookup", "source": "check", "target": "catalog", "kind": "dependency", "directed": true, "label": "读取规则" },
+    { "id": "shared", "source": "catalog", "target": "external", "kind": "dependency", "directed": false, "label": "共享定义" }
+  ]
+}

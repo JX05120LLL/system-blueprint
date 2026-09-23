@@ -1,0 +1,11 @@
+{
+  "path": "artifacts\\system-blueprint-v2.zip",
+  "files": 29,
+  "bytes": 575052,
+  "sha256": "5df122e2ed63284c56ef9e5416f6fca0ae851d2f364ffdc6fa1ae58da6888f38",
+  "status": "passed",
+  "excludes": [
+    "node_modules",
+    "__pycache__"
+  ]
+}

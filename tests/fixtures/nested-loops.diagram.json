@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "2.0", "id": "nested-loops", "title": "两层分组与反馈回路",
+  "description": "交替折叠父组和子组，再展开应恢复原始边；真实节点自环不得被误当作折叠内部边丢弃。",
+  "view": { "kind": "flow", "direction": "DOWN", "theme": "light", "primaryPath": ["enter", "allowed", "audit", "complete"] },
+  "groups": [
+    { "id": "parent", "label": "请求处理", "details": "父组包含内部校验子组以及审计步骤。" },
+    { "id": "child", "label": "内部校验", "parentId": "parent", "details": "保留本组先前的折叠状态；原始关系始终保存在文档中。" }
+  ],
+  "nodes": [
+    { "id": "start", "kind": "start", "label": "开始处理", "evidenceStatus": "confirmed" },
+    { "id": "check", "kind": "decision", "label": "满足条件？", "groupId": "child", "evidenceStatus": "confirmed" },
+    { "id": "work", "kind": "process", "label": "执行业务处理", "groupId": "child", "evidenceStatus": "confirmed" },
+    { "id": "audit", "kind": "process", "label": "记录审计结果", "groupId": "parent", "evidenceStatus": "confirmed" },
+    { "id": "end", "kind": "end", "label": "返回结果", "evidenceStatus": "confirmed" }
+  ],
+  "edges": [
+    { "id": "enter", "source": "start", "target": "check", "kind": "control", "directed": true },
+    { "id": "allowed", "source": "check", "target": "work", "kind": "control", "directed": true, "label": "满足" },
+    { "id": "denied", "source": "check", "target": "end", "kind": "exception", "directed": true, "label": "不满足" },
+    { "id": "retry", "source": "work", "target": "check", "kind": "feedback", "directed": true, "label": "需要重试" },
+    { "id": "audit", "source": "work", "target": "audit", "kind": "control", "directed": true },
+    { "id": "self-loop", "source": "audit", "target": "audit", "kind": "feedback", "directed": true, "label": "审计复核" },
+    { "id": "complete", "source": "audit", "target": "end", "kind": "control", "directed": true }
+  ]
+}

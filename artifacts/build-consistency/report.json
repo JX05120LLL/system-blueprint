@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "node": "v24.14.0",
+  "platform": "win32",
+  "checks": [
+    "exact package versions, lockfiles, installed direct dependencies, Node 24, matching Playwright and schema versions",
+    "fresh schema types and Ajv validator; browser/CLI bundles; upstream license bytes and notices; build manifest"
+  ],
+  "differences": [],
+  "filesCompared": 20,
+  "version": "2.0.0",
+  "playwright": "1.58.2"
+}

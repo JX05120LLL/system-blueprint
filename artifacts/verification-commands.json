@@ -1,0 +1,165 @@
+{
+  "date": "2026-09-23",
+  "records": [
+    {
+      "command": "npm ci",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "chunk_id": "4ea653",
+          "wall_time_seconds": 2.9697152,
+          "exit_code": 0,
+          "original_token_count": 101,
+          "output": "\nadded 47 packages in 2s\nnpm warn install-scripts 2 packages have install scripts not yet covered by allowScripts:\nnpm warn install-scripts   esbuild@0.25.12 (postinstall: node install.js)\nnpm warn install-scripts   esbuild@0.27.7 (postinstall: node install.js)\nnpm warn install-scripts\nnpm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.\n"
+        }
+      }
+    },
+    {
+      "command": "npm ci --prefix system-blueprint",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "chunk_id": "9a5eb3",
+          "wall_time_seconds": 1.8193342000000001,
+          "exit_code": 0,
+          "original_token_count": 6,
+          "output": "\nadded 2 packages in 1s\n"
+        }
+      }
+    },
+    {
+      "command": "node system-blueprint/node_modules/playwright/cli.js install chromium",
+      "result": {
+        "chunk_id": "e2dcdf",
+        "wall_time_seconds": 0.9127615,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "command": "npm.cmd run build",
+      "result": {
+        "chunk_id": "0092de",
+        "wall_time_seconds": 0.9877908,
+        "exit_code": 0,
+        "original_token_count": 76,
+        "output": "\n> system-blueprint-dev@2.0.0 build\n> node scripts/build.mjs\n\n\n  system-blueprint\\assets\\viewer.js  1.7mb\n\nDone in 66ms\n\n  system-blueprint\\scripts\\generate.mjs  72.8kb\n\nDone in 8ms\n\n  system-blueprint\\scripts\\validate.mjs  69.9kb\n\nDone in 7ms\n\n  system-blueprint\\scripts\\export.mjs  25.7kb\n\nDone in 7ms\n"
+      }
+    },
+    {
+      "command": "npm.cmd run check:build",
+      "result": {
+        "chunk_id": "00686e",
+        "wall_time_seconds": 7.4159377,
+        "exit_code": 0,
+        "original_token_count": 137,
+        "output": "\n> system-blueprint-dev@2.0.0 check:build\n> node scripts/check-build.mjs\n\n{\n  \"status\": \"passed\",\n  \"node\": \"v24.14.0\",\n  \"platform\": \"win32\",\n  \"checks\": [\n    \"exact package versions, lockfiles, installed direct dependencies, Node 24, matching Playwright and schema versions\",\n    \"fresh schema types and Ajv validator; browser/CLI bundles; upstream license bytes and notices; build manifest\"\n  ],\n  \"differences\": [],\n  \"filesCompared\": 20,\n  \"version\": \"2.0.0\",\n  \"playwright\": \"1.58.2\",\n  \"report\": \"artifacts/build-consistency/report.json\"\n}\n"
+      }
+    },
+    {
+      "command": "npm.cmd run typecheck",
+      "result": {
+        "chunk_id": "f114a9",
+        "wall_time_seconds": 2.4484333,
+        "exit_code": 0,
+        "original_token_count": 39,
+        "output": "\n> system-blueprint-dev@2.0.0 typecheck\n> npm run generate:types && tsc --noEmit\n\n\n> system-blueprint-dev@2.0.0 generate:types\n> node scripts/schema.mjs\n\n"
+      }
+    },
+    {
+      "command": "npm.cmd run test:unit",
+      "result": {
+        "chunk_id": "228ded",
+        "wall_time_seconds": 8.1415021,
+        "exit_code": 0,
+        "original_token_count": 1173,
+        "output": "\n> system-blueprint-dev@2.0.0 test:unit\n> node --import tsx --test tests/unit/*.test.ts\n\n✔ V10 generate preserves existing files and rejects unknown options instead of silently accepting them (6856.4201ms)\n✔ V12 whitespace-padded JSON over 2 MiB is rejected before parsing and writing (55.0979ms)\n✔ V11 validate reports a concrete missing endpoint and refuses unsupported versions (97.9415ms)\n✔ V12 export refuses invalid scale, SVG scale and conflicting formats before browser startup (293.1599ms)\n✔ V15 raster metadata uses Chromium pixel rounding and V12 bounds remain conservative (0.5726ms)\n✔ collapsed geometry errors point back to original groups and original edge IDs (1.3486ms)\n✔ decision port follows diamond boundary while preserving orthogonal final segment (0.6985ms)\n✔ capsule and store endpoints stop at their actual curved outline (0.3041ms)\n✔ geometry reports overlapping nodes, escaped children and invalid canvas dimensions (0.4156ms)\n✔ geometry detects edge crossing a non-endpoint node and label clipping but allows edge crossings (0.4249ms)\n✔ geometry checks measured text and separate labels without manufacturing errors for valid spacing (0.2157ms)\n✔ geometry reports a route or label hiding a group title (0.2092ms)\n✔ V01 lays out one node with a finite complete canvas (54.6078ms)\n✔ RIGHT and DOWN follow requested flow direction without changing measured dimensions (56.3086ms)\n✔ V05 compound coordinates include parent and child offsets and reserve group titles (46.4058ms)\n✔ V03 V04 V06 preserves branches, loops and all original edge mappings with orthogonal routes (44.2587ms)\n✔ parallel reader/export layouts keep independent results and a failure does not poison later layouts (61.086ms)\n✔ nested sibling groups and in-group edge labels use the actual ELK edge container (76.9701ms)\n✔ deployment fixture keeps nested cyclic cross-group data dependencies and primary path (47.5872ms)\n✔ short relationship labels do not insert a second full spacing layer (14.7447ms)\n✔ incoming compound edge avoids a legal two-line Chinese group heading (30.6548ms)\n✔ M5 deployment high fan-out keeps all seven labeled dependencies readable (46.9394ms)\n✔ high fan-out labels remain distinct after target groups collapse in either direction (170.3274ms)\n✔ V01: a single node is valid; validation preserves input without adding defaults (2.8111ms)\n✔ V03/V04: conditional branches, a feedback cycle and a real self loop are valid (0.5804ms)\n✔ V11: structural errors have field paths, and unknown fields/version are refused (0.6152ms)\n✔ V11: duplicate IDs and missing endpoints/groups point at the offending field (0.5869ms)\n✔ V11: empty, missing-parent, cyclic and deeper-than-two-level groups fail (1.1484ms)\n✔ V20: decision branches ignore data/dependency edges and require distinguishable conditions (0.3689ms)\n✔ V20: flow relationship kinds must be directed even in overview documents (0.2011ms)\n✔ fork/join counts control relations instead of data or exception branches (0.2075ms)\n✔ primary path rejects missing IDs, duplicates, discontinuity and undirected relations (0.2494ms)\n✔ unknown initial collapse targets fail; disconnected graphs warn without refusing generation (0.4078ms)\n✔ flow nodes not reachable from any start warn even when undirected connectivity exists (0.2121ms)\n✔ V12: supported limits are inclusive and oversize collections/details fail (10.0657ms)\n✔ V04/V20: traversals terminate on cycles and select relations by view semantics (0.7922ms)\n✔ group queries use all descendants and indexes preserve undirected direct relations (0.1654ms)\n✔ V05: child state survives parent collapse and source document stays unchanged (2.9038ms)\n✔ V06: distinct conditions and directions survive collapsed endpoint projection (0.5548ms)\n✔ V19: all hidden conditions and decisions are signalled, and expansion restores edges (0.59ms)\n✔ no synthetic ID can collide with original node, group or edge IDs (0.3143ms)\n✔ synthetic identifiers never interpolate raw group text into the generated ID (0.5062ms)\n✔ projection defaults to initial collapse set but supports explicit expanded export (0.1984ms)\n✔ every original edge occurs exactly once as a visible mapping or hidden internal edge (0.9175ms)\n✔ V07 coalesces pending layouts and commits only the latest revision (2.6621ms)\n✔ V07 rejected latest layout is observable and next valid operation recovers (0.5425ms)\n✔ V02 wraps Chinese, English words and unbroken identifiers without losing characters (1.4318ms)\nℹ tests 47\nℹ suites 0\nℹ pass 47\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 7536.3592\n"
+      }
+    },
+    {
+      "command": "npm.cmd run build (final newline normalization)",
+      "result": {
+        "chunk_id": "f85abb",
+        "wall_time_seconds": 0.9964643,
+        "exit_code": 0,
+        "original_token_count": 76,
+        "output": "\n> system-blueprint-dev@2.0.0 build\n> node scripts/build.mjs\n\n\n  system-blueprint\\assets\\viewer.js  1.7mb\n\nDone in 64ms\n\n  system-blueprint\\scripts\\generate.mjs  72.8kb\n\nDone in 7ms\n\n  system-blueprint\\scripts\\validate.mjs  69.9kb\n\nDone in 7ms\n\n  system-blueprint\\scripts\\export.mjs  25.7kb\n\nDone in 8ms\n"
+      }
+    },
+    {
+      "command": "npm.cmd run test:browser",
+      "result": {
+        "chunk_id": "51613e",
+        "wall_time_seconds": 10.0116566,
+        "session_id": 94516,
+        "original_token_count": 487,
+        "output": "\n> system-blueprint-dev@2.0.0 test:browser\n> playwright test\n\n\nRunning 32 tests using 1 worker\n\n(node:26632) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:26632) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n  ok  1 tests\\browser\\acceptance.spec.ts:4:1 › V16 readable narrow initial view centers the entry node even with feedback lanes (569ms)\n  ok  2 tests\\browser\\acceptance.spec.ts:14:1 › V05 hiding a selected child group maps details and focus to the visible parent (584ms)\n  ok  3 tests\\browser\\acceptance.spec.ts:24:1 › V15 explicit export background covers the diagram as well as its title margin (473ms)\n  ok  4 tests\\browser\\acceptance.spec.ts:35:1 › V16 details keyboard collapse and edge close restore visible graph focus (623ms)\n  ok  5 tests\\browser\\acceptance.spec.ts:50:1 › V01 single node fits, opens meaningful details and stays offline (691ms)\n  ok  6 tests\\browser\\acceptance.spec.ts:71:1 › V02 real Chinese and identifier wrapping retains text at normal font sizes (642ms)\n  ok  7 tests\\browser\\acceptance.spec.ts:92:1 › V02 overlong visible title reports the node and field instead of shrinking or truncating (359ms)\n  ok  8 tests\\browser\\acceptance.spec.ts:105:1 › V03 V06 shared endpoints keep two visible conditions and edge details through collapse (627ms)\n  ok  9 tests\\browser\\acceptance.spec.ts:128:1 › V04 cycle traversal terminates with correct upstream and downstream relations (628ms)\n  ok 10 tests\\browser\\acceptance.spec.ts:144:1 › V06 aggregate edge details enumerate every original relation with matching conditions (539ms)\n  ok 11 tests\\browser\\acceptance.spec.ts:163:1 › V05 V16 nested keyboard collapse restores child state and moves hidden-node focus safely (727ms)\n"
+      }
+    },
+    {
+      "command": "npm.cmd run test:package",
+      "result": {
+        "chunk_id": "444043",
+        "wall_time_seconds": 10.0134843,
+        "session_id": 46102,
+        "original_token_count": 20,
+        "output": "\n> system-blueprint-dev@2.0.0 test:package\n> node scripts/check-package.mjs\n\n"
+      }
+    },
+    {
+      "command": "npm.cmd run test:browser completion",
+      "result": {
+        "exit_code": 0,
+        "output": "32 passed (35.1s); artifacts/browser-results.json"
+      }
+    },
+    {
+      "command": "npm.cmd run examples:generate",
+      "result": {
+        "chunk_id": "2ae896",
+        "wall_time_seconds": 10.0028578,
+        "session_id": 30047,
+        "original_token_count": 30,
+        "output": "\n> system-blueprint-dev@2.0.0 examples:generate\n> node scripts/examples.mjs\n\ngenerate overview\ngenerate runtime-flow\n"
+      }
+    },
+    {
+      "command": "npm.cmd run test:package completion",
+      "result": {
+        "chunk_id": "7c706a",
+        "wall_time_seconds": 0.0000075,
+        "exit_code": 0,
+        "original_token_count": 38,
+        "output": "{\"status\":\"passed\",\"report\":\"D:\\\\code\\\\system-blueprint-skill\\\\artifacts\\\\package\\\\report.json\",\"htmlBytes\":1751274,\"playwright\":\"1.58.2\",\"steps\":7}\n"
+      }
+    },
+    {
+      "command": "npm.cmd run examples:generate completion",
+      "result": {
+        "chunk_id": "4cc99b",
+        "wall_time_seconds": 0.0000091,
+        "exit_code": 0,
+        "original_token_count": 47,
+        "output": "generate memory-recall\ngenerate deployment-topology\ngenerate before\ngenerate after\n{\n  \"status\": \"passed\",\n  \"examples\": 6,\n  \"errors\": [],\n  \"report\": \"artifacts/examples-report.json\"\n}\n"
+      }
+    },
+    {
+      "command": "npm.cmd run test:performance",
+      "result": {
+        "chunk_id": "766746",
+        "wall_time_seconds": 9.3252228,
+        "exit_code": 0,
+        "original_token_count": 607,
+        "output": "\n> system-blueprint-dev@2.0.0 test:performance\n> node --import tsx scripts/performance.mjs\n\n{\n  \"machine\": {\n    \"platform\": \"win32 10.0.26200 x64\",\n    \"cpu\": \"12th Gen Intel(R) Core(TM) i7-12700H\",\n    \"logicalCpus\": 20,\n    \"memoryGiB\": 15.6,\n    \"node\": \"v24.14.0\",\n    \"browser\": \"145.0.7632.6\",\n    \"viewport\": \"1366x768\",\n    \"font\": \"Segoe UI, Microsoft YaHei, Noto Sans CJK SC, sans-serif\",\n    \"gpu\": \"disabled for reproducible Windows screenshots\",\n    \"actualNodeFonts\": [\n      {\n        \"familyName\": \"Segoe UI Semibold\",\n        \"postScriptName\": \"SegoeUI-Semibold\",\n        \"isCustomFont\": false,\n        \"glyphCount\": 4\n      },\n      {\n        \"familyName\": \"Microsoft YaHei\",\n        \"postScriptName\": \"MicrosoftYaHei-Bold\",\n        \"isCustomFont\": false,\n        \"glyphCount\": 2\n      }\n    ]\n  },\n  \"targets\": {\n    \"htmlMiB\": 3,\n    \"readyP95Ms\": 1500,\n    \"collapseP95Ms\": 500\n  },\n  \"standard\": {\n    \"bytes\": 1761190,\n    \"readyMs\": [\n      210.5,\n      224.59999999403954,\n      211.2000000178814,\n      232.2000000178814,\n      212.19999998807907,\n      227.7999999821186,\n      209.5,\n      222.90000000596046,\n      224.2000000178814,\n      207.59999999403954\n    ],\n    \"readyP95Ms\": 232.2000000178814,\n    \"collapseMs\": [\n      45.099999994039536,\n      46.099999994039536,\n      48.900000005960464,\n      52,\n      45.30000001192093,\n      48.80000001192093,\n      49.29999998211861,\n      49.20000001788139,\n      48.80000001192093,\n      48.10000002384186,\n      49.5,\n      49.19999998807907,\n      49,\n      49,\n      48.19999998807907,\n      50.400000005960464,\n      48,\n      48.400000005960464,\n      49.599999994039536,\n      48.60000002384186\n    ],\n    \"collapseP95Ms\": 50.400000005960464,\n    \"collapseTiming\": \"operation to DOM commit plus two animation frames\",\n    \"zoomPanLayoutRuns\": {\n      \"before\": 21,\n      \"after\": 21\n    },\n    \"zoomPanEventDispatchMaxMs\": 2.261\n  },\n  \"upper\": {\n    \"readyMs\": 462.39999997615814,\n    \"longTasksMs\": [],\n    \"nodes\": 100,\n    \"edges\": 300,\n    \"groups\": 20,\n    \"width\": 34279,\n    \"height\": 1063,\n    \"operations\": {\n      \"collapseMs\": 249.80000001192093,\n      \"roundTripMs\": 469.30000001192093,\n      \"restoredNodes\": 100,\n      \"restoredEdges\": 300,\n      \"restoredGroups\": 20,\n      \"svgMs\": 204.19999998807907,\n      \"exportedNodes\": 100,\n      \"exportedEdges\": 300,\n      \"svgBytes\": 218701,\n      \"longTasksMs\": []\n    }\n  }\n}\n"
+      }
+    },
+    {
+      "command": "Final documented checks",
+      "result": {
+        "exit_code": 0,
+        "output": "Final typecheck passed; check:build 20/20; CLI regression 5/5 after newline normalization; examples:check 6/6; package ZIP CRC and byte comparisons passed; documentation links 16 files / 0 missing; git diff --check exit 0."
+      }
+    }
+  ]
+}

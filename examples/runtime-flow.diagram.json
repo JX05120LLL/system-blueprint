@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "2.0",
+  "id": "runtime-flow",
+  "title": "Runtime Flow · v2 工作流",
+  "description": "四个阶段覆盖材料理解、建模、生成检查与交付。返工分支为明确标记的工作流规划，不代表自动执行服务。",
+  "view": {
+    "kind": "flow",
+    "direction": "DOWN",
+    "theme": "light",
+    "primaryPath": [
+      "request-scope",
+      "scope-extract",
+      "extract-refine",
+      "refine-generate",
+      "generate-review",
+      "review-pass",
+      "deliver-feedback",
+      "feedback-done"
+    ]
+  },
+  "groups": [
+    {
+      "id": "scope-stage",
+      "label": "1 · 范围与格式"
+    },
+    {
+      "id": "model-stage",
+      "label": "2 · 系统建模"
+    },
+    {
+      "id": "render-stage",
+      "label": "3 · 生成与检查"
+    },
+    {
+      "id": "delivery-stage",
+      "label": "4 · 交付与反馈"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "request",
+      "kind": "start",
+      "label": "收集输入材料",
+      "evidenceStatus": "confirmed",
+      "groupId": "scope-stage",
+      "details": "合并旧图 User Prompt 与 Skill Trigger：输入可来自代码仓库、文档、自然语言或 Mermaid；Agent 判断本次任务是否适用 System Blueprint。",
+      "sources": [
+        {
+          "path": "tests/fixtures/legacy/system-blueprint-runtime-flow.svg"
+        }
+      ]
+    },
+    {
+      "id": "scope",
+      "kind": "process",
+      "label": "确定范围与格式",
+      "evidenceStatus": "confirmed",
+      "groupId": "scope-stage",
+      "summary": "读者、图类型与输出",
+      "details": "保留 Scope Decision / Output Mode 的职责：选择 overview、flow 或 deployment，并确定 HTML/SVG/位图交付。本图展示 HTML/SVG 路线；用户明确要求 Mermaid 时尊重其格式，不强行进入本生成器。Scope Decision 在旧图没有条件出口，因此不伪装成业务判断。"
+    },
+    {
+      "id": "extract",
+      "kind": "process",
+      "label": "提取系统模型",
+      "evidenceStatus": "confirmed",
+      "groupId": "model-stage",
+      "summary": "组件、边界、方向与条件",
+      "details": "对应 Model Extraction：核对节点、分组、边界、输入输出和关键流程。代码仓库输入应参考实际调用与配置；设计材料区分证实、假设和规划。"
+    },
+    {
+      "id": "refine",
+      "kind": "process",
+      "label": "整理关系与证据",
+      "evidenceStatus": "confirmed",
+      "groupId": "model-stage",
+      "summary": "保留稳定 ID 与关键分支",
+      "details": "合并 System Simplification 与 Visual Grammar：按读者需要确定粒度，长说明放 details；保持所有必要条件、回路、方向与原始关系。形状表达处理/判断/存储，采用浅色工程风，不按类型铺大块色彩。"
+    },
+    {
+      "id": "generate",
+      "kind": "process",
+      "label": "生成离线阅读器",
+      "evidenceStatus": "confirmed",
+      "groupId": "render-stage",
+      "summary": "校验 → 测量 → 布局",
+      "details": "合并 Template Composition、SVG Rendering 与 Self-contained File。v2 生成器内嵌已构建运行时和图数据，浏览器测量文字后布局并绘制 SVG；不继续套用 v1 Hero/卡片结构。",
+      "sources": [
+        {
+          "path": "src/cli/generate.ts"
+        },
+        {
+          "path": "src/viewer/index.ts"
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "kind": "decision",
+      "label": "图形检查通过？",
+      "evidenceStatus": "planned",
+      "groupId": "render-stage",
+      "details": "规划中的 Agent 检查点：同时核对结构、真实截图、几何、条件和导出。生成命令成功只表示 HTML 已组装，不代表人工视觉验收已自动完成。"
+    },
+    {
+      "id": "deliver",
+      "kind": "process",
+      "label": "交付图与源数据",
+      "evidenceStatus": "confirmed",
+      "groupId": "delivery-stage",
+      "summary": "HTML、JSON 与静态图",
+      "details": "对应 README / Docs：交付可离线阅读的 HTML 与可编辑的 diagram.json，按需要附 SVG/PNG/JPEG。静态图全展开，不受当前缩放、折叠和选中影响。"
+    },
+    {
+      "id": "feedback",
+      "kind": "decision",
+      "label": "需要调整？",
+      "evidenceStatus": "planned",
+      "groupId": "delivery-stage",
+      "details": "将旧图 Feedback Loop 明确为两条规划出口。用户要求调整时回到原模型保留 ID 地修改；确认本次内容后完成交付。原 SVG 只有反馈节点，没有这两条条件边。"
+    },
+    {
+      "id": "done",
+      "kind": "end",
+      "label": "完成本次交付",
+      "evidenceStatus": "confirmed",
+      "groupId": "delivery-stage",
+      "details": "保留 Iterated Output 的含义：交付经过核对的本次版本，说明范围、来源、假设以及未验证项。"
+    }
+  ],
+  "edges": [
+    {
+      "id": "request-scope",
+      "source": "request",
+      "target": "scope",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "scope-extract",
+      "source": "scope",
+      "target": "extract",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "extract-refine",
+      "source": "extract",
+      "target": "refine",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "refine-generate",
+      "source": "refine",
+      "target": "generate",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "generate-review",
+      "source": "generate",
+      "target": "review",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "review-pass",
+      "source": "review",
+      "target": "deliver",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "planned",
+      "label": "通过"
+    },
+    {
+      "id": "review-rework",
+      "source": "review",
+      "target": "refine",
+      "kind": "feedback",
+      "directed": true,
+      "evidenceStatus": "planned",
+      "label": "未通过",
+      "details": "为 v2 检查流程补充的返工路径；修改内容或布局后重新生成，不删除必要关系来通过检查。"
+    },
+    {
+      "id": "deliver-feedback",
+      "source": "deliver",
+      "target": "feedback",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "feedback-revise",
+      "source": "feedback",
+      "target": "extract",
+      "kind": "feedback",
+      "directed": true,
+      "evidenceStatus": "planned",
+      "label": "需要调整"
+    },
+    {
+      "id": "feedback-done",
+      "source": "feedback",
+      "target": "done",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "planned",
+      "label": "确认交付"
+    }
+  ]
+}

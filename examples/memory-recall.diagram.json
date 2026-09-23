@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "2.0",
+  "id": "memory-recall",
+  "title": "Memory / Recall · 选择性召回",
+  "description": "当前会话始终作为基础。仅在用户明确要求或强匹配时检索历史；未命中与失败路径是此示例的假设。",
+  "view": {
+    "kind": "flow",
+    "direction": "DOWN",
+    "theme": "light",
+    "primaryPath": [
+      "session-intent",
+      "intent-policy",
+      "skip-recall",
+      "local-context",
+      "context-continue"
+    ]
+  },
+  "groups": [
+    {
+      "id": "current-session",
+      "label": "当前会话"
+    },
+    {
+      "id": "recall-policy",
+      "label": "召回判断"
+    },
+    {
+      "id": "context-assembly",
+      "label": "上下文组装"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "session",
+      "kind": "start",
+      "label": "读取当前会话",
+      "evidenceStatus": "confirmed",
+      "groupId": "current-session",
+      "summary": "消息与当前摘要",
+      "details": "合并原 Message 与 Session Summary。Session Memory 包括最近轮次和当前会话摘要，当前请求首先立足于这些本地材料，不自动混入全部历史。",
+      "sources": [
+        {
+          "path": "tests/fixtures/legacy/system-blueprint-memory-recall.svg"
+        }
+      ]
+    },
+    {
+      "id": "intent",
+      "kind": "process",
+      "label": "识别会话意图",
+      "evidenceStatus": "confirmed",
+      "groupId": "current-session",
+      "summary": "继续、新建、比较、召回",
+      "details": "保留 Intent Router 的 continue / new / compare / recall 分类。原图没有给出分类器、阈值或具体代码，本示例不声称其已实现。"
+    },
+    {
+      "id": "policy",
+      "kind": "decision",
+      "label": "需要历史召回？",
+      "evidenceStatus": "confirmed",
+      "groupId": "recall-policy",
+      "details": "保留 Recall Policy 的条件：用户明确要求历史信息，或当前任务与历史材料存在强匹配。强匹配的阈值及判断实现由实际系统定义。"
+    },
+    {
+      "id": "retrieve",
+      "kind": "process",
+      "label": "检索相关历史",
+      "evidenceStatus": "confirmed",
+      "groupId": "recall-policy",
+      "summary": "保留来源与相关范围",
+      "details": "保留原 History Sources 的四类来源：Trips、Plan Options、Session Summaries、Messages。按实际来源策略有序检索；原图未证明四类之间的精确先后次序、查询实现或存储协议。"
+    },
+    {
+      "id": "match",
+      "kind": "decision",
+      "label": "找到相关记录？",
+      "evidenceStatus": "assumed",
+      "groupId": "recall-policy",
+      "details": "为示例补充的假设：召回结果相关时才注入；未命中或检索失败时继续使用当前上下文，不伪造历史记忆。原 SVG 没有给出失败策略。"
+    },
+    {
+      "id": "local",
+      "kind": "process",
+      "label": "保留当前上下文",
+      "evidenceStatus": "confirmed",
+      "groupId": "context-assembly",
+      "summary": "不注入无关历史",
+      "details": "无需召回时走此路径；未命中/失败也可回到此路径（后者为假设）。用户偏好只在相关且有依据时加入，不因已存储而默认影响每个任务。"
+    },
+    {
+      "id": "context",
+      "kind": "process",
+      "label": "组装相关上下文",
+      "evidenceStatus": "confirmed",
+      "groupId": "context-assembly",
+      "summary": "当前材料 + 必要记忆",
+      "details": "保留 Context Builder 及 Memory Types：Session Memory 为最近轮次与当前摘要；Plan Memory 为当前选项状态与已确认约束；User Preferences 为稳定偏好与可复用决策。Recall 仅按需提供相关历史结果。来源和边界随上下文保留。"
+    },
+    {
+      "id": "continue",
+      "kind": "end",
+      "label": "交给后续任务",
+      "evidenceStatus": "confirmed",
+      "details": "明确检索结果去向：组装后的上下文供后续回答、规划或工具任务使用。本图不承诺具体 Agent 运行时。"
+    }
+  ],
+  "edges": [
+    {
+      "id": "session-intent",
+      "source": "session",
+      "target": "intent",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "intent-policy",
+      "source": "intent",
+      "target": "policy",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "recall-needed",
+      "source": "policy",
+      "target": "retrieve",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed",
+      "label": "明确要求或强匹配"
+    },
+    {
+      "id": "skip-recall",
+      "source": "policy",
+      "target": "local",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed",
+      "label": "否则不检索"
+    },
+    {
+      "id": "retrieve-match",
+      "source": "retrieve",
+      "target": "match",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "recall-hit",
+      "source": "match",
+      "target": "context",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "命中相关记录"
+    },
+    {
+      "id": "recall-miss",
+      "source": "match",
+      "target": "local",
+      "kind": "exception",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "未命中或检索失败"
+    },
+    {
+      "id": "local-context",
+      "source": "local",
+      "target": "context",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    },
+    {
+      "id": "context-continue",
+      "source": "context",
+      "target": "continue",
+      "kind": "control",
+      "directed": true,
+      "evidenceStatus": "confirmed"
+    }
+  ]
+}

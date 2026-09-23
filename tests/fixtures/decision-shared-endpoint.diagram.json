@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "2.0", "id": "decision-shared-endpoint", "title": "相同端点的不同条件",
+  "description": "成功与失败都返回同一结果入口，折叠判断组后条件必须保持独立。",
+  "view": { "kind": "flow", "direction": "DOWN", "theme": "light", "primaryPath": ["enter", "success"] },
+  "groups": [{ "id": "checks", "label": "请求校验", "details": "只有一个判断节点，两个出口表达互斥结果，不能合并为无条件连接。" }],
+  "nodes": [
+    { "id": "start", "kind": "start", "label": "收到请求", "evidenceStatus": "confirmed" },
+    { "id": "check", "kind": "decision", "label": "请求有效？", "groupId": "checks", "evidenceStatus": "confirmed" },
+    { "id": "result", "kind": "end", "label": "返回校验结果", "evidenceStatus": "confirmed" }
+  ],
+  "edges": [
+    { "id": "enter", "source": "start", "target": "check", "kind": "control", "directed": true },
+    { "id": "success", "source": "check", "target": "result", "kind": "control", "directed": true, "label": "成功", "details": "返回校验成功及已解析的字段。" },
+    { "id": "failure", "source": "check", "target": "result", "kind": "control", "directed": true, "label": "失败", "details": "返回校验失败及具体错误列表。" }
+  ]
+}

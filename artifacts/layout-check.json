@@ -1,0 +1,82 @@
+[
+  {
+    "name": "overview",
+    "width": 1632,
+    "height": 186,
+    "ms": 145.10000002384186,
+    "geometry": [
+      {
+        "code": "LAYOUT_ELONGATED",
+        "path": "",
+        "ids": [],
+        "message": "图较长，适应画布后文字可能过小；请考虑拆分为总览与子图。",
+        "severity": "warning"
+      }
+    ],
+    "textOverflow": []
+  },
+  {
+    "name": "long-text",
+    "width": 1160,
+    "height": 184,
+    "ms": 139.30000001192093,
+    "geometry": [],
+    "textOverflow": []
+  },
+  {
+    "name": "nested-loops",
+    "width": 570,
+    "height": 1190,
+    "ms": 154.90000000596046,
+    "geometry": [],
+    "textOverflow": []
+  },
+  {
+    "name": "deployment-cross-group",
+    "width": 2059,
+    "height": 438,
+    "ms": 161.69999998807907,
+    "geometry": [],
+    "textOverflow": []
+  },
+  {
+    "name": "hidden-conditions",
+    "width": 288,
+    "height": 460,
+    "ms": 128.80000001192093,
+    "geometry": [],
+    "textOverflow": []
+  },
+  {
+    "name": "decision-shared-endpoint",
+    "width": 448,
+    "height": 632,
+    "ms": 135.2000000178814,
+    "geometry": [],
+    "textOverflow": []
+  },
+  {
+    "name": "mixed-flow",
+    "width": 1056,
+    "height": 725,
+    "ms": 136,
+    "geometry": [],
+    "textOverflow": []
+  },
+  {
+    "name": "injection",
+    "width": 726,
+    "height": 224,
+    "ms": 133,
+    "geometry": [],
+    "textOverflow": []
+  },
+  {
+    "name": "parallel-control",
+    "width": 544,
+    "height": 680,
+    "ms": 132.7999999821186,
+    "geometry": [],
+    "textOverflow": []
+  }
+]

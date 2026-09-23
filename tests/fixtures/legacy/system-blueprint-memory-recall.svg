@@ -1,0 +1,120 @@
+<svg width="1600" height="980" viewBox="0 0 1600 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="220" y1="60" x2="1380" y2="940" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101C33"/>
+      <stop offset="1" stop-color="#08111E"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.36"/>
+    </filter>
+    <style>
+      .title { fill:#EAF2FF; font: 700 44px 'Segoe UI', Arial, sans-serif; }
+      .subtitle { fill:#9FB0CF; font: 400 18px 'Segoe UI', Arial, sans-serif; }
+      .group-title { fill:#F3F7FF; font: 700 22px 'Segoe UI', Arial, sans-serif; }
+      .group-copy { fill:#AFC0DF; font: 400 14px 'Segoe UI', Arial, sans-serif; }
+      .node-title { fill:#F7FAFF; font: 700 17px 'Segoe UI', Arial, sans-serif; }
+      .node-copy { fill:#AFC0DF; font: 400 13px 'Segoe UI', Arial, sans-serif; }
+      .chip { fill:#DCE7FF; font: 600 13px 'Segoe UI', Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="980" rx="32" fill="url(#bg)"/>
+  <text x="92" y="92" class="title">Memory &amp; Recall Flow</text>
+  <text x="92" y="126" class="subtitle">A session stays local, while history and preferences are recalled only when they are relevant.</text>
+
+  <g opacity="0.12">
+    <path d="M0 156H1600M0 312H1600M0 468H1600M0 624H1600M0 780H1600" stroke="#DCE7FF"/>
+    <path d="M160 0V980M320 0V980M480 0V980M640 0V980M800 0V980M960 0V980M1120 0V980M1280 0V980M1440 0V980" stroke="#DCE7FF"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="96" y="190" width="392" height="190" rx="28" fill="#10324B" stroke="#57CFFF" stroke-opacity="0.36"/>
+    <text x="128" y="236" class="group-title">Current Session</text>
+    <text x="128" y="264" class="group-copy">The active request stays grounded in the current conversation.</text>
+
+    <rect x="128" y="292" width="148" height="54" rx="18" fill="#143B57" stroke="#86DEFF" stroke-opacity="0.35"/>
+    <text x="162" y="326" class="node-title">Message</text>
+
+    <rect x="298" y="292" width="158" height="54" rx="18" fill="#143B57" stroke="#86DEFF" stroke-opacity="0.35"/>
+    <text x="329" y="326" class="node-title">Session Summary</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="552" y="150" width="496" height="282" rx="30" fill="#2E1A49" stroke="#D5AAFF" stroke-opacity="0.32"/>
+    <text x="586" y="198" class="group-title">Recall &amp; Decision Layer</text>
+    <text x="586" y="226" class="group-copy">Decide when to stay local, when to inject preferences, and when to recall history.</text>
+
+    <rect x="586" y="266" width="180" height="86" rx="20" fill="#3A215B" stroke="#E1BFFF" stroke-opacity="0.35"/>
+    <text x="617" y="302" class="node-title">Intent Router</text>
+    <text x="617" y="326" class="node-copy">continue / new / compare / recall</text>
+
+    <rect x="810" y="266" width="204" height="86" rx="20" fill="#3A215B" stroke="#E1BFFF" stroke-opacity="0.35"/>
+    <text x="845" y="302" class="node-title">Context Builder</text>
+    <text x="845" y="326" class="node-copy">Assemble only relevant memory</text>
+
+    <rect x="700" y="372" width="204" height="86" rx="20" fill="#3A215B" stroke="#E1BFFF" stroke-opacity="0.35"/>
+    <text x="736" y="408" class="node-title">Recall Policy</text>
+    <text x="736" y="432" class="node-copy">Explicit request or strong match</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1118" y="150" width="388" height="282" rx="30" fill="#35240F" stroke="#F7B955" stroke-opacity="0.34"/>
+    <text x="1152" y="198" class="group-title">History Sources</text>
+    <text x="1152" y="226" class="group-copy">Ordered retrieval across durable records.</text>
+
+    <rect x="1152" y="260" width="144" height="56" rx="18" fill="#4A3110" stroke="#FFD27F" stroke-opacity="0.35"/>
+    <text x="1202" y="295" class="node-title">Trips</text>
+
+    <rect x="1322" y="260" width="144" height="56" rx="18" fill="#4A3110" stroke="#FFD27F" stroke-opacity="0.35"/>
+    <text x="1348" y="295" class="node-title">Plan Options</text>
+
+    <rect x="1152" y="336" width="144" height="56" rx="18" fill="#4A3110" stroke="#FFD27F" stroke-opacity="0.35"/>
+    <text x="1176" y="371" class="node-title">Session Summaries</text>
+
+    <rect x="1322" y="336" width="144" height="56" rx="18" fill="#4A3110" stroke="#FFD27F" stroke-opacity="0.35"/>
+    <text x="1363" y="371" class="node-title">Messages</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="336" y="544" width="930" height="252" rx="30" fill="#122A22" stroke="#52E6B2" stroke-opacity="0.32"/>
+    <text x="370" y="592" class="group-title">Memory Types</text>
+    <text x="370" y="620" class="group-copy">Keep the current session focused, then selectively enrich it with structured memory.</text>
+
+    <rect x="370" y="662" width="214" height="92" rx="22" fill="#143228" stroke="#7EF0C6" stroke-opacity="0.35"/>
+    <text x="402" y="702" class="node-title">Session Memory</text>
+    <text x="402" y="727" class="node-copy">Recent turns and current session summary</text>
+
+    <rect x="618" y="662" width="214" height="92" rx="22" fill="#143228" stroke="#7EF0C6" stroke-opacity="0.35"/>
+    <text x="652" y="702" class="node-title">Plan Memory</text>
+    <text x="652" y="727" class="node-copy">Current option state and confirmed constraints</text>
+
+    <rect x="866" y="662" width="214" height="92" rx="22" fill="#143228" stroke="#7EF0C6" stroke-opacity="0.35"/>
+    <text x="895" y="702" class="node-title">User Preferences</text>
+    <text x="895" y="727" class="node-copy">Stable tastes and reusable decisions</text>
+
+    <rect x="1114" y="662" width="118" height="92" rx="22" fill="#143228" stroke="#7EF0C6" stroke-opacity="0.35"/>
+    <text x="1141" y="702" class="node-title">Recall</text>
+    <text x="1141" y="727" class="node-copy">On demand</text>
+  </g>
+
+  <g stroke-linecap="round" stroke-width="5">
+    <path d="M488 286H552" stroke="#7FDBFF"/>
+    <path d="M1048 291H1118" stroke="#D5AAFF"/>
+    <path d="M1374 432V482H802V544" stroke="#FFD27F"/>
+    <path d="M802 458V544" stroke="#D5AAFF"/>
+    <path d="M488 325H586" stroke="#7FDBFF"/>
+  </g>
+
+  <rect x="96" y="876" width="188" height="38" rx="19" fill="#142238" stroke="#3D5E8D" stroke-opacity="0.42"/>
+  <circle cx="122" cy="895" r="6" fill="#57CFFF"/>
+  <text x="138" y="900" class="chip">Current Session</text>
+  <rect x="304" y="876" width="202" height="38" rx="19" fill="#142238" stroke="#3D5E8D" stroke-opacity="0.42"/>
+  <circle cx="330" cy="895" r="6" fill="#D5AAFF"/>
+  <text x="346" y="900" class="chip">Recall &amp; Decision</text>
+  <rect x="526" y="876" width="188" height="38" rx="19" fill="#142238" stroke="#3D5E8D" stroke-opacity="0.42"/>
+  <circle cx="552" cy="895" r="6" fill="#FFD27F"/>
+  <text x="568" y="900" class="chip">History Sources</text>
+  <rect x="734" y="876" width="202" height="38" rx="19" fill="#142238" stroke="#3D5E8D" stroke-opacity="0.42"/>
+  <circle cx="760" cy="895" r="6" fill="#52E6B2"/>
+  <text x="776" y="900" class="chip">Memory Layers</text>
+</svg>

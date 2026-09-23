@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "2.0", "id": "long-text", "title": "中文与英文文字测量",
+  "description": "标题、说明与条件按真实字体换行；完整内容不得通过缩小字号或省略号隐藏。",
+  "view": { "kind": "overview", "direction": "RIGHT", "theme": "light", "primaryPath": ["read", "write"] },
+  "groups": [],
+  "nodes": [
+    { "id": "chinese", "kind": "process", "label": "中文请求与历史上下文完整性检查", "summary": "检查当前请求与历史上下文\n保留必要的中文语义", "details": "这是较长的实现说明，只在详情面板展示。它解释请求处理的约束、输入来源与失败时的行为，不挤入节点标题。", "evidenceStatus": "confirmed" },
+    { "id": "identifier", "kind": "process", "label": "RequestContextNormalizationService", "summary": "Normalize request context\nPreserve source references", "evidenceStatus": "confirmed" },
+    { "id": "store", "kind": "store", "label": "上下文索引存储", "summary": "记录中文与英文标识符\n支持后续重新生成", "evidenceStatus": "confirmed" }
+  ],
+  "edges": [
+    { "id": "read", "source": "chinese", "target": "identifier", "kind": "data", "directed": true, "label": "输入材料与历史上下文" },
+    { "id": "write", "source": "identifier", "target": "store", "kind": "data", "directed": true, "label": "NormalizedContextRecord" }
+  ]
+}

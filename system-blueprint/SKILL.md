@@ -1,172 +1,45 @@
 ---
 name: system-blueprint
-description: Generate polished system blueprints, architecture diagrams, deployment topology views, integration maps, data-flow visuals, and technical overview graphics as standalone HTML files with inline SVG. Use when the user asks for an architecture diagram, system map, topology view, component relationship visual, deployment view, data-flow visual, request-flow visual, agent runtime diagram, memory flow diagram, or when Mermaid output should be upgraded into presentation-quality visuals. Also use when updating an existing HTML or SVG system diagram.
+description: Use when users request architecture diagrams, system blueprints, deployment topology, component or integration maps, request/control/data flows, Agent Runtime or Memory/Recall diagrams, Before/After comparisons, or updates to existing technical HTML/SVG diagrams.
 ---
 
-# System Blueprint Skill
+# System Blueprint
 
-Create presentation-quality technical diagrams from a codebase, spec, or plain-language description.
+把仓库、文档或描述转为可离线阅读的技术图。默认交付可持续修改的 `.diagram.json` 与自包含交互 HTML；按需附独立 SVG、PNG、JPEG。默认浅色工程风，支持深色。用户明确要求 Mermaid 时遵循其格式。
 
-This skill is intentionally packaged around the common `SKILL.md + assets/` pattern so it can be adapted across Codex, Claude-style skills, and other agents that read the same lightweight skill structure.
+## 路由与工作流
 
-## Default output
+1. 确定读者、范围、图类型和交付格式。总览/部署偏 RIGHT，流程和 Memory 偏 DOWN；Before/After 用两份同粒度文档。合理可推断时直接推进。
+2. 阅读 [建模规则](references/modeling.md) 和 [JSON Schema](references/diagram-schema.json)。先提取节点、边界、方向、条件及来源；保持稳定 ID。区分 confirmed、assumed、planned。
+3. 在用户工作目录保存图数据。最多 100 节点、300 边、20 组与两层分组；超限拆图。原模型保留所有必要分支、回路和条件，details 保存长说明；不手写布局坐标。
+4. 运行校验并修复具体诊断，再生成 HTML。不要直接修改打包资源或为每张图重写模板。
+5. 按 [视觉与验收规则](references/visual-guidelines.md) 实际打开、操作并检查截图。生成成功不等于视觉通过；文字必须先测量再布局，不能缩小字号掩盖溢出。
+6. 按要求导出全展开静态图，独立打开验证；交付文件链接、范围、关键假设和验证结果。保留 JSON 方便重生成。
 
-Prefer a standalone HTML file with inline SVG.
+## 可执行入口
 
-Use Mermaid only when the user explicitly wants Markdown-native diagrams or when the target surface cannot host HTML files.
+将下列 `<skill-dir>` 替换为当前 Skill 的绝对安装目录；输入/输出使用用户工作目录的绝对路径，可含中文和空格。
 
-Use `assets/template.html` as the base document unless the user already has an existing system-diagram HTML file that should be updated in place.
+```powershell
+node "<skill-dir>/scripts/validate.mjs" "<work-dir>/diagram.json"
+node "<skill-dir>/scripts/generate.mjs" "<work-dir>/diagram.json" --output "<work-dir>/diagram.html"
 
-When the user needs README-friendly assets, also generate standalone SVG files.
+# 仅自动静态导出需要安装这些依赖
+npm ci --prefix "<skill-dir>"
+node "<skill-dir>/node_modules/playwright/cli.js" install chromium
 
-When the user needs common image formats, export the final HTML or SVG into PNG or JPG with `scripts/export_diagram.py`.
+node "<skill-dir>/scripts/export.mjs" "<work-dir>/diagram.html" --format svg --output "<work-dir>/diagram.svg"
+node "<skill-dir>/scripts/export.mjs" "<work-dir>/diagram.html" --format png --scale 2 --output "<work-dir>/diagram.png"
+node "<skill-dir>/scripts/export.mjs" "<work-dir>/diagram.html" --format jpg --background "#FFFFFF" --output "<work-dir>/diagram.jpg"
+```
 
-## Workflow
+校验/生成只需 Node.js 24.x 与完整 Skill 目录，不依赖仓库源码、根 node_modules 或浏览器。阅读者只需浏览器。新命令覆盖已有文件要显式加 `--overwrite`；退出码：0 成功、2 输入/参数错误、1 依赖/渲染失败。详细参数使用 `node "<skill-dir>/scripts/export.mjs" --help`。
 
-1. Extract the system model before drawing.
-2. Normalize the system into:
-   - components
-   - groups or trust boundaries
-   - connections
-   - protocols or data labels
-   - one or more key flows
-3. Choose a view type:
-   - system overview
-   - deployment topology
-   - request or control flow
-   - data flow
-   - agent runtime and memory flow
-   - system blueprint with layered boundaries
-   - before vs after comparison
-4. Keep the first version simple:
-   - 4-10 primary nodes
-   - 1-3 group containers
-   - a small legend or summary area
-5. Render the diagram into a self-contained HTML file with inline SVG.
-6. If README embedding is needed, emit one or more standalone SVG examples.
-7. If PNG or JPG is needed, export from the HTML or SVG output.
-8. If the user asks for iteration, update the same file and preserve the visual language.
+## 交付边界
 
-## Output contract
-
-When producing HTML output:
-
-- Keep the file self-contained.
-- Keep styles inline in the HTML file.
-- Keep the diagram in inline SVG.
-- Avoid JavaScript unless the user explicitly asks for interactive behavior.
-- Avoid external runtime dependencies.
-- Prefer semantic color coding and consistent spacing.
-
-Suggested destination if the user does not specify one:
-
-- `docs/architecture/<diagram-name>.html`
-
-Use a kebab-case filename.
-
-Suggested names:
-
-- `system-blueprint.html`
-- `runtime-architecture.html`
-- `deployment-topology.html`
-- `agent-memory-flow.html`
-
-Suggested image names:
-
-- `system-blueprint-overview.svg`
-- `runtime-flow.png`
-- `deployment-topology.jpg`
-
-## Layout rules
-
-- Prefer left-to-right layout for request flow, service interactions, and layered systems.
-- Prefer top-to-bottom layout for lifecycle, decision flow, and pipeline diagrams.
-- Prefer grouped containers for bounded contexts, trust zones, layers, or subsystems.
-- Group related nodes inside bounded containers when it improves readability.
-- Keep arrows behind boxes when possible.
-- Do not cross lines unless the alternative is worse.
-- Keep labels short and legible.
-- Make the title and subtitle useful enough that the file can be shared out of context.
-
-## Visual rules
-
-- Use a dark background and strong contrast by default.
-- Favor a modern technical presentation style over enterprise clip-art aesthetics.
-- Use one color family per semantic role, for example:
-  - client or entry
-  - application or services
-  - data or storage
-  - integrations or external systems
-  - security or identity
-- Keep boxes visually consistent:
-  - rounded corners
-  - subtle border
-  - soft shadow or glow
-  - short title and one supporting line
-- Include a small summary or legend area below or beside the diagram when it adds clarity.
-- Keep the first version tasteful and restrained; use polish, not ornament.
-
-## Editing existing diagrams
-
-When updating an existing HTML system diagram:
-
-- preserve the file structure when practical
-- preserve stable IDs or class names when practical
-- update content and layout without rewriting unrelated sections
-- keep the existing visual language unless the user asks for a redesign
-
-## If the source is a codebase
-
-First extract:
-
-- entry points
-- frontend or client surfaces
-- APIs and services
-- databases and caches
-- queues, schedulers, or background workers
-- third-party integrations
-- auth or identity boundaries
-- deployment targets
-- durable business objects when they matter to the architecture
-
-Then collapse low-value details into grouped nodes instead of drawing every class or file.
-
-## If the source is a design discussion
-
-Clarify only the minimum needed:
-
-- what the main system boundary is
-- which components are internal vs external
-- which flows matter most
-- whether the user wants overview, runtime flow, or deployment view
-- whether the output is meant for docs, README, presentation, or stakeholder review
-
-If details are missing, make a clearly labeled first-pass diagram rather than blocking.
-
-## Do not
-
-- dump raw Mermaid when polished HTML output is acceptable
-- draw every implementation detail from the codebase
-- over-label every edge
-- add decorative elements that make the diagram harder to read
-- rely on external JS libraries for basic rendering
-- mimic cloud vendor icon sheets unless the user explicitly asks for that style
-
-## Bundled asset
-
-Use `assets/template.html` as the default base file. Replace the placeholder title, subtitle, badges, cards, legend, and SVG scene with task-specific content.
-
-## Bundled script
-
-Use `scripts/export_diagram.py` when the user needs:
-
-- `HTML -> PNG`
-- `HTML -> JPG`
-- `SVG -> PNG`
-- `SVG -> JPG`
-
-If the environment does not have `cairosvg`, explain that raster export needs:
-
-- `pip install cairosvg`
-
-Use SVG directly when the user only needs GitHub README embedding.
+- HTML 内嵌数据、CSS、JS 和布局 Worker，不使用 CDN、网络字体或服务端；file:// 下可缩放、平移、详情、高亮和折叠。
+- 折叠不修改原图；不同条件不合并。静态导出始终完整展开，不继承当前视角、选中态或工具栏。
+- HTML 的 details 也会完整分享。只收录必要说明与引用，不包含凭证、真实用户记录或整份私有配置。
+- 无法运行浏览器时继续交付可完成的 JSON/HTML，并明确视觉或导出未验证。
+- 旧 v1 HTML/SVG 按语义人工重建模型，不承诺无损自动还原。`assets/legacy-template.html` 保留旧模板。
+- 兼容入口 `python scripts/export_diagram.py` 保留 PNG/JPG 参数和覆盖行为；HTML 新增 Node/Playwright 依赖，旧 SVG 仍用 CairoSVG/Pillow。多 SVG 旧 HTML 要指定 `--svg-index`；旧 HTML 仅支持静态内联 SVG 的位图导出，不执行其页面脚本。

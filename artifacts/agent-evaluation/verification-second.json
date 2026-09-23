@@ -1,0 +1,232 @@
+{
+  "checks": [
+    {
+      "name": "offline file load",
+      "passed": true,
+      "theme": "light",
+      "transform": {
+        "x": 485.4,
+        "y": 24,
+        "k": 0.8
+      },
+      "collapsedGroups": [],
+      "revision": 1,
+      "committedRevision": 1,
+      "nodeCount": 13,
+      "edgeCount": 13,
+      "diagnostics": []
+    },
+    {
+      "name": "geometry and actual SVG text bounds",
+      "passed": true,
+      "issues": [],
+      "nodeCount": 13,
+      "edgeCount": 13,
+      "groups": 4,
+      "width": 494,
+      "height": 2459
+    },
+    {
+      "name": "node detail and source",
+      "passed": true
+    },
+    {
+      "name": "upstream highlighting",
+      "passed": true
+    },
+    {
+      "name": "downstream handles loop without duplicates",
+      "passed": true,
+      "count": 10
+    },
+    {
+      "name": "Escape closes detail and restores node focus",
+      "passed": true
+    },
+    {
+      "name": "zoom button",
+      "passed": true
+    },
+    {
+      "name": "fit supports long diagram below 25 percent",
+      "passed": true,
+      "scale": 0.21594779381862544
+    },
+    {
+      "name": "continuous zoom from fit",
+      "passed": true
+    },
+    {
+      "name": "pan gesture changes view",
+      "passed": true
+    },
+    {
+      "name": "drag does not select a node",
+      "passed": true
+    },
+    {
+      "name": "wheel zoom",
+      "passed": true
+    },
+    {
+      "name": "keyboard group collapse",
+      "passed": true
+    },
+    {
+      "name": "keyboard group expand",
+      "passed": true
+    },
+    {
+      "name": "rapid group toggles settle consistently",
+      "passed": true,
+      "revision": 14,
+      "committedRevision": 14
+    },
+    {
+      "name": "group collapse reduces visible nodes",
+      "passed": true
+    },
+    {
+      "name": "export leaves reading state unchanged",
+      "passed": true
+    },
+    {
+      "name": "collapsed-view export contains all original nodes",
+      "passed": true,
+      "nodeCount": 13
+    },
+    {
+      "name": "reset restores groups and preserves theme",
+      "passed": true
+    },
+    {
+      "name": "feedback edge detail preserves assumption and source",
+      "passed": true
+    },
+    {
+      "name": "viewport 1920 no horizontal overflow",
+      "passed": true,
+      "viewport": 1920,
+      "document": 1920,
+      "body": 1920,
+      "buttons": [
+        {
+          "id": "theme",
+          "left": 1709.140625,
+          "right": 1789.140625
+        },
+        {
+          "id": "download",
+          "left": 1797.140625,
+          "right": 1888
+        },
+        {
+          "id": "zoom-out",
+          "left": 24,
+          "right": 64
+        },
+        {
+          "id": "zoom-in",
+          "left": 122,
+          "right": 162
+        },
+        {
+          "id": "fit",
+          "left": 189,
+          "right": 269
+        },
+        {
+          "id": "reset",
+          "left": 274,
+          "right": 354
+        }
+      ]
+    },
+    {
+      "name": "viewport 375 no horizontal overflow",
+      "passed": true,
+      "viewport": 375,
+      "document": 375,
+      "body": 375,
+      "buttons": [
+        {
+          "id": "theme",
+          "left": 16,
+          "right": 96
+        },
+        {
+          "id": "download",
+          "left": 104,
+          "right": 194.859375
+        },
+        {
+          "id": "zoom-out",
+          "left": 10,
+          "right": 50
+        },
+        {
+          "id": "zoom-in",
+          "left": 127.203125,
+          "right": 167.203125
+        },
+        {
+          "id": "fit",
+          "left": 207.40625,
+          "right": 277.40625
+        },
+        {
+          "id": "reset",
+          "left": 295,
+          "right": 365
+        }
+      ]
+    },
+    {
+      "name": "mobile detail opens",
+      "passed": true
+    },
+    {
+      "name": "mobile detail closes",
+      "passed": true
+    },
+    {
+      "name": "offline no external requests",
+      "passed": true,
+      "externalRequests": []
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true,
+      "pageErrors": []
+    },
+    {
+      "name": "no-JS model summary fallback",
+      "passed": true,
+      "text": "跳到图形画布\n\nSYSTEM BLUEPRINT 02\n\nAgent Runtime · 从请求到系统图\n\n深色主题\n下载 SVG ↓\n−\n100%\n+\n适应画布\n重置视图\n\n正在准备图形…\n\n此交互图需要 JavaScript\n\n可使用独立 SVG 查看完整图形。模型摘要：\n\n用户请求：代码仓库、规格、Mermaid 或自然语言\n触发 Skill：识别架构、拓扑与流程意图\n选择图的范围：总览、运行流程、记忆、部署或对比\n确定输出形式：默认 HTML + SVG；Mermaid 需明确请求\n提取结构模型：识别节点、分组、边界和关系\n简化系统表达：将细节整理为有意义的层次\n应用视觉语法：用样式区分语义角色\n编排图面内容：组织标题、图例、节点与场景\n渲染 SVG：布局节点、路径、分组与标签\n生成自包含文件：内嵌样式与图形，支持离线阅读\n放入 README / 文档：用于仓库、RFC、内部文档与演示\n收集反馈：增补组件、修订流程、调整重点\n交付迭代结果：保持视觉语言，持续完善内容"
+    },
+    {
+      "name": "standalone SVG title condition feedback and full graph",
+      "passed": true,
+      "width": "494",
+      "height": "2643",
+      "nodeCount": 13,
+      "arrows": 13
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "screenshots": [
+    "1366-node-detail.png",
+    "1366-collapsed.png",
+    "1366-feedback-detail.png",
+    "1920-initial.png",
+    "375-initial.png",
+    "375-detail.png",
+    "1366-no-js.png"
+  ],
+  "limitations": [
+    "此图只有单层分组；两层嵌套折叠不适用。",
+    "未提供代码或运行日志，未验证任何 Agent Runtime 真实实现。"
+  ],
+  "failure": "TimeoutError: page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+}

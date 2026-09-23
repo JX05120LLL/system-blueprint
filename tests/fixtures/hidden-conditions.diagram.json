@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "2.0", "id": "hidden-conditions", "title": "折叠组内的隐藏条件",
+  "description": "两个条件完全位于处理组内，组对外出口不带条件；折叠时必须明确提示隐藏的判断与条件。",
+  "view": { "kind": "flow", "direction": "DOWN", "theme": "light", "collapsedGroups": ["processing"], "primaryPath": ["enter", "accepted", "merge-ok", "exit"] },
+  "groups": [{ "id": "processing", "label": "校验与结果整理", "details": "组内包含一个判断与两个条件。折叠摘要不代表内部无条件执行。" }],
+  "nodes": [
+    { "id": "start", "kind": "start", "label": "收到请求", "evidenceStatus": "confirmed" },
+    { "id": "decision", "kind": "decision", "label": "校验通过？", "groupId": "processing", "evidenceStatus": "confirmed" },
+    { "id": "ok", "kind": "process", "label": "准备有效结果", "groupId": "processing", "evidenceStatus": "confirmed" },
+    { "id": "error", "kind": "process", "label": "整理错误说明", "groupId": "processing", "evidenceStatus": "confirmed" },
+    { "id": "merge", "kind": "process", "label": "统一响应格式", "groupId": "processing", "evidenceStatus": "confirmed" },
+    { "id": "end", "kind": "end", "label": "返回响应", "evidenceStatus": "confirmed" }
+  ],
+  "edges": [
+    { "id": "enter", "source": "start", "target": "decision", "kind": "control", "directed": true },
+    { "id": "accepted", "source": "decision", "target": "ok", "kind": "control", "directed": true, "label": "通过" },
+    { "id": "rejected", "source": "decision", "target": "error", "kind": "exception", "directed": true, "label": "不通过" },
+    { "id": "merge-ok", "source": "ok", "target": "merge", "kind": "control", "directed": true },
+    { "id": "merge-error", "source": "error", "target": "merge", "kind": "control", "directed": true },
+    { "id": "exit", "source": "merge", "target": "end", "kind": "control", "directed": true }
+  ]
+}

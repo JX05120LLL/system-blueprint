@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "2.0",
+  "id": "before",
+  "title": "Before · 三层基线",
+  "description": "使用前端、API 与数据库作为共同粒度。关系是旧示例的结构整理，不代表已核实的生产架构。",
+  "view": {
+    "kind": "overview",
+    "direction": "DOWN",
+    "theme": "light",
+    "primaryPath": [
+      "frontend-api",
+      "api-database"
+    ]
+  },
+  "groups": [],
+  "nodes": [
+    {
+      "id": "frontend",
+      "kind": "process",
+      "label": "前端",
+      "evidenceStatus": "confirmed",
+      "summary": "请求入口",
+      "details": "对应原 Before 的 Frontend。与 After 使用相同稳定 ID 和粒度；原 After 的 Browser / Mobile / Prompt UI 合并为同一客户端职责。",
+      "sources": [
+        {
+          "path": "tests/fixtures/legacy/system-blueprint-before-after.svg"
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "kind": "process",
+      "label": "API",
+      "evidenceStatus": "confirmed",
+      "summary": "应用处理",
+      "details": "与 After 共用同一 API 身份。本图仅展示三层职责，不推断实际服务框架。"
+    },
+    {
+      "id": "database",
+      "kind": "store",
+      "label": "数据库",
+      "evidenceStatus": "confirmed",
+      "summary": "业务记录",
+      "details": "对应原 Database。原图 API 线未连到数据库外框；此处明确表达推定的应用访问关系，并将其依据标为假设。"
+    }
+  ],
+  "edges": [
+    {
+      "id": "frontend-api",
+      "source": "frontend",
+      "target": "api",
+      "kind": "dependency",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "应用请求"
+    },
+    {
+      "id": "api-database",
+      "source": "api",
+      "target": "database",
+      "kind": "data",
+      "directed": true,
+      "evidenceStatus": "assumed",
+      "label": "业务读写"
+    }
+  ]
+}

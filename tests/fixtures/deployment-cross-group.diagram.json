@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "2.0", "id": "deployment-cross-group", "title": "跨部署区域的连接",
+  "description": "外部用户、应用服务与数据服务按位置分组，连接必须跨越真实容器边界。",
+  "view": { "kind": "deployment", "direction": "RIGHT", "theme": "light", "primaryPath": ["https", "query"] },
+  "groups": [
+    { "id": "client-zone", "label": "用户设备" },
+    { "id": "region", "label": "应用部署区域" },
+    { "id": "compute", "label": "计算服务", "parentId": "region" },
+    { "id": "storage", "label": "托管数据", "parentId": "region" }
+  ],
+  "nodes": [
+    { "id": "browser", "kind": "external", "label": "浏览器", "groupId": "client-zone", "evidenceStatus": "confirmed" },
+    { "id": "api", "kind": "process", "label": "API 服务", "groupId": "compute", "evidenceStatus": "confirmed" },
+    { "id": "worker", "kind": "process", "label": "后台任务", "groupId": "compute", "evidenceStatus": "confirmed" },
+    { "id": "database", "kind": "store", "label": "业务数据库", "groupId": "storage", "evidenceStatus": "confirmed" },
+    { "id": "queue", "kind": "store", "label": "任务队列", "groupId": "storage", "evidenceStatus": "confirmed" },
+    { "id": "mail", "kind": "external", "label": "外部邮件服务", "evidenceStatus": "planned" }
+  ],
+  "edges": [
+    { "id": "https", "source": "browser", "target": "api", "kind": "dependency", "directed": true, "label": "HTTPS" },
+    { "id": "query", "source": "api", "target": "database", "kind": "data", "directed": true, "label": "业务读写" },
+    { "id": "enqueue", "source": "api", "target": "queue", "kind": "data", "directed": true, "label": "发布任务" },
+    { "id": "consume", "source": "queue", "target": "worker", "kind": "data", "directed": true, "label": "消费任务" },
+    { "id": "persist", "source": "worker", "target": "database", "kind": "data", "directed": true, "label": "保存状态" },
+    { "id": "notify", "source": "worker", "target": "mail", "kind": "dependency", "directed": true, "label": "发送通知" },
+    { "id": "shared-network", "source": "database", "target": "queue", "kind": "dependency", "directed": false, "label": "同一私有网络" }
+  ]
+}

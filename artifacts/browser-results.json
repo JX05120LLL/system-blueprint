@@ -1,0 +1,1241 @@
+{
+  "config": {
+    "configFile": "D:\\code\\system-blueprint-skill\\playwright.config.ts",
+    "rootDir": "D:/code/system-blueprint-skill/tests/browser",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/code/system-blueprint-skill/artifacts/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/code/system-blueprint-skill/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "artifacts/browser-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "acceptance.spec.ts",
+      "file": "acceptance.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "V16 readable narrow initial view centers the entry node even with feedback lanes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 569,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:08:56.985Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-af95b2960369b50c5528",
+          "file": "acceptance.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "V05 hiding a selected child group maps details and focus to the visible parent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 584,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:08:57.817Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-010e703dc410bc94fb53",
+          "file": "acceptance.spec.ts",
+          "line": 14,
+          "column": 1
+        },
+        {
+          "title": "V15 explicit export background covers the diagram as well as its title margin",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 473,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:08:58.416Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-353612d290ff64c3c4e3",
+          "file": "acceptance.spec.ts",
+          "line": 24,
+          "column": 1
+        },
+        {
+          "title": "V16 details keyboard collapse and edge close restore visible graph focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 623,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:08:58.897Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-cfdf97bf2996b4a454bb",
+          "file": "acceptance.spec.ts",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "V01 single node fits, opens meaningful details and stays offline",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 691,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:08:59.529Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "single-node-offline",
+                      "contentType": "image/png",
+                      "path": "D:\\code\\system-blueprint-skill\\artifacts\\test-results\\acceptance-V01-single-node-42736-l-details-and-stays-offline\\attachments\\single-node-offline-eae458b9220472f63607bea30c0c2cd091e6bcfd.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-96175128235f1b3dc794",
+          "file": "acceptance.spec.ts",
+          "line": 50,
+          "column": 1
+        },
+        {
+          "title": "V02 real Chinese and identifier wrapping retains text at normal font sizes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 642,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:00.228Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "long-text-light",
+                      "contentType": "image/png",
+                      "path": "D:\\code\\system-blueprint-skill\\artifacts\\test-results\\acceptance-V02-real-Chines-a9650-s-text-at-normal-font-sizes\\attachments\\long-text-light-e64d1e35d4d8a8b52f4bd33bbdf76794e81050c3.png"
+                    },
+                    {
+                      "name": "long-text-dark",
+                      "contentType": "image/png",
+                      "path": "D:\\code\\system-blueprint-skill\\artifacts\\test-results\\acceptance-V02-real-Chines-a9650-s-text-at-normal-font-sizes\\attachments\\long-text-dark-1ca7322f5c4426942223012578de35b0469322f2.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-f189d32eb855e2f9b228",
+          "file": "acceptance.spec.ts",
+          "line": 71,
+          "column": 1
+        },
+        {
+          "title": "V02 overlong visible title reports the node and field instead of shrinking or truncating",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 359,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:00.877Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-3c54c65ddfffcb291716",
+          "file": "acceptance.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "V03 V06 shared endpoints keep two visible conditions and edge details through collapse",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 627,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:01.244Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "shared-conditions-edge-details",
+                      "contentType": "image/png",
+                      "path": "D:\\code\\system-blueprint-skill\\artifacts\\test-results\\acceptance-V03-V06-shared--74fc9-ge-details-through-collapse\\attachments\\shared-conditions-edge-details-3d140e3f8cd7be0fdaf1557ee48e1d5f4fb35ad5.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-2af245d1f6188ad8f71f",
+          "file": "acceptance.spec.ts",
+          "line": 105,
+          "column": 1
+        },
+        {
+          "title": "V04 cycle traversal terminates with correct upstream and downstream relations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 628,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:01.879Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-8fe9ace88a14b3a5c8b5",
+          "file": "acceptance.spec.ts",
+          "line": 128,
+          "column": 1
+        },
+        {
+          "title": "V06 aggregate edge details enumerate every original relation with matching conditions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 539,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:02.513Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-2aface489471670015d3",
+          "file": "acceptance.spec.ts",
+          "line": 144,
+          "column": 1
+        },
+        {
+          "title": "V05 V16 nested keyboard collapse restores child state and moves hidden-node focus safely",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 727,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:03.062Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "nested-parent-collapsed",
+                      "contentType": "image/png",
+                      "path": "D:\\code\\system-blueprint-skill\\artifacts\\test-results\\acceptance-V05-V16-nested--57fed-es-hidden-node-focus-safely\\attachments\\nested-parent-collapsed-79662cf17d94c5ccae89fab29614c7d91b4b50dc.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-63659c630aeafdef0371",
+          "file": "acceptance.spec.ts",
+          "line": 163,
+          "column": 1
+        },
+        {
+          "title": "V07 latest rapid collapse and theme actions win without mutating the original model",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 545,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:03.797Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-e4fc9f169d304f43f925",
+          "file": "acceptance.spec.ts",
+          "line": 188,
+          "column": 1
+        },
+        {
+          "title": "V07 failed collapsed measurement retains the last graph and recovers on reset",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 535,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:04.350Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-6074f4fe1a773212b16a",
+          "file": "acceptance.spec.ts",
+          "line": 210,
+          "column": 1
+        },
+        {
+          "title": "V08 zoom and pan do not relayout; export is complete and leaves reader state untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 728,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:04.892Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-4cd19baaaa9be8cbecac",
+          "file": "acceptance.spec.ts",
+          "line": 237,
+          "column": 1
+        },
+        {
+          "title": "V09 malicious-looking labels, IDs and details remain text with no network or script execution",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 549,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:05.627Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-f4a9d25a4e806a3a0a83",
+          "file": "acceptance.spec.ts",
+          "line": 262,
+          "column": 1
+        },
+        {
+          "title": "V16 canvas dragging over a node does not accidentally open details",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 694,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:06.182Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-9ce88ee6d4b95ac5c7a0",
+          "file": "acceptance.spec.ts",
+          "line": 277,
+          "column": 1
+        },
+        {
+          "title": "V19 hidden conditions appear in summary and group details; reset restores initial collapse and retains theme",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 757,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:06.883Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hidden-conditions-details",
+                      "contentType": "image/png",
+                      "path": "D:\\code\\system-blueprint-skill\\artifacts\\test-results\\acceptance-V19-hidden-cond-93be7--collapse-and-retains-theme\\attachments\\hidden-conditions-details-34379f7f98749eb4b2639ff0ce8ac567ae30fd06.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-c15fc6f191bd980a752d",
+          "file": "acceptance.spec.ts",
+          "line": 291,
+          "column": 1
+        },
+        {
+          "title": "V20 mixed-flow highlighter follows its view semantics and keeps direct relations in details",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 590,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:07.649Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-109c3da4301532774607",
+          "file": "acceptance.spec.ts",
+          "line": 317,
+          "column": 3
+        },
+        {
+          "title": "V20 mixed-overview highlighter follows its view semantics and keeps direct relations in details",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 630,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:08.247Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-cd213ef3ebaea2ce87b9",
+          "file": "acceptance.spec.ts",
+          "line": 317,
+          "column": 3
+        },
+        {
+          "title": "V16 V21 narrow long flow fits below 25 percent and zooms continuously with reachable details",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 883,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:08.886Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "narrow-overview",
+                      "contentType": "image/png",
+                      "path": "D:\\code\\system-blueprint-skill\\artifacts\\test-results\\acceptance-V16-V21-narrow--e4180-usly-with-reachable-details\\attachments\\narrow-overview-164cd1c502e83393ef2ebd52a5206ced40764532.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6bf654160f377cf56a60-263072c49d4620170b24",
+          "file": "acceptance.spec.ts",
+          "line": 330,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "comparison.spec.ts",
+      "file": "comparison.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "V22 comparison preserves dimensions, scales and independent marker/gradient references",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 215,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:09.807Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "134bf4c0330291c58d86-fec42bca409c0dfa6838",
+          "file": "comparison.spec.ts",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "legacy-export.spec.ts",
+      "file": "legacy-export.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "V17 legacy template preserves viewBox casing and intrinsic size through Node and Python",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2044,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:10.053Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-d1a1d5d4f7cadedeefe7",
+          "file": "legacy-export.spec.ts",
+          "line": 16,
+          "column": 1
+        },
+        {
+          "title": "V17 legacy browser CSS and inherited font survive, while page scripts stay disabled",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1072,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:12.109Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-861b8e7d8dfacd7dfc9f",
+          "file": "legacy-export.spec.ts",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "V17 R3 legacy ancestor gradients and embedded images retain their pixels and SVG-relative position",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3909,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:13.189Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-b6f7fc8492ad53fce3c9",
+          "file": "legacy-export.spec.ts",
+          "line": 45,
+          "column": 1
+        },
+        {
+          "title": "V17 legacy multiple SVGs require selection and prohibit SVG export",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3422,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:17.106Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-4aa3c8d96a169b3d2761",
+          "file": "legacy-export.spec.ts",
+          "line": 85,
+          "column": 1
+        },
+        {
+          "title": "V17 legacy fails explicitly for remote and missing sibling resources",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1593,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:20.533Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-510b5e1a5ed8ce68eabe",
+          "file": "legacy-export.spec.ts",
+          "line": 99,
+          "column": 1
+        },
+        {
+          "title": "V12 legacy refuses over-limit bitmaps and v2 missing API fails without hanging",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1657,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:22.134Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-eb82e8260621bbde3d1b",
+          "file": "legacy-export.spec.ts",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "V17 Python SVG keeps overwrite behavior and encodes real JPEG with explicit background",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 736,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:23.799Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-5c8a12e76f1afb0c3c2c",
+          "file": "legacy-export.spec.ts",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "V12 Python applies bitmap limit to CSS-computed SVG dimensions before Cairo allocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 311,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:24.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-65e9aea6059a62374f0c",
+          "file": "legacy-export.spec.ts",
+          "line": 130,
+          "column": 1
+        },
+        {
+          "title": "V15 v2 CLI creates independently readable SVG, PNG and JPEG with matching dimensions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4536,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:24.864Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cf3dbc881f106c661cc5-b8ec546bc2b0de7ec0ea",
+          "file": "legacy-export.spec.ts",
+          "line": 137,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "viewer.spec.ts",
+      "file": "viewer.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "V14 V16 offline node details, keyboard and theme",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 645,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "buffer": ""
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:29.443Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "21fabc857d2aace6b217-d11a3cc8f747cdbda96d",
+          "file": "viewer.spec.ts",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "V14 without JavaScript shows model summary without inactive reader controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 757,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "buffer": ""
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-09-23T09:09:30.096Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "21fabc857d2aace6b217-bfe2d2c106892813d8dc",
+          "file": "viewer.spec.ts",
+          "line": 23,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-23T09:08:55.866Z",
+    "duration": 35128.818,
+    "expected": 32,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

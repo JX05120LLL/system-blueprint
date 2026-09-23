@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://system-blueprint.local/schema/2.0/diagram.json",
+  "title": "DiagramDocument",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "title", "view", "nodes", "edges", "groups"],
+  "properties": {
+    "schemaVersion": { "const": "2.0", "type": "string" },
+    "id": { "$ref": "#/definitions/nonEmptyText" },
+    "title": { "$ref": "#/definitions/nonEmptyText" },
+    "description": { "type": "string" },
+    "view": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "direction", "theme"],
+      "properties": {
+        "kind": { "enum": ["overview", "flow", "deployment"] },
+        "direction": { "enum": ["RIGHT", "DOWN"] },
+        "theme": { "enum": ["light", "dark"] },
+        "collapsedGroups": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/definitions/nonEmptyText" } },
+        "primaryPath": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyText" } }
+      }
+    },
+    "nodes": { "type": "array", "minItems": 1, "maxItems": 100, "items": { "$ref": "#/definitions/node" } },
+    "edges": { "type": "array", "maxItems": 300, "items": { "$ref": "#/definitions/edge" } },
+    "groups": { "type": "array", "maxItems": 20, "items": { "$ref": "#/definitions/group" } }
+  },
+  "definitions": {
+    "nonEmptyText": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "details": { "type": "string", "maxLength": 8000 },
+    "evidenceStatus": { "enum": ["confirmed", "assumed", "planned"] },
+    "source": {
+      "type": "object", "additionalProperties": false, "required": ["path"],
+      "properties": {
+        "path": { "$ref": "#/definitions/nonEmptyText" },
+        "line": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "sources": { "type": "array", "items": { "$ref": "#/definitions/source" } },
+    "node": {
+      "type": "object", "additionalProperties": false, "required": ["id", "kind", "label"],
+      "properties": {
+        "id": { "$ref": "#/definitions/nonEmptyText" },
+        "kind": { "enum": ["start", "end", "process", "decision", "store", "external", "fork", "join"] },
+        "label": { "$ref": "#/definitions/nonEmptyText" },
+        "summary": { "type": "string" },
+        "details": { "$ref": "#/definitions/details" },
+        "groupId": { "$ref": "#/definitions/nonEmptyText" },
+        "evidenceStatus": { "$ref": "#/definitions/evidenceStatus" },
+        "sources": { "$ref": "#/definitions/sources" }
+      }
+    },
+    "edge": {
+      "type": "object", "additionalProperties": false, "required": ["id", "source", "target", "kind", "directed"],
+      "properties": {
+        "id": { "$ref": "#/definitions/nonEmptyText" },
+        "source": { "$ref": "#/definitions/nonEmptyText" },
+        "target": { "$ref": "#/definitions/nonEmptyText" },
+        "kind": { "enum": ["control", "data", "dependency", "exception", "feedback"] },
+        "directed": { "type": "boolean" },
+        "label": { "type": "string" },
+        "details": { "$ref": "#/definitions/details" },
+        "evidenceStatus": { "$ref": "#/definitions/evidenceStatus" },
+        "sources": { "$ref": "#/definitions/sources" }
+      }
+    },
+    "group": {
+      "type": "object", "additionalProperties": false, "required": ["id", "label"],
+      "properties": {
+        "id": { "$ref": "#/definitions/nonEmptyText" },
+        "label": { "$ref": "#/definitions/nonEmptyText" },
+        "parentId": { "$ref": "#/definitions/nonEmptyText" },
+        "details": { "$ref": "#/definitions/details" }
+      }
+    }
+  }
+}

@@ -1,461 +1,192 @@
-# System Blueprint
+# System Blueprint v2
 
-面向 AI Agent 的通用技能包，用来生成更适合展示、评审和沉淀文档的系统蓝图与技术图示。
+把代码仓库、设计文档或系统描述转成可阅读、可交互、可离线分享的技术图。默认浅色工程风，使用文字、形状、方向和克制的强调色表达关系。
 
-它的目标不是再产出一份“能跑就行”的 Mermaid，而是让 Agent 在合适的时候直接生成可交付的图形资产：
+交付包含可继续修改的 `.diagram.json`、双击即可打开的单文件 HTML，以及按需导出的 SVG、PNG、JPEG。HTML 支持缩放、平移、节点与关系详情、上下游高亮、两层分组折叠；不需要账号、服务器或网络连接。
 
-- 独立 `HTML` 文件，内联 `SVG`，适合浏览器打开、演示和方案评审
-- 可直接嵌入 GitHub README 的 `SVG`
-- 需要投递、截图或发群时可导出 `PNG / JPG`
+[项目仓库](https://github.com/JX05120LLL/system-blueprint) · [Skill 入口](system-blueprint/SKILL.md) · [模型规则](system-blueprint/references/modeling.md) · [验证记录](docs/validation/)
 
-这个仓库当前以 `SKILL.md + assets/ + scripts/` 的轻量结构组织，优先面向 Codex，也尽量兼容支持类似 Skill 结构的其他 Agent 工作流。
+## 快速开始
 
-[查看仓库](https://github.com/JX05120LLL/system-blueprint) · [如果这个项目对你有帮助，欢迎点个 Star](https://github.com/JX05120LLL/system-blueprint/stargazers)
+生成者需要 **Node.js 24.x**。在仓库根目录运行：
 
----
+```powershell
+node system-blueprint/scripts/validate.mjs examples/overview.diagram.json
+node system-blueprint/scripts/generate.mjs examples/overview.diagram.json --output output/overview.html
+```
 
-## 为什么做这个项目
+用浏览器打开 `output/overview.html`。生成不需要 npm install、Playwright 或仓库根目录的开发依赖：已构建的运行时随 Skill 分发。HTML 已组装仍需实际打开，检查文字、关系、交互和导出效果。
 
-很多 Agent 已经可以根据代码仓库、需求文档或口头描述快速生成架构图，但常见问题也很明确：
+需要自动导出时再安装 Skill 内的依赖：
 
-- 图能表达结构，但展示质量一般
-- 细节很多，但层次不清
-- 适合临时说明，不适合放进 README、设计文档或汇报材料
-- 输出往往强绑定某个平台，不方便迁移和复用
+```powershell
+npm ci --prefix system-blueprint
+node system-blueprint/node_modules/playwright/cli.js install chromium
 
-`System Blueprint` 解决的是这类中间地带的问题：
+node system-blueprint/scripts/export.mjs output/overview.html --format svg --output output/overview.svg
+node system-blueprint/scripts/export.mjs output/overview.html --format png --scale 2 --output output/overview.png
+node system-blueprint/scripts/export.mjs output/overview.html --format jpg --background "#FFFFFF" --output output/overview.jpg
+```
 
-- 比纯文本图更适合展示
-- 比重型设计工具更轻量
-- 比平台私有插件更通用
+浏览器工具栏也可直接下载 SVG。PNG/JPEG 使用 CLI 的 Chromium 渲染；HTML 阅读者无需安装 Node 或 Playwright。
 
----
+## 五类示例
 
-## 它能做什么
+README 中显示的是静态 SVG。交互请下载相应 HTML 后在浏览器打开；每份 HTML 独立、自包含，不依赖同目录文件。
 
-这个 skill 适合生成以下类型的技术图：
+[全部 JSON / HTML / SVG / PNG / JPEG 产物](examples/README.md) · [新旧效果对照与截图](artifacts/visual-comparison.html)
 
-- 系统架构图
-- 系统蓝图 / 分层关系图
-- 部署拓扑图
-- 请求流 / 控制流图
-- 数据流图
-- Agent Runtime 图
-- Memory / Recall 流程图
-- Before / After 架构对比图
-- 集成关系图 / 组件关系图
+| 类型 | 源数据 | 交互阅读器 |
+| --- | --- | --- |
+| System Overview | [overview.diagram.json](examples/overview.diagram.json) | [overview.html](examples/overview.html) |
+| Runtime Flow | [runtime-flow.diagram.json](examples/runtime-flow.diagram.json) | [runtime-flow.html](examples/runtime-flow.html) |
+| Memory / Recall | [memory-recall.diagram.json](examples/memory-recall.diagram.json) | [memory-recall.html](examples/memory-recall.html) |
+| Deployment Topology | [deployment-topology.diagram.json](examples/deployment-topology.diagram.json) | [deployment-topology.html](examples/deployment-topology.html) |
+| Before / After | [before.diagram.json](examples/before.diagram.json)、[after.diagram.json](examples/after.diagram.json) | [before.html](examples/before.html)、[after.html](examples/after.html) |
 
-默认输出策略：
-
-- 优先输出独立 `HTML` 文件，内联 `SVG`
-- 需要 README 嵌入时输出 `SVG`
-- 需要位图时用脚本导出 `PNG / JPG`
-- 只有在用户明确要求 Mermaid，或者目标环境只能接受 Markdown 图时，才回退到 Mermaid
-
----
-
-## 预览
-
-下面这些示例图可以直接放进 GitHub README、项目文档或方案说明。
-
-### 1. System Overview
+### System Overview
 
 ![System Blueprint 总览图](./images/system-blueprint-overview.svg)
 
-### 2. Runtime Flow
+### Runtime Flow
 
 ![Runtime Flow 运行流程图](./images/system-blueprint-runtime-flow.svg)
 
-### 3. Memory / Recall
+### Memory / Recall
 
 ![Memory / Recall 流程图](./images/system-blueprint-memory-recall.svg)
 
-### 4. Deployment Topology
+### Deployment Topology
 
 ![Deployment Topology 拓扑图](./images/system-blueprint-deployment-topology.svg)
 
-### 5. Before / After
+### Before / After
 
 ![Before / After 蓝图对比图](./images/system-blueprint-before-after.svg)
 
----
+Before/After 使用相同前端、API、数据库基线与主题；新增 LLM 能力明确标为规划。两份单图保持相同比例合成静态对比图，交互仍分别打开两份 HTML。迁移的保留项、简化项和假设见 [示例迁移说明](docs/validation/example-migration.md)。
 
-## 适合谁用
+## 安装为 Skill
 
-如果你经常需要让 Agent 帮你产出“能展示”的技术图，这个 skill 会比较合适：
-
-- 想给项目仓库补一张真正能看的架构图
-- 想把已有 Mermaid 升级成更适合评审的视觉稿
-- 想给 Agent 系统、工作流系统、RAG 系统补运行时说明图
-- 想把部署关系、数据边界、外部依赖讲清楚
-- 想把设计讨论结果沉淀成可分享的产物
-
----
-
-## 仓库结构
-
-```text
-system-blueprint-skill/
-├── README.md
-├── images/
-│   ├── system-blueprint-overview.svg
-│   ├── system-blueprint-runtime-flow.svg
-│   ├── system-blueprint-memory-recall.svg
-│   ├── system-blueprint-deployment-topology.svg
-│   └── system-blueprint-before-after.svg
-└── system-blueprint/
-    ├── SKILL.md
-    ├── agents/
-    │   └── openai.yaml
-    ├── assets/
-    │   └── template.html
-    └── scripts/
-        └── export_diagram.py
-```
-
-各目录作用：
-
-- `system-blueprint/SKILL.md`
-  skill 的核心说明文件，定义触发方式、工作流、输出约定和图形规则。
-
-- `system-blueprint/assets/template.html`
-  默认模板，生成独立 HTML 蓝图时优先使用。
-
-- `system-blueprint/scripts/export_diagram.py`
-  将 `HTML / SVG` 导出为 `PNG / JPG / JPEG` 的辅助脚本。
-
-- `system-blueprint/agents/openai.yaml`
-  面向 Codex / OpenAI 风格环境的增强元数据。
-
-- `images/`
-  README 预览图和可直接复用的示例 SVG。
-
----
-
-## 安装方式
-
-### 1. 在 Codex 中安装
-
-把仓库里的 `system-blueprint/` 目录复制到本地 skills 目录：
-
-```bash
-~/.codex/skills/system-blueprint/
-```
-
-也就是说，最终结构应该类似这样：
+将整个 `system-blueprint/` 复制到 Codex 的 Skills 目录，例如：
 
 ```text
 ~/.codex/skills/system-blueprint/
 ├── SKILL.md
 ├── agents/
+├── references/
 ├── assets/
-└── scripts/
+├── scripts/
+├── package.json
+└── package-lock.json
 ```
 
-如果你是从当前仓库安装，复制的是这个目录：
+复制的是子目录，不是整个仓库。保留所有这些资源及许可文件，不能只复制 SKILL.md。生成与阅读不需要源码或根目录 node_modules；安装到其他位置后，命令从脚本自身位置解析随包资源。使用绝对输入/输出路径可避免工作目录歧义。
+
+如需要自动导出，在**复制后的 Skill 目录**执行 `npm ci`，再运行 `node node_modules/playwright/cli.js install chromium`。仅传阅生成好的 HTML/SVG 时无需安装任何依赖。
+
+也可以将这个完整子目录打包分发，或用于支持类似 SKILL.md 约定的其他 Agent；不同平台的触发元数据仍需自行核对。
+
+## 给 Agent 的请求示例
 
 ```text
-system-blueprint/
-```
-
-而不是整个仓库根目录。
-
-### 2. 通过 zip / 文件夹分发
-
-如果你的 Agent 环境支持上传 zip 或导入本地目录，也可以直接打包 `system-blueprint/` 这个目录进行安装。
-
-### 3. 兼容其他支持 `SKILL.md` 的 Agent
-
-这个项目刻意采用较轻的 Skill 结构：
-
-- `SKILL.md`
-- `assets/`
-- 可选的 agent 元数据
-
-因此它通常比较容易适配到支持相似约定的 Agent 系统里。  
-需要注意的是，不同平台对 Skill 元数据、触发词和资源目录的约定并不完全一致，落地时可能需要做少量目录或配置调整。
-
----
-
-## 如何使用
-
-这个仓库不是传统意义上的 Web 服务或 CLI 主程序。
-
-它的“运行方式”分成两部分：
-
-- 在 Agent 中通过 prompt 触发 skill
-- 在本地通过导出脚本把 HTML / SVG 转成 PNG / JPG
-
-### 1. 在 Agent 中触发
-
-你可以直接这样描述任务：
-
-```text
-使用 system-blueprint，为这个仓库生成一份独立 HTML 系统架构图。
+使用 system-blueprint，为这个仓库生成系统总览。
+先核对实际模块与调用关系，区分已证实、假设和规划。
+输出可修改的图数据、离线交互 HTML，以及 README 可嵌入的 SVG。
+采用默认浅色工程风，保留关键条件、回路、边界和来源。
+请实际打开验证，并说明未验证的部分。
 ```
 
 ```text
-使用 system-blueprint，根据下面的系统描述生成部署拓扑图，输出为独立 HTML，并附带一个适合 README 的 SVG 版本。
+使用 system-blueprint，绘制请求处理或 Memory/Recall 流程。
+必须能看清需要检索、不检索、未命中和失败路径。
+长说明放详情，关键条件保留在图上；不要用缩小字号解决溢出。
 ```
 
-```text
-使用 system-blueprint，把这张 Mermaid 图升级成更适合展示的 HTML + SVG 架构图。
+用户明确要求 Mermaid 时尊重该格式。此工具不提供在线协作、账号服务、拖拽改图或图形编辑器；增量修改优先编辑原 JSON 并保留 ID。
+
+## 模型与交互约定
+
+图类型为 overview、flow、deployment；Memory 使用 flow；比较图使用两份独立文档。模型使用 JSON Schema / Ajv 结构校验，并另行检查引用、条件、方向、分组和主路径。详见 [建模规则与最小示例](system-blueprint/references/modeling.md)。
+
+- 首版上限：100 节点、300 边、20 组、最多两层分组；文件不超过 2 MiB，单个 details 不超过 8,000 字符。超限明确报错并建议总览加子图，不截断数据。
+- decision 至少两个带有不同非空条件的流程出口；control/exception/feedback 必须有向。普通回路、自环合法；data/dependency 不算判断分支。
+- 先用本机字体测量，再用 ELK 布局。节点标题与 summary 最多两行，边标签最多三行；超出时给出字段诊断，精简内容或拆图，不自动缩小或截断。
+- flow 上下游只沿流程边遍历；overview/deployment 遍历所有有向关系。无向依赖只显示直接关联。
+- 折叠不会修改原模型。隐藏判断与条件有摘要提示，组和聚合边详情可追溯原始内容；展开父组会恢复子组的折叠选择。
+- Tab、Enter、Space 和 Escape 支持基本阅读操作。窄屏保留平移和可关闭详情；工具栏不会要求整图压缩到看不清。
+- 长图首次打开采用 80% 的可读起点视角。主动“适应画布”或“重置视图”显示完整图，必要时低于 25%；继续放大保持倍率连续。重置恢复初始折叠并清除选择，但保留主题。
+
+HTML 内嵌的 details 也是分享内容；折叠不能脱敏。不要将密码、令牌、真实用户记录或整份私有配置放入模型。文本会转义并以文字渲染，不接受可执行 HTML。
+
+## 导出与命令边界
+
+静态导出使用独立全展开视图，包含标题、说明、标签、箭头、背景和必要图例；不包含工具栏、详情面板或当前高亮。缩放、平移、折叠不会裁切导出内容，也不会因导出而改变阅读器状态。
+
+```powershell
+# 新命令默认不覆盖；确认替换时显式添加 --overwrite
+node system-blueprint/scripts/generate.mjs examples/overview.diagram.json --output output/overview.html --overwrite
+node system-blueprint/scripts/export.mjs output/overview.html --format svg --theme dark --output output/overview-dark.svg
+node system-blueprint/scripts/export.mjs --help
 ```
 
-```text
-使用 system-blueprint，绘制这个 Agent 系统的请求流、意图路由、状态变化和 recall 流程。
+路径支持空格和中文，输出目录按需创建。输入/参数错误退出 2，依赖、浏览器或渲染失败退出 1，成功退出 0。输出扩展名与真实格式必须一致，冲突会报错。
+
+SVG 是矢量格式，不接受 scale。PNG/JPEG 默认 scale=2，允许 0.5–4；任何边超过 16,000 px 或总像素超过 40,000,000 时停止，要求降低倍率或拆图，不悄悄裁切。JPEG 使用明确背景，例如 `#FFFFFF`。系统字体在不同平台可能不同，需要固定像素外观时提供位图。
+
+## 旧 HTML / SVG 与 Python 入口
+
+旧静态 HTML/SVG 仍能直接使用，原模板保留在 [legacy-template.html](system-blueprint/assets/legacy-template.html)。v1 文件没有完整模型，迁移按语义人工重建，不承诺自动无损还原。v2 HTML 的原数据位于 `script#blueprint-data`，也建议始终保留独立 JSON。
+
+```powershell
+# 旧 SVG 位图导出
+pip install cairosvg pillow
+python system-blueprint/scripts/export_diagram.py old-diagram.svg --format png --output output/legacy.png
+
+# 旧 HTML 与 v2 HTML 都转交 Node / Playwright
+python system-blueprint/scripts/export_diagram.py old-diagram.html --format jpg --background "#FFFFFF"
+
+# 旧 HTML 含多个 SVG 时明确选择，从 0 开始
+python system-blueprint/scripts/export_diagram.py multi.html --format png --svg-index 1
 ```
 
-### 2. 推荐的输入来源
+| 输入 / 入口 | 范围与依赖 |
+| --- | --- |
+| v2 HTML → Node export.mjs | SVG / PNG / JPEG；Skill 内 Playwright + Chromium |
+| v1 HTML → Node 或 Python | 仅 PNG / JPEG；静态自包含内联 SVG；不执行页面脚本，阻止远程资源；多图必须给索引 |
+| SVG → Python | PNG / JPEG；CairoSVG + Pillow；Windows 可能另需 Cairo 运行库 |
+| v1 HTML → 独立 SVG | 不在兼容范围；需要 v2 模型重新生成 |
 
-这个 skill 适合从以下输入构建图：
+Python 兼容入口保留原来的**覆盖已有输出**行为和默认 `#08111E` 背景参数；新 Node 命令必须 `--overwrite`。旧 HTML 导出现在新增 Node/Playwright 依赖，不再依赖 BeautifulSoup 提取 SVG，也不再把浏览器 CSS 当成 CairoSVG 可完整复现的能力。旧 SVG 路径仍受 CairoSVG 支持范围限制，不能保证全部浏览器滤镜一致。
 
-- 代码仓库
-- 系统设计文档
-- PRD / 技术方案
-- Mermaid 草图
-- 自然语言描述
+## 维护与验证
 
-### 3. 推荐的输出形式
+源码按 model / projection / layout / render / viewer / export / cli 分层；schema 生成 TypeScript 类型与独立校验器；esbuild 生成随 Skill 分发的 JS。ELK 布局 Worker 的源码内嵌到 HTML，再创建 Blob Worker，不需要相邻 Worker 文件。
 
-如果你没有特别指定，建议优先让 Agent 输出：
+```powershell
+npm ci
+npm ci --prefix system-blueprint
+node system-blueprint/node_modules/playwright/cli.js install chromium
+npm run check:build
+npm run typecheck
+npm run test:unit
+npm run build
+npm run check:build
+npm run test:browser
+npm run test:package
+npm run examples:check
 
-- 一份独立 `HTML`
-- 一份 README 友好的 `SVG`
-
-这样同时兼顾：
-
-- 展示效果
-- 仓库文档嵌入
-- 后续继续迭代
-
----
-
-## 典型提示词
-
-### 从代码仓库生成系统蓝图
-
-```text
-使用 system-blueprint，分析这个仓库并生成一份系统蓝图。
-要求：
-1. 输出独立 HTML 文件
-2. 使用内联 SVG
-3. 保持深色技术风格
-4. 重点体现入口层、应用层、数据层和外部依赖
-5. 额外输出一个适合 README 的 SVG
+# 重生成示例、测量性能
+npm run examples:generate
+npm run test:performance
 ```
 
-### 把 Mermaid 升级成展示版图
+Windows PowerShell 如果拦截 npm.ps1，可使用 `npm.cmd`。Linux CI 安装 Chromium 时还需准备系统依赖。修改源码后必须重新 build，避免预构建资源与源码脱节。
 
-```text
-使用 system-blueprint，把下面这份 Mermaid 图升级成更精美的 HTML 架构图。
-要求保留原始结构，但增强分组、颜色语义、标题、副标题和图例。
-```
+`check:build` 在临时目录从源码重建，比对 20 个分发/生成文件、许可证、版本和 lockfile；不会先覆盖原产物来掩盖不一致。完整 skill 的本地安装包为 [system-blueprint-v2.zip](artifacts/system-blueprint-v2.zip)，不包含 node_modules。
 
-### 生成部署拓扑图
+[完整验收结果](docs/validation/v2-validation-report.md) · [性能实测](docs/validation/performance.md) · [22 项验收计划](docs/validation/acceptance-plan.md) · [浏览器实测](docs/validation/browser-coverage.md) · [测试数据语义](docs/validation/fixture-report.md) · [布局检查](docs/validation/layout-report.md) · [示例迁移](docs/validation/example-migration.md)
 
-```text
-使用 system-blueprint，根据下面描述生成部署拓扑图：
-- 前端运行在 Vercel
-- API 服务运行在 Railway
-- PostgreSQL 托管在 Neon
-- Redis 用于缓存
-- 外部依赖包括 OpenAI、Stripe 和邮件服务
-输出独立 HTML，并附带 SVG。
-```
+性能目标与已测结果分开：30 节点 / 45 边 / 3 组的 HTML 目标不超过 3 MiB，首次就绪 p95 ≤1.5 秒，折叠/展开 p95 ≤500 毫秒；100 / 300 / 20 上沿要求完整完成并记录耗时和主线程阻塞。这些是方案目标，不能从构建通过或简单图推断全部达标；实际机器、浏览器、样本、时间和体积见 [性能实测记录](docs/validation/performance.md)。
 
-### 生成 Agent Runtime / Memory 图
-
-```text
-使用 system-blueprint，绘制一个 Agent 系统的运行时流程图。
-重点展示：
-- 用户请求进入
-- 意图判断
-- 工具调用
-- 记忆检索
-- 结果汇总
-- 最终响应
-输出为独立 HTML。
-```
-
----
-
-## 输出约定
-
-skill 默认遵循以下约定：
-
-- 文件优先自包含，不依赖外部前端运行时
-- 视觉核心使用内联 `SVG`
-- 尽量不依赖 JavaScript
-- 默认输出适合展示的深色技术风格
-- 优先关注结构表达和层次清晰，而不是堆砌装饰
-
-推荐输出文件名：
-
-- `system-blueprint.html`
-- `runtime-architecture.html`
-- `deployment-topology.html`
-- `agent-memory-flow.html`
-
-推荐图片名：
-
-- `system-blueprint-overview.svg`
-- `runtime-flow.svg`
-- `deployment-topology.svg`
-- `agent-memory-flow.png`
-
----
-
-## 位图导出
-
-如果你已经有生成好的 `HTML` 或 `SVG`，可以用仓库内的脚本继续导出成 `PNG / JPG / JPEG`。
-
-### 脚本位置
-
-```text
-system-blueprint/scripts/export_diagram.py
-```
-
-### 安装依赖
-
-当前脚本依赖以下 Python 包：
-
-```bash
-pip install cairosvg beautifulsoup4 pillow
-```
-
-说明：
-
-- `cairosvg` 用于把 `SVG` 渲染成位图
-- `beautifulsoup4` 用于从 HTML 中提取内联 `svg`
-- `Pillow` 用于保存 `JPG / JPEG`
-
-### 用法示例
-
-在当前仓库根目录下：
-
-```bash
-python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format png
-```
-
-```bash
-python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format jpg
-```
-
-如果你已经有某个独立 HTML 蓝图文件：
-
-```bash
-python system-blueprint/scripts/export_diagram.py docs/travel-agent-system-blueprint.html --format png
-```
-
-指定输出路径：
-
-```bash
-python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format png --output output/overview.png
-```
-
-调整导出缩放倍率：
-
-```bash
-python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format png --scale 2.5
-```
-
-导出 JPEG 时指定背景色：
-
-```bash
-python system-blueprint/scripts/export_diagram.py images/system-blueprint-overview.svg --format jpg --background "#08111E"
-```
-
-### Windows 说明
-
-在部分 Windows 环境里，除了 Python 包本身，还可能需要系统可用的 Cairo 运行库。  
-如果导出时报找不到相关动态库，通常就是 Cairo 运行时缺失导致的。
-
-如果你当前只是想在 GitHub README 中展示图，优先直接使用 `SVG`，依赖更少，也更稳定。
-
----
-
-## 设计原则
-
-这个 skill 在图形生成上遵循几条明确原则：
-
-- 先抽系统模型，再画图
-- 优先表达层次、边界和关键流
-- 第一版先克制，避免把图画得过满
-- 分组容器优先于散点堆叠
-- 语义配色优先于花哨装饰
-- 标题和副标题必须脱离上下文也能看懂
-- README 图和展示图都应该能独立成立
-
----
-
-## 适配范围与边界
-
-这个仓库追求的是“尽量通用”，不是“所有 Agent 无缝通吃”。
-
-目前更适合的使用场景：
-
-- Codex 风格 skill 系统
-- 支持 `SKILL.md` 的轻量 Agent 平台
-- 允许读取本地模板与脚本资源的运行环境
-
-需要注意的边界：
-
-- 不同 Agent 平台对 Skill 元数据支持程度不同
-- 不同平台的资源目录约定可能不同
-- Mermaid 不是默认主输出，只是兼容回退方案
-- PNG / JPG 导出依赖本地 Python 环境
-
----
-
-## 什么时候适合用它
-
-以下场景尤其适合：
-
-- 给开源项目补一张首页架构图
-- 给客户方案做一张更能讲故事的蓝图
-- 给多 Agent 系统补运行时流程图
-- 给 RAG / Memory 系统补 recall 说明图
-- 给重构方案做 before / after 对比图
-- 把原本分散在文字里的结构，收敛成一张可读的图
-
----
-
-## 贡献建议
-
-如果你准备继续扩展这个项目，比较值得补充的方向有：
-
-- 更多蓝图模板
-- 更多导出样式
-- 更完整的示例输入与示例输出
-- 不同 Agent 平台的适配元数据
-- 自动化测试和示例生成流程
-- 发布用的安装说明与版本管理
-
-如果你提 PR，建议尽量保持以下原则：
-
-- 结构轻量
-- 模板可复用
-- 输出尽量自包含
-- 不引入没必要的运行时依赖
-
----
-
-## 支持项目
-
-如果这个项目对你有帮助，欢迎支持一下：
-
-- 给仓库点个 Star: <https://github.com/JX05120LLL/system-blueprint>
-- 分享给也在做 Agent、架构文档或技术可视化的朋友
-- 提 issue 或 PR，补充你希望支持的图类型和工作流
-
----
-
-## 总结
-
-`System Blueprint` 不是为了替代所有绘图工具，而是为了补上 Agent 工作流里经常缺失的一环：
-
-让“从代码或描述到一张真正能展示的技术图”这件事，变得更快、更轻、更可复用。
-
-如果你正好也在做这类事情，这个仓库应该会有用。  
-觉得有帮助的话，欢迎点个 Star。
+自动布局不能保证任意复杂图零交叉。结构校验、几何检查与实际截图审查缺一不可；本机 Chromium 验证也不等于所有操作系统、浏览器或真实部署均已验证。浏览器不可用时可以先交付经过校验的数据和已组装 HTML，但必须明确视觉、交互或导出未验证。

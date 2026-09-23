@@ -3,3 +3,13 @@ __pycache__/
 *.pyo
 *.pyd
 *.zip
+node_modules/
+system-blueprint/node_modules/
+artifacts/test-results/
+artifacts/playwright-report/
+*.tmp
+artifacts/acceptance-*
+artifacts/browser-*.html
+artifacts/layouts/*.html
+artifacts/example-build/
+artifacts/performance/*.html
