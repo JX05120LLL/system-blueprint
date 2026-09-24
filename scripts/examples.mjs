@@ -25,13 +25,13 @@ try {
     const source = `examples/${name}.diagram.json`;
     const html = `examples/${name}.html`;
     const model = JSON.parse(await readFile(source, 'utf8'));
-    run(['system-blueprint/scripts/validate.mjs', source]);
+    run(['system-flow/scripts/validate.mjs', source]);
     if (check) {
       const candidate = `${stage}/${name}.check.html`;
-      run(['system-blueprint/scripts/generate.mjs', source, '--output', candidate, '--overwrite']);
+      run(['system-flow/scripts/generate.mjs', source, '--output', candidate, '--overwrite']);
       assert((await readFile(candidate)).equals(await readFile(html)), `${name}: HTML is stale; run npm run examples:generate`);
     } else {
-      run(['system-blueprint/scripts/generate.mjs', source, '--output', html, '--overwrite']);
+      run(['system-flow/scripts/generate.mjs', source, '--output', html, '--overwrite']);
     }
     await page.setViewportSize({ width: 1366, height: 768 });
     await page.goto(pathToFileURL(resolve(html)).href);
@@ -62,7 +62,7 @@ try {
     const outputs = {};
     for (const format of ['svg', 'png', 'jpg']) {
       const staged = `${stage}/${name}.${format}`;
-      run(['system-blueprint/scripts/export.mjs', html, '--format', format, '--output', staged, '--overwrite']);
+      run(['system-flow/scripts/export.mjs', html, '--format', format, '--output', staged, '--overwrite']);
       const bytes = await readFile(staged);
       if (format === 'svg') {
         const xml = bytes.toString('utf8');

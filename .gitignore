@@ -6,6 +6,6 @@ artifacts/
 *.pyd
 *.zip
 node_modules/
-system-blueprint/node_modules/
+system-flow/node_modules/
 *.tmp
 .playwright-cli/

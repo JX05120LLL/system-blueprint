@@ -18,7 +18,7 @@ function repositoryUrl(pkg) {
 }
 
 export async function generateNotices({ outputRoot = root } = {}) {
-  await mkdir(join(outputRoot, 'system-blueprint/references/licenses'), { recursive: true });
+  await mkdir(join(outputRoot, 'system-flow/references/licenses'), { recursive: true });
   const outputs = []; const versions = {};
   const lines = ['# Third-party notices', '', 'The offline viewer includes the following libraries. Their installed upstream license texts are copied without alteration into `references/licenses/`. These links identify source repositories; the generated HTML loads no remote resources.', '', '| Package | Version | License | Source |', '| --- | --- | --- | --- |'];
   for (const name of noticePackages) {
@@ -30,18 +30,18 @@ export async function generateNotices({ outputRoot = root } = {}) {
       catch (error) { if (error.code !== 'ENOENT') throw error; }
     }
     if (!license?.length) throw new Error(`License missing: ${name}`);
-    const path = `system-blueprint/references/licenses/${name}.txt`;
+    const path = `system-flow/references/licenses/${name}.txt`;
     await writeFile(join(outputRoot, path), license); outputs.push(path);
     lines.push(`| ${name} | ${pkg.version} | [${pkg.license}](references/licenses/${name}.txt) | [upstream](${repositoryUrl(pkg)}) |`);
   }
-  const exporter = JSON.parse(await readFile(join(root, 'system-blueprint/package.json'), 'utf8'));
+  const exporter = JSON.parse(await readFile(join(root, 'system-flow/package.json'), 'utf8'));
   lines.push('',
     `ELK is upstream code distributed under EPL-2.0. The corresponding elkjs wrapper and build sources are available at [elkjs ${versions.elkjs}](https://github.com/kieler/elkjs/tree/${versions.elkjs}); its [build definition](https://raw.githubusercontent.com/kieler/elkjs/${versions.elkjs}/build.gradle) identifies the Eclipse Layout Kernel modules incorporated into the worker. The underlying Java layout sources are in the [Eclipse Layout Kernel repository](https://github.com/eclipse-elk/elk). The application embeds the installed upstream \`elk-worker.min.js\` without changing its layout algorithms.`, '',
     `The optional export dependency is Playwright ${exporter.dependencies.playwright} (Apache-2.0). Its license and third-party notices are installed by \`npm ci\` in the skill directory; Chromium carries its own notices in the installed browser distribution.`, '',
     'Build-only dependencies (TypeScript, esbuild, json-schema-to-typescript, tsx and test tools) are locked in the repository package-lock.json. They are not needed to generate HTML from an installed skill.', '',
     'The drawio-skill repository was consulted for workflow and review ideas only; no upstream implementation code was copied.',
   );
-  const path = 'system-blueprint/THIRD_PARTY_NOTICES.md';
+  const path = 'system-flow/THIRD_PARTY_NOTICES.md';
   await writeFile(join(outputRoot, path), `${lines.join('\n')}\n`); outputs.push(path);
   return outputs;
 }

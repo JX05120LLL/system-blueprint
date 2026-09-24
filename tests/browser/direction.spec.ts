@@ -7,7 +7,7 @@ import { idle, state, type ReaderApi } from './helpers';
 
 test('offline reader switches layout direction and saves the chosen direction', async ({ page }) => {
   const html = resolve('artifacts/acceptance-order-flow-direction.html');
-  execFileSync(process.execPath, ['system-blueprint/scripts/generate.mjs', 'examples/traditional-microservices-order-flow.diagram.json', '--output', html, '--overwrite']);
+  execFileSync(process.execPath, ['system-flow/scripts/generate.mjs', 'examples/traditional-microservices-order-flow.diagram.json', '--output', html, '--overwrite']);
   const requests: string[] = [], errors: string[] = [];
   page.on('request', request => { if (/^https?:/i.test(request.url())) requests.push(request.url()); });
   page.on('pageerror', error => errors.push(error.message));

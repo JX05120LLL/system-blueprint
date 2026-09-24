@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 async function open(page: import('@playwright/test').Page, name: string) {
   const output = resolve(`artifacts/browser-${name}.html`);
-  execFileSync(process.execPath, ['system-blueprint/scripts/generate.mjs', `tests/fixtures/${name}.diagram.json`, '--output', output, '--overwrite']);
+  execFileSync(process.execPath, ['system-flow/scripts/generate.mjs', `tests/fixtures/${name}.diagram.json`, '--output', output, '--overwrite']);
   await page.context().setOffline(true);
   await page.goto(pathToFileURL(output).href);
   await page.evaluate(() => (window as any).blueprint.ready);

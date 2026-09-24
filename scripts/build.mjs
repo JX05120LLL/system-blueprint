@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { generateSchema, repositoryRoot, schemaOutputs } from './schema.mjs';
 import { generateNotices } from './notices.mjs';
 
-export const bundleOutputs = ['system-blueprint/assets/viewer.js', ...['generate', 'validate', 'export'].map(name => `system-blueprint/scripts/${name}.mjs`)];
-export const manifestPath = 'system-blueprint/assets/build-manifest.json';
+export const bundleOutputs = ['system-flow/assets/viewer.js', ...['generate', 'validate', 'export'].map(name => `system-flow/scripts/${name}.mjs`)];
+export const manifestPath = 'system-flow/assets/build-manifest.json';
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
 /** Rebuild from source into outputRoot; no installed prebuilt resource is a bundle input. */
@@ -30,12 +30,12 @@ export async function buildProject({ outputRoot = repositoryRoot, logLevel = 'in
     plugins: [generatedPlugin, { name: 'inline-layout-worker', setup(builder) { builder.onResolve({ filter: /^\.\/engine(?:\.ts)?$/ }, args => args.importer.replaceAll('\\', '/').endsWith('/layout/elk.ts') ? { path: join(repositoryRoot, 'src/layout/engine.browser.ts') } : undefined); } }],
   });
   for (const name of ['generate', 'validate', 'export']) {
-    await build({ ...common, entryPoints: [`src/cli/${name}.ts`], outfile: join(outputRoot, `system-blueprint/scripts/${name}.mjs`), platform: 'node', format: 'esm', external: ['playwright'], banner: { js: '#!/usr/bin/env node' } });
+    await build({ ...common, entryPoints: [`src/cli/${name}.ts`], outfile: join(outputRoot, `system-flow/scripts/${name}.mjs`), platform: 'node', format: 'esm', external: ['playwright'], banner: { js: '#!/usr/bin/env node' } });
   }
   const notices = await generateNotices({ outputRoot });
   const pkg = JSON.parse(await readFile(join(repositoryRoot, 'package.json'), 'utf8'));
-  const skill = JSON.parse(await readFile(join(repositoryRoot, 'system-blueprint/package.json'), 'utf8'));
-  const schemaBytes = await readFile(join(repositoryRoot, 'system-blueprint/references/diagram-schema.json'));
+  const skill = JSON.parse(await readFile(join(repositoryRoot, 'system-flow/package.json'), 'utf8'));
+  const schemaBytes = await readFile(join(repositoryRoot, 'system-flow/references/diagram-schema.json'));
   const schema = JSON.parse(schemaBytes);
   const hashes = {};
   for (const path of [...schemaOutputs, ...bundleOutputs, ...notices]) hashes[path] = sha256(await readFile(join(outputRoot, path)));
@@ -44,7 +44,7 @@ export async function buildProject({ outputRoot = repositoryRoot, logLevel = 'in
     schemaSha256: sha256(schemaBytes), node: pkg.engines.node,
     playwright: skill.dependencies.playwright, buildDependencies: pkg.devDependencies, files: hashes,
   };
-  await mkdir(join(outputRoot, 'system-blueprint/assets'), { recursive: true });
+  await mkdir(join(outputRoot, 'system-flow/assets'), { recursive: true });
   const manifestFile = join(outputRoot, manifestPath);
   const manifestText = `${JSON.stringify(manifest, null, 2)}\n`;
   // Windows may briefly deny truncating this generated file while another process reads it.

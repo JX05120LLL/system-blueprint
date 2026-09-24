@@ -8,7 +8,7 @@ import { makePerformanceDocument } from '../tests/fixtures/factory.ts';
 await mkdir('artifacts/performance', { recursive: true });
 for (const [name, counts] of [['standard', [30, 45, 3]], ['upper', [100, 300, 20]]]) {
   await writeFile(`artifacts/performance/${name}.json`, JSON.stringify(makePerformanceDocument(...counts)));
-  execFileSync(process.execPath, ['system-blueprint/scripts/generate.mjs', `artifacts/performance/${name}.json`, '--output', `artifacts/performance/${name}.html`, '--overwrite']);
+  execFileSync(process.execPath, ['system-flow/scripts/generate.mjs', `artifacts/performance/${name}.json`, '--output', `artifacts/performance/${name}.html`, '--overwrite']);
 }
 const browser = await chromium.launch({ channel: 'chromium', args: ['--disable-gpu'] });
 const results = { machine: { platform: `${os.platform()} ${os.release()} ${os.arch()}`, cpu: os.cpus()[0].model, logicalCpus: os.cpus().length, memoryGiB: +(os.totalmem() / 2 ** 30).toFixed(1), node: process.version, browser: browser.version(), viewport: '1366x768', font: 'Segoe UI, Microsoft YaHei, Noto Sans CJK SC, sans-serif', gpu: 'disabled for reproducible Windows screenshots' }, targets: { htmlMiB: 3, readyP95Ms: 1500, collapseP95Ms: 500 }, standard: {}, upper: {} };

@@ -5,8 +5,8 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 const execute = promisify(execFile);
 const outputRoot = resolve('artifacts/compatibility');
-const nodeExporter = resolve('system-blueprint/scripts/export.mjs');
-const pythonExporter = resolve('system-blueprint/scripts/export_diagram.py');
+const nodeExporter = resolve('system-flow/scripts/export.mjs');
+const pythonExporter = resolve('system-flow/scripts/export_diagram.py');
 async function invoke(command: string, args: string[]) {
   try { const result = await execute(command, args, { encoding: 'utf8', timeout: 40000 }); return { status: 0, ...result }; }
   catch (error) { const result = error as Error & { code: number; stdout: string; stderr: string }; return { status: result.code, stdout: result.stdout, stderr: result.stderr }; }
@@ -96,6 +96,20 @@ test('V17 legacy multiple SVGs require selection and prohibit SVG export', async
   expect(svg.status).toBe(2); expect(svg.stderr).toContain('v2 HTML');
 });
 
+test('previous v2 HTML marker remains exportable after the runtime rename', async () => {
+  const current = join(outputRoot, 'current-marker.html');
+  const previous = join(outputRoot, 'previous-marker.html');
+  const output = join(outputRoot, 'previous-marker.svg');
+  const generated = await invoke(process.execPath, [resolve('system-flow/scripts/generate.mjs'), resolve('tests/fixtures/overview.diagram.json'), '--output', current, '--overwrite']);
+  expect(generated.status, generated.stderr).toBe(0);
+  const html = await readFile(current, 'utf8');
+  expect(html).toContain('<meta name="system-flow" content="2.0">');
+  await writeFile(previous, html.replace('<meta name="system-flow" content="2.0">', '<meta name="system-blueprint" content="2.0">'));
+  const exported = await invoke(process.execPath, [nodeExporter, previous, '--format', 'svg', '--output', output, '--overwrite']);
+  expect(exported.status, exported.stderr).toBe(0);
+  expect(await readFile(output, 'utf8')).toContain('System Flow');
+});
+
 test('V17 legacy fails explicitly for remote and missing sibling resources', async () => {
   for (const [name, content] of [['remote', '<svg viewBox="0 0 10 10"><image href="https://example.com/private.png"/></svg>'], ['local', '<link rel="stylesheet" href="missing.css"><svg viewBox="0 0 10 10"></svg>']] as const) {
     const input = join(outputRoot, `${name}.html`); await writeFile(input, content);
@@ -108,7 +122,7 @@ test('V12 legacy refuses over-limit bitmaps and v2 missing API fails without han
   const input = join(outputRoot, 'huge.html'); await writeFile(input, '<svg viewBox="0 0 9000 20"></svg>');
   const huge = await invoke(process.execPath, [nodeExporter, input, '--format', 'png', '--output', join(outputRoot, 'huge.png'), '--overwrite']);
   expect(huge.status).toBe(2); expect(huge.stderr).toContain('降低 --scale');
-  const broken = join(outputRoot, 'missing-api.html'); await writeFile(broken, '<meta name="system-blueprint" content="2.0"><script id="blueprint-data" type="application/json">{"schemaVersion":"2.0"}</script>');
+  const broken = join(outputRoot, 'missing-api.html'); await writeFile(broken, '<meta name="system-flow" content="2.0"><script id="blueprint-data" type="application/json">{"schemaVersion":"2.0"}</script>');
   const started = Date.now();
   const missing = await invoke(process.execPath, [nodeExporter, broken, '--format', 'svg', '--output', join(outputRoot, 'missing.svg'), '--overwrite']);
   expect(missing.status).toBe(1); expect(missing.stderr).toContain('导出接口'); expect(Date.now() - started).toBeLessThan(15000);
@@ -136,7 +150,7 @@ test('V12 Python applies bitmap limit to CSS-computed SVG dimensions before Cair
 
 test('V15 v2 CLI creates independently readable SVG, PNG and JPEG with matching dimensions', async ({ page }) => {
   const input = join(outputRoot, 'v2-format.html');
-  const generated = await invoke(process.execPath, [resolve('system-blueprint/scripts/generate.mjs'), resolve('tests/fixtures/overview.diagram.json'), '--output', input, '--overwrite']);
+  const generated = await invoke(process.execPath, [resolve('system-flow/scripts/generate.mjs'), resolve('tests/fixtures/overview.diagram.json'), '--output', input, '--overwrite']);
   expect(generated.status, generated.stderr).toBe(0);
   const svgPath = join(outputRoot, 'v2-format.svg');
   const svgResult = await invoke(process.execPath, [nodeExporter, input, '--format', 'svg', '--output', svgPath, '--overwrite']);

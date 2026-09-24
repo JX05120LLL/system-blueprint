@@ -1,14 +1,14 @@
 {
   "schemaVersion": "2.0",
   "id": "system-blueprint-overview",
-  "title": "System Blueprint · v2 生成与交付",
+  "title": "System Flow · v2 生成与交付",
   "description": "从系统材料到可探索、可分享的技术图。内容由 Agent 建模，程序负责布局与交付。",
   "view": { "kind": "overview", "direction": "RIGHT", "theme": "light", "primaryPath": ["input-model", "model-document", "document-view", "view-static"] },
   "groups": [],
   "nodes": [
-    { "id": "input", "kind": "external", "label": "输入材料", "summary": "仓库 / 文档 / 系统描述", "details": "支持代码仓库、设计文档、自然语言与 Mermaid。Agent 核对实际关系与来源，不将示意组件当成已实现服务。", "evidenceStatus": "confirmed", "sources": [{ "path": "system-blueprint/SKILL.md" }] },
-    { "id": "model", "kind": "process", "label": "Agent 按 Skill 建模", "summary": "边界、依赖与关键条件", "details": "Skill 指导 Agent 提取节点、分组、方向与业务条件，区分已证实、假设与规划。规则与模板属于生成工具包，不是在线服务。", "evidenceStatus": "confirmed", "sources": [{ "path": "system-blueprint/SKILL.md" }] },
-    { "id": "document", "kind": "store", "label": "diagram.json", "summary": "可校验、可持续修改", "details": "稳定 ID 保留内容关系，JSON Schema 与语义检查拒绝缺失端点及模糊分支。原始模型不存坐标。", "evidenceStatus": "confirmed", "sources": [{ "path": "system-blueprint/references/diagram-schema.json" }] },
+    { "id": "input", "kind": "external", "label": "输入材料", "summary": "仓库 / 文档 / 系统描述", "details": "支持代码仓库、设计文档、自然语言与 Mermaid。Agent 核对实际关系与来源，不将示意组件当成已实现服务。", "evidenceStatus": "confirmed", "sources": [{ "path": "system-flow/SKILL.md" }] },
+    { "id": "model", "kind": "process", "label": "Agent 按 Skill 建模", "summary": "边界、依赖与关键条件", "details": "Skill 指导 Agent 提取节点、分组、方向与业务条件，区分已证实、假设与规划。规则与模板属于生成工具包，不是在线服务。", "evidenceStatus": "confirmed", "sources": [{ "path": "system-flow/SKILL.md" }] },
+    { "id": "document", "kind": "store", "label": "diagram.json", "summary": "可校验、可持续修改", "details": "稳定 ID 保留内容关系，JSON Schema 与语义检查拒绝缺失端点及模糊分支。原始模型不存坐标。", "evidenceStatus": "confirmed", "sources": [{ "path": "system-flow/references/diagram-schema.json" }] },
     { "id": "view", "kind": "process", "label": "离线 HTML", "summary": "测量 → 布局 → 审核修改", "details": "内嵌运行时在浏览器测量文字后布局。详情板支持审核并修改节点、连线和分组属性，重新校验和布局后可下载修订的图数据与单文件 HTML。仍支持缩放、平移、关系高亮和两层分组折叠，不依赖 CDN。", "evidenceStatus": "confirmed", "sources": [{ "path": "src/viewer/index.ts" }] },
     { "id": "static", "kind": "end", "label": "SVG / PNG / JPEG", "summary": "全展开的完整静态图", "details": "SVG 在浏览器内下载；自动 SVG 与位图由 Node / Playwright 导出。独立导出图不受当前视角、折叠或选择影响。", "evidenceStatus": "confirmed", "sources": [{ "path": "src/export" }] }
   ],

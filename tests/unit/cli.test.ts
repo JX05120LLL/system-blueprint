@@ -6,7 +6,7 @@ import { resolve, join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { checkRasterSize } from '../../src/cli/export-options';
 
-const scripts = resolve('system-blueprint/scripts');
+const scripts = resolve('system-flow/scripts');
 const run = (name: string, args: string[]) => spawnSync(process.execPath, [join(scripts, `${name}.mjs`), ...args], { encoding: 'utf8', timeout: 15000 });
 const doc = { schemaVersion: '2.0', id: 'cli-test', title: '中文安全路径', view: { kind: 'overview', direction: 'RIGHT', theme: 'light' }, nodes: [{ id: 'n', kind: 'process', label: '输入材料' }], edges: [], groups: [] };
 

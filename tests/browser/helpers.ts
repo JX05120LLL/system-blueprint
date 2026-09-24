@@ -37,7 +37,7 @@ export async function openFixture(page: Page, name: string, options: { mutate?: 
     await mkdir(resolve('artifacts'), { recursive: true });
     await writeFile(source, JSON.stringify(document), 'utf8');
   }
-  execFileSync(process.execPath, ['system-blueprint/scripts/generate.mjs', source, '--output', output, '--overwrite'], { encoding: 'utf8' });
+  execFileSync(process.execPath, ['system-flow/scripts/generate.mjs', source, '--output', output, '--overwrite'], { encoding: 'utf8' });
   const network: string[] = [];
   const pageErrors: string[] = [];
   page.on('request', request => { if (/^https?:/i.test(request.url())) network.push(request.url()); });

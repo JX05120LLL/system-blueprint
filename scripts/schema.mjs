@@ -11,7 +11,7 @@ export const schemaOutputs = ['src/model/diagram.generated.ts', 'src/model/valid
 
 /** Generate only under outputRoot, allowing verification without changing checked-in files. */
 export async function generateSchema({ outputRoot = repositoryRoot } = {}) {
-  const schema = JSON.parse(await readFile(join(repositoryRoot, 'system-blueprint/references/diagram-schema.json'), 'utf8'));
+  const schema = JSON.parse(await readFile(join(repositoryRoot, 'system-flow/references/diagram-schema.json'), 'utf8'));
   const types = await compile(schema, 'DiagramDocument', {
     bannerComment: '/* Generated from diagram-schema.json. Do not edit. */',
     additionalProperties: false, ignoreMinAndMaxItems: true,

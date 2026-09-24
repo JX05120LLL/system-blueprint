@@ -5,7 +5,8 @@ export async function inspectHtml(page: Page, html: string) {
   // The policy appears before any untrusted markup. Disabled JS also prevents inline event handlers.
   await page.setContent(`<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' data:; img-src data:; font-src data:; script-src 'none'; base-uri 'none'">${html}`, { waitUntil: 'load' });
   return page.evaluate(() => {
-    const version = document.querySelector('meta[name="system-blueprint"]')?.getAttribute('content');
+    const version = document.querySelector('meta[name="system-flow"]')?.getAttribute('content')
+      ?? document.querySelector('meta[name="system-blueprint"]')?.getAttribute('content');
     const data = document.querySelector('#blueprint-data');
     const resources: string[] = [];
     const allowed = (url: string) => !url.trim() || url.trim().startsWith('#') || /^data:/i.test(url.trim());

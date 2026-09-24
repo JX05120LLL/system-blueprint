@@ -1,4 +1,4 @@
-name: Verify System-Flow
+name: Verify System Flow
 
 on:
   pull_request:
@@ -32,24 +32,24 @@ jobs:
           cache: npm
           cache-dependency-path: |
             package-lock.json
-            system-blueprint/package-lock.json
+            system-flow/package-lock.json
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
       - name: Install locked Node dependencies
         run: |
           npm ci
-          npm ci --prefix system-blueprint
+          npm ci --prefix system-flow
       - name: Install Linux fonts, Cairo and browser libraries
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install --yes libcairo2 fonts-noto-cjk
           python -m pip install cairosvg==2.8.2 pillow==11.3.0
-          node system-blueprint/node_modules/playwright/cli.js install --with-deps chromium
+          node system-flow/node_modules/playwright/cli.js install --with-deps chromium
       - name: Install Windows browser
         if: runner.os == 'Windows'
-        run: node system-blueprint/node_modules/playwright/cli.js install chromium
+        run: node system-flow/node_modules/playwright/cli.js install chromium
       - name: Verify tracked prebuilt files before any regeneration
         run: npm run check:build
       - name: Typecheck and unit tests

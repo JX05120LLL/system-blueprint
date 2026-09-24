@@ -7,8 +7,8 @@ import { execFile, execFileSync } from 'node:child_process';
 import { promisify } from 'node:util';
 const execute = promisify(execFile);
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const temp = await mkdtemp(join(tmpdir(), 'blueprint-package-'));
-const skill = join(temp, '独立 skill'); const cwd = join(temp, '仓库外 工作目录');
+const temp = await mkdtemp(join(tmpdir(), 'system-flow-package-'));
+const skill = join(temp, 'system-flow'); const cwd = join(temp, '仓库外 工作目录');
 const artifacts = join(root, 'artifacts/package');
 const steps = [];
 async function run(label, executable, args, expected = 0) {
@@ -22,7 +22,7 @@ async function run(label, executable, args, expected = 0) {
 let passed = false;
 try {
   await mkdir(cwd); await mkdir(artifacts, { recursive: true });
-  await cp(join(root, 'system-blueprint'), skill, { recursive: true, filter: path => !path.split(/[\\/]/).some(part => part === 'node_modules' || part === '__pycache__') });
+  await cp(join(root, 'system-flow'), skill, { recursive: true, filter: path => !path.split(/[\\/]/).some(part => part === 'node_modules' || part === '__pycache__') });
   const input = join(cwd, '请求 流程.json'); const html = join(cwd, '请求 流程.html');
   const model = { schemaVersion: '2.0', id: 'package-check', title: '独立安装验证', view: { kind: 'flow', direction: 'DOWN', theme: 'light' }, groups: [], nodes: [{ id: 'start', kind: 'start', label: '收到请求' }, { id: 'gate', kind: 'decision', label: '校验通过？' }, { id: 'done', kind: 'end', label: '返回结果' }, { id: 'error', kind: 'end', label: '返回错误' }], edges: [{ id: 'e1', source: 'start', target: 'gate', kind: 'control', directed: true }, { id: 'e2', source: 'gate', target: 'done', kind: 'control', directed: true, label: '通过' }, { id: 'e3', source: 'gate', target: 'error', kind: 'exception', directed: true, label: '不通过' }] };
   await writeFile(input, JSON.stringify(model, null, 2));
@@ -56,7 +56,7 @@ try {
   if (passed) {
     // Only remove the exact directory created above, after checking its resolved containment.
     const actual = await realpath(temp); const base = await realpath(tmpdir()); const child = relative(base, actual);
-    if (!child || child.startsWith('..') || isAbsolute(child) || !basename(actual).startsWith('blueprint-package-')) throw new Error(`拒绝删除未核实的临时路径：${actual}`);
+    if (!child || child.startsWith('..') || isAbsolute(child) || !basename(actual).startsWith('system-flow-package-')) throw new Error(`拒绝删除未核实的临时路径：${actual}`);
     await rm(actual, { recursive: true });
   }
 }

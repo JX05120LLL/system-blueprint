@@ -16,7 +16,7 @@
 
 System Flow 是一个面向**软件架构与运行流程**的本地绘图 Skill。Agent 先核对事实和来源，再把组件、调用、数据流、判断与分组写入 `.diagram.json`；程序负责校验、文字测量、布局、渲染和导出。它适合解释“系统由什么组成、请求如何流转、模块如何协作”，不以项目排期或甘特图为目标。
 
-每张图同时保留可继续修改的源数据、单文件交互 HTML 和按需生成的 SVG / PNG / JPEG。阅读 HTML 不需要账号、服务器或网络；生成所需的运行时已包含在 `system-blueprint/` 子目录中。
+每张图同时保留可继续修改的源数据、单文件交互 HTML 和按需生成的 SVG / PNG / JPEG。阅读 HTML 不需要账号、服务器或网络；生成所需的运行时已包含在 `system-flow/` 子目录中。
 
 ## 效果预览
 
@@ -36,7 +36,13 @@ System Flow 是一个面向**软件架构与运行流程**的本地绘图 Skill�
 
 [图数据](examples/traditional-microservices-order-flow.diagram.json) · [交互 HTML](examples/traditional-microservices-order-flow.html) · [演示 GIF](images/traditional-microservices-order-flow.gif)
 
-这两张图是教学示意，节点及连接中的“假设”需要按真实系统核查，不代表本仓库或任何实际系统的部署状态。[两份演示图](examples/README.md)另有索引。
+### 可编辑示例 · 详情板审核
+
+这段录屏展示节点详情板和“编辑详情”入口。下载[交互 HTML](examples/traditional-microservices-order-flow.html)后，可点击已有节点、连接或分组，修改名称、说明、条件、方向和来源；保存后画布会按修订数据更新，再下载图数据与修订 HTML 留存。录屏本身只展示入口，实际修改请在 HTML 中操作。
+
+[![下单流程的节点详情板与编辑入口](images/1.gif)](images/1.gif)
+
+上述两份图数据是教学示意，节点及连接中的“假设”需要按真实系统核查，不代表本仓库或任何实际系统的部署状态。[两份演示图](examples/README.md)另有索引。
 
 ## 核心能力
 
@@ -55,25 +61,25 @@ System Flow 是一个面向**软件架构与运行流程**的本地绘图 Skill�
 生成环境为 **Node.js 24.x**。克隆仓库后，无需安装根目录依赖即可校验并生成示例：
 
 ```bash
-node system-blueprint/scripts/validate.mjs examples/traditional-microservices.diagram.json
-node system-blueprint/scripts/generate.mjs examples/traditional-microservices.diagram.json --output output/microservices.html
+node system-flow/scripts/validate.mjs examples/traditional-microservices.diagram.json
+node system-flow/scripts/generate.mjs examples/traditional-microservices.diagram.json --output output/microservices.html
 ```
 
 在浏览器中打开 `output/microservices.html`。如果需要自动导出静态图，先在 Skill 子目录安装 Playwright 和 Chromium：
 
 ```bash
-npm ci --prefix system-blueprint
-node system-blueprint/node_modules/playwright/cli.js install chromium
-node system-blueprint/scripts/export.mjs output/microservices.html --format svg --output output/microservices.svg
-node system-blueprint/scripts/export.mjs output/microservices.html --format png --scale 2 --output output/microservices.png
-node system-blueprint/scripts/export.mjs output/microservices.html --format jpg --background "#FFFFFF" --output output/microservices.jpg
+npm ci --prefix system-flow
+node system-flow/node_modules/playwright/cli.js install chromium
+node system-flow/scripts/export.mjs output/microservices.html --format svg --output output/microservices.svg
+node system-flow/scripts/export.mjs output/microservices.html --format png --scale 2 --output output/microservices.png
+node system-flow/scripts/export.mjs output/microservices.html --format jpg --background "#FFFFFF" --output output/microservices.jpg
 ```
 
-生成与导出默认不覆盖已有文件，确需替换时添加 `--overwrite`。浏览器工具栏也可直接下载 SVG；PNG/JPEG 的 CLI 导出需要本地 Chromium。更多字段、条件和分组规则见[建模说明](system-blueprint/references/modeling.md)。
+生成与导出默认不覆盖已有文件，确需替换时添加 `--overwrite`。浏览器工具栏也可直接下载 SVG；PNG/JPEG 的 CLI 导出需要本地 Chromium。更多字段、条件和分组规则见[建模说明](system-flow/references/modeling.md)。
 
 ## 安装 Skill
 
-将完整的 [`system-blueprint/`](system-blueprint/) 目录复制到你的 Codex Skills 目录，并命名为 `system-flow`，例如 `~/.codex/skills/system-flow/`。展示名和触发名是 **System Flow / `system-flow`**；当前仓库的运行时目录仍沿用 `system-blueprint/`，以保持已有脚本路径可用。复制时需保留 `SKILL.md`、`agents/`、`assets/`、`references/`、`scripts/` 与锁文件。生成只需要 Node.js 24；仅在需要 CLI 位图导出时，在复制后的目录中执行 `npm ci` 并安装 Chromium。
+将完整的 [`system-flow/`](system-flow/) 目录复制到编程工具的 Skills 目录，保持目录名为 `system-flow`。Codex 的当前官方个人安装路径是 `~/.agents/skills/system-flow/`；Claude Code、Cursor、GitHub Copilot 和 Gemini CLI 也支持读取 `SKILL.md`，各工具的个人与项目安装位置见[编程工具安装指南](docs/agent-setup.md)。展示名和触发名是 **System Flow / `system-flow`**。复制时需保留 `SKILL.md`、`LICENSE`、`agents/`、`assets/`、`references/`、`scripts/` 与锁文件。生成只需要 Node.js 24；仅在需要 CLI 位图导出时，在复制后的目录中执行 `npm ci` 并安装 Chromium。
 
 可这样向 Agent 提出任务：
 
@@ -84,14 +90,14 @@ node system-blueprint/scripts/export.mjs output/microservices.html --format jpg 
 实际打开检查文字、连线和交互，并标明尚待人工核对的地方。
 ```
 
-完整使用说明与约束见 [SKILL.md](system-blueprint/SKILL.md)。
+完整使用说明与约束见 [SKILL.md](system-flow/SKILL.md)。
 
 ## 实现与目录
 
 `JSON Schema / Ajv` 校验输入，随后依次完成可见图投影、文字测量、`ELK.js` 布局、`SVG / CSS` 渲染和 `d3-zoom` 交互。`esbuild` 将阅读器与布局 Worker 打进单文件 HTML；`Playwright` 用于浏览器验证及 PNG/JPEG 导出。
 
 ```text
-system-blueprint/   可独立复制的 Skill、已构建运行时和导出脚本
+system-flow/   可独立复制的 Skill、已构建运行时和导出脚本
 src/                模型、投影、测量、布局、渲染、阅读器与 CLI 源码
 examples/           两份演示图的 JSON 与离线 HTML
 images/             README 使用的 PNG/GIF 预览
@@ -117,8 +123,8 @@ npm run examples:check
 
 [使用说明](docs/usage.md) · [演示文件索引](examples/README.md)
 
-自动布局无法保证任意复杂图都没有交叉；生成后仍需检查事实、文字、方向和布局。旧 v1 HTML / SVG 可使用兼容入口导出位图，但不能无损转换为可编辑图数据；详细限制见 [SKILL.md](system-blueprint/SKILL.md)。
+自动布局无法保证任意复杂图都没有交叉；生成后仍需检查事实、文字、方向和布局。旧 v1 HTML / SVG 可使用兼容入口导出位图，但不能无损转换为可编辑图数据；详细限制见 [SKILL.md](system-flow/SKILL.md)。
 
 ## 开源许可证
 
-本项目的原创内容采用 [MIT License](LICENSE)。独立复制 `system-blueprint/` Skill 时，请一并保留其中的 [LICENSE](system-blueprint/LICENSE)；所含第三方组件仍遵循各自的许可证，详见[第三方声明](system-blueprint/THIRD_PARTY_NOTICES.md)。
+本项目的原创内容采用 [MIT License](LICENSE)。独立复制 `system-flow/` Skill 时，请一并保留其中的 [LICENSE](system-flow/LICENSE)；所含第三方组件仍遵循各自的许可证，详见[第三方声明](system-flow/THIRD_PARTY_NOTICES.md)。

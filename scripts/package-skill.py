@@ -1,7 +1,7 @@
-"""Build and verify the standalone, reproducible system-blueprint skill archive.
+"""Build and verify the standalone, reproducible system-flow skill archive.
 
 Run after ``npm run build`` so the bundled browser and CLI assets are current.
-Only the contents of ``system-blueprint/`` are distributed; repository source,
+Only the contents of ``system-flow/`` are distributed; repository source,
 examples, local dependencies, and temporary caches are not included.
 """
 
@@ -18,8 +18,8 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 
 ROOT = Path(__file__).resolve().parent.parent
-SKILL = ROOT / "system-blueprint"
-ARCHIVE = ROOT / "artifacts" / "system-blueprint-v2.zip"
+SKILL = ROOT / "system-flow"
+ARCHIVE = ROOT / "artifacts" / "system-flow-v2.zip"
 REPORT = ROOT / "artifacts" / "package" / "archive.json"
 SKIP_DIRS = frozenset({"node_modules", "__pycache__", ".cache", ".pytest_cache", ".mypy_cache", ".ruff_cache"})
 SKIP_FILES = frozenset({".DS_Store", "Thumbs.db"})
@@ -43,9 +43,9 @@ def collect_files(source: Path) -> list[tuple[str, bytes]]:
             if path.is_symlink() or not path.is_file():
                 raise ValueError(f"Refusing non-regular file: {path}")
             relative = path.relative_to(source).as_posix()
-            files.append((f"system-blueprint/{relative}", path.read_bytes()))
+            files.append((f"system-flow/{relative}", path.read_bytes()))
     files.sort(key=lambda item: item[0])
-    required = {"system-blueprint/SKILL.md", "system-blueprint/package.json", "system-blueprint/assets/viewer.js", "system-blueprint/scripts/generate.mjs"}
+    required = {"system-flow/SKILL.md", "system-flow/package.json", "system-flow/assets/viewer.js", "system-flow/scripts/generate.mjs"}
     missing = required.difference(name for name, _ in files)
     if missing:
         raise ValueError(f"Incomplete skill directory; missing: {', '.join(sorted(missing))}")

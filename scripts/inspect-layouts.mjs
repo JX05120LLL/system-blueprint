@@ -13,7 +13,7 @@ try {
   const page = await context.newPage();
   for (const name of names) {
     const output = resolve(`artifacts/layouts/${name}.html`);
-    execFileSync(process.execPath, ['system-blueprint/scripts/generate.mjs', `tests/fixtures/${name}.diagram.json`, '--output', output, '--overwrite']);
+    execFileSync(process.execPath, ['system-flow/scripts/generate.mjs', `tests/fixtures/${name}.diagram.json`, '--output', output, '--overwrite']);
     await page.goto(pathToFileURL(output).href);
     try {
       await page.evaluate(() => window.blueprint.ready);

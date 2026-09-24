@@ -44,21 +44,21 @@ const output = join(repositoryRoot, 'artifacts/build-consistency/report.json');
 let temp;
 try {
   assert.equal(Number(process.versions.node.split('.')[0]), 24, 'Build verification requires the documented Node.js 24 toolchain.');
-  const [root, skill] = await Promise.all([checkPackage(repositoryRoot), checkPackage(join(repositoryRoot, 'system-blueprint'))]);
+  const [root, skill] = await Promise.all([checkPackage(repositoryRoot), checkPackage(join(repositoryRoot, 'system-flow'))]);
   assert.equal(root.pkg.version, skill.pkg.version, 'Repository and skill version mismatch');
   assert.deepEqual(root.pkg.engines, skill.pkg.engines, 'Repository and skill Node engines mismatch');
   const playwright = skill.dependencies.playwright;
   assert.equal(root.dependencies['@playwright/test'], playwright, 'Root test runner and skill Playwright versions must match');
-  for (const [name, environment, directory] of [['root', root, repositoryRoot], ['skill', skill, join(repositoryRoot, 'system-blueprint')]]) {
+  for (const [name, environment, directory] of [['root', root, repositoryRoot], ['skill', skill, join(repositoryRoot, 'system-flow')]]) {
     for (const dependency of ['playwright', 'playwright-core']) {
       assert.equal(environment.lock.packages[`node_modules/${dependency}`]?.version, playwright, `${name}: ${dependency} lock version drift`);
       assert.equal((await json(join(directory, 'node_modules', dependency, 'package.json'))).version, playwright, `${name}: installed ${dependency} version drift`);
     }
   }
-  const schema = await json(join(repositoryRoot, 'system-blueprint/references/diagram-schema.json'));
+  const schema = await json(join(repositoryRoot, 'system-flow/references/diagram-schema.json'));
   assert.equal(schema.properties.schemaVersion.const, root.pkg.version.split('.').slice(0, 2).join('.'), 'Schema major/minor differs from package version');
   report.checks.push('exact package versions, lockfiles, installed direct dependencies, Node 24, matching Playwright and schema versions');
-  temp = await mkdtemp(join(tmpdir(), 'blueprint-build-check-'));
+  temp = await mkdtemp(join(tmpdir(), 'system-flow-build-check-'));
   const files = await buildProject({ outputRoot: temp, logLevel: 'silent' });
   for (const path of files) {
     const expected = await readFile(join(temp, path));
@@ -75,7 +75,7 @@ try {
 finally {
   if (temp) {
     const actual = await realpath(temp); const base = await realpath(tmpdir()); const child = relative(base, actual);
-    if (!child || child.startsWith('..') || isAbsolute(child) || !basename(actual).startsWith('blueprint-build-check-')) throw new Error(`Refusing to remove unverified temporary path: ${actual}`);
+    if (!child || child.startsWith('..') || isAbsolute(child) || !basename(actual).startsWith('system-flow-build-check-')) throw new Error(`Refusing to remove unverified temporary path: ${actual}`);
     await rm(actual, { recursive: true });
   }
   await mkdir(join(repositoryRoot, 'artifacts/build-consistency'), { recursive: true });
