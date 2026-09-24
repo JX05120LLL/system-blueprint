@@ -1,6 +1,45 @@
-import type { LayoutGraph, LayoutNode, TextBlock } from '../layout/types';
-import type { ThemeTokens } from './theme';
+import type { Box, LayoutGraph, LayoutNode, Point, TextBlock } from '../layout/types';
+import { assignSourceEdgeColours, type ThemeTokens } from './theme';
 export const SVG_NS = 'http://www.w3.org/2000/svg';
+export interface RenderOptions { animateFlow?: boolean; overrideReducedMotion?: boolean; }
+const cornerCoordinate = (value: number) => Number(value.toFixed(3));
+const pointCommand = (command: 'M' | 'L', point: Point) => `${command}${point.x} ${point.y}`;
+
+/** Keep ELK's routed endpoints and waypoints while easing bends that have room to turn. */
+export function roundedEdgePath(points: Point[], obstacles: Box[] = []): string {
+  const route = points.filter((point, index) => index === 0 ||
+    Math.hypot(point.x - points[index - 1]!.x, point.y - points[index - 1]!.y) > 1e-6);
+  if (!route.length) return '';
+  const commands = [pointCommand('M', route[0]!)];
+  for (let i = 1; i < route.length - 1; i++) {
+    const before = route[i - 1]!; const bend = route[i]!; const after = route[i + 1]!;
+    const incoming = { x: bend.x - before.x, y: bend.y - before.y };
+    const outgoing = { x: after.x - bend.x, y: after.y - bend.y };
+    const incomingLength = Math.hypot(incoming.x, incoming.y);
+    const outgoingLength = Math.hypot(outgoing.x, outgoing.y);
+    const turnSin = Math.abs(incoming.x * outgoing.y - incoming.y * outgoing.x) / (incomingLength * outgoingLength);
+    const turnCos = (incoming.x * outgoing.x + incoming.y * outgoing.y) / (incomingLength * outgoingLength);
+    const radius = Math.min(10, incomingLength * .45, outgoingLength * .45);
+    if (radius < 3 || turnSin < .1 || turnCos < -.94) {
+      commands.push(pointCommand('L', bend));
+      continue;
+    }
+    const entry = { x: cornerCoordinate(bend.x - incoming.x / incomingLength * radius), y: cornerCoordinate(bend.y - incoming.y / incomingLength * radius) };
+    const exit = { x: cornerCoordinate(bend.x + outgoing.x / outgoingLength * radius), y: cornerCoordinate(bend.y + outgoing.y / outgoingLength * radius) };
+    // The quadratic stays within this box; if it might enter content, retain ELK's original corner.
+    const left = Math.min(entry.x, bend.x, exit.x) - 1.5;
+    const right = Math.max(entry.x, bend.x, exit.x) + 1.5;
+    const top = Math.min(entry.y, bend.y, exit.y) - 1.5;
+    const bottom = Math.max(entry.y, bend.y, exit.y) + 1.5;
+    if (obstacles.some(box => left < box.x + box.width && right > box.x && top < box.y + box.height && bottom > box.y)) {
+      commands.push(pointCommand('L', bend));
+      continue;
+    }
+    commands.push(pointCommand('L', entry), `Q${bend.x} ${bend.y} ${exit.x} ${exit.y}`);
+  }
+  if (route.length > 1) commands.push(pointCommand('L', route[route.length - 1]!));
+  return commands.join(' ');
+}
 export function svgElement<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number> = {}): SVGElementTagNameMap[K] {
   const element = document.createElementNS(SVG_NS, tag);
   for (const [key, value] of Object.entries(attrs)) element.setAttribute(key, String(value));
@@ -14,19 +53,30 @@ function writeText(parent: SVGElement, block: TextBlock, x: number, y: number, f
 }
 function shape(node: LayoutNode, theme: ThemeTokens): SVGElement {
   const { width: w, height: h } = node;
-  const attrs = { fill: theme.surface, stroke: theme.border, 'stroke-width': 1.5, class: 'bp-shape' };
+  const colour = node.isCollapsed ? { fill: theme.surface, stroke: theme.border }
+    : node.kind === 'decision' ? theme.semantic.decision
+    : node.kind === 'store' ? theme.semantic.store
+    : node.kind === 'external' ? theme.semantic.external
+    : node.kind === 'start' || node.kind === 'end' ? theme.semantic.terminal
+    : theme.semantic.process;
+  const attrs = { ...colour, 'stroke-width': 1.5, class: 'bp-shape' };
   if (node.kind === 'decision') return svgElement('polygon', { ...attrs, points: `${w / 2},0 ${w},${h / 2} ${w / 2},${h} 0,${h / 2}` });
   if (node.kind === 'store') return svgElement('path', { ...attrs, d: `M0 12 C0 -4 ${w} -4 ${w} 12 V${h - 12} C${w} ${h + 4} 0 ${h + 4} 0 ${h - 12} Z M0 12 C0 28 ${w} 28 ${w} 12` });
   return svgElement('rect', { ...attrs, width: w, height: h, rx: ['start', 'end'].includes(node.kind) ? h / 2 : 8, 'stroke-dasharray': node.kind === 'external' ? '5 3' : 'none' });
 }
-export function renderGraph(graph: LayoutGraph, theme: ThemeTokens): SVGSVGElement {
+export function renderGraph(graph: LayoutGraph, theme: ThemeTokens, options: RenderOptions = {}): SVGSVGElement {
   const root = svgElement('svg', { xmlns: SVG_NS, width: graph.width, height: graph.height, viewBox: `0 0 ${graph.width} ${graph.height}`, role: 'group', 'aria-label': '技术图', 'data-diagram': 'true' });
   root.style.fontFamily = theme.fontFamily;
   const style = svgElement('style');
-  style.textContent = `.bp-node,.bp-group-toggle,.bp-edge{cursor:pointer}.bp-node:focus{outline:none}.bp-node:focus .bp-shape,.bp-node.bp-selected .bp-shape{stroke:${theme.accent};stroke-width:3}.bp-dim{opacity:.2}.bp-related .bp-shape{stroke:${theme.accent};stroke-width:2.5}.bp-edge.bp-related .bp-edge-line,.bp-edge.bp-selected .bp-edge-line{stroke:${theme.accent};stroke-width:3}.bp-edge:focus .bp-edge-line{stroke:${theme.accent};stroke-width:3}.bp-group-toggle:focus rect{stroke:${theme.accent};stroke-width:2}.bp-group-toggle:hover rect{fill:${theme.group}}`;
+  style.textContent = `.bp-node,.bp-group-toggle,.bp-edge{cursor:pointer}.bp-node:focus{outline:none}.bp-node:focus .bp-shape,.bp-node.bp-selected .bp-shape{stroke:${theme.accent};stroke-width:3}.bp-dim{opacity:.2}.bp-related .bp-shape{stroke:${theme.accent};stroke-width:2.5}.bp-edge.bp-related .bp-edge-line,.bp-edge.bp-selected .bp-edge-line{stroke-width:3}.bp-edge:focus .bp-edge-line{stroke-width:3}.bp-group-toggle:focus rect{stroke:${theme.accent};stroke-width:2}.bp-group-toggle:hover rect{fill:${theme.group}}`
+    + (options.animateFlow ? `.bp-edge-flow{pointer-events:none;animation:bp-flow 1.8s linear infinite}.bp-motion-paused .bp-edge-flow{animation-play-state:paused}@keyframes bp-flow{to{stroke-dashoffset:-21}}${options.overrideReducedMotion ? '' : '@media (prefers-reduced-motion:reduce){.bp-edge-flow{display:none}}'}` : '');
   root.append(style);
   const defs = svgElement('defs');
-  ['normal', 'accent', 'exception'].forEach((name, i) => { const marker = svgElement('marker', { id: `bp-arrow-${name}`, markerWidth: 8, markerHeight: 8, refX: 8, refY: 4, orient: 'auto', markerUnits: 'userSpaceOnUse' }); marker.append(svgElement('path', { d: 'M0 0 L8 4 L0 8 Z', fill: [theme.edge, theme.accent, theme.exception][i] })); defs.append(marker); });
+  const markerColours = {
+    exception: theme.exception, feedback: theme.semantic.feedbackEdge,
+    ...Object.fromEntries(theme.sourceEdgePalette.map((colour, index) => [`source-${index}`, colour])),
+  };
+  for (const [name, colour] of Object.entries(markerColours)) { const marker = svgElement('marker', { id: `bp-arrow-${name}`, markerWidth: 8, markerHeight: 8, refX: 8, refY: 4, orient: 'auto', markerUnits: 'userSpaceOnUse' }); marker.append(svgElement('path', { d: 'M0 0 L8 4 L0 8 Z', fill: colour })); defs.append(marker); }
   root.append(defs);
   root.append(svgElement('rect', { width: graph.width, height: graph.height, fill: theme.background, 'data-background': 'true' }));
   for (const group of graph.groups) {
@@ -38,15 +88,31 @@ export function renderGraph(graph: LayoutGraph, theme: ThemeTokens): SVGSVGEleme
     button.append(svgElement('path', { d: 'M14 20 H26', stroke: theme.muted, 'stroke-width': 1.5 })); el.append(button); root.append(el);
   }
   const labels = svgElement('g', { 'data-edge-labels': 'true' });
+  const nodeById = new Map(graph.nodes.map(node => [node.id, node]));
+  const sourceColours = assignSourceEdgeColours(graph.nodes.flatMap(node => node.originalNodeIds), theme);
+  const routeObstacles: Box[] = [
+    ...graph.nodes.map(({ x, y, width, height }) => ({ x, y, width, height })),
+    ...graph.groups.filter(group => group.titleText.lines.length).map(group => ({
+      x: group.x + 20, y: group.y + 14, width: group.titleText.width, height: group.titleText.height,
+    })),
+    ...graph.edges.flatMap(edge => edge.labelBox ? [{ x: edge.labelBox.x - 5, y: edge.labelBox.y - 2, width: edge.labelBox.width + 10, height: edge.labelBox.height + 4 }] : []),
+  ];
   for (const edge of graph.edges) {
-    const main = (edge as typeof edge & { primary?: boolean }).primary;
-    const colour = edge.kind === 'exception' ? theme.exception : main ? theme.accent : theme.edge;
+    const main = !!(edge as typeof edge & { primary?: boolean }).primary;
+    const sourceNode = nodeById.get(edge.source);
+    const sourceId = sourceNode?.originalNodeIds.includes(edge.source) ? edge.source : sourceNode?.originalNodeIds.slice().sort()[0];
+    const assigned = sourceId ? sourceColours.get(sourceId) : undefined;
+    if (!assigned) throw new Error(`缺少连接 ${edge.id} 的来源节点颜色。`);
+    const colour = edge.kind === 'exception' ? theme.exception : edge.kind === 'feedback' ? theme.semantic.feedbackEdge : assigned.colour;
+    const marker = edge.kind === 'exception' || edge.kind === 'feedback' ? edge.kind : assigned.markerKey;
     const dash = edge.kind === 'feedback' ? '6 4' : edge.kind === 'dependency' ? '3 4' : 'none';
-    const el = svgElement('g', { class: 'bp-edge', 'data-edge-id': edge.id, tabindex: 0, role: 'button', 'aria-label': `${edge.source} ${edge.directed ? '到' : '关联'} ${edge.target}${edge.label ? `：${edge.label}` : ''}` });
+    const kindName = { control: '流程', data: '数据', dependency: '依赖', exception: '异常', feedback: '反馈' }[edge.kind];
+    const el = svgElement('g', { class: 'bp-edge', 'data-edge-id': edge.id, 'data-edge-kind': edge.kind, tabindex: 0, role: 'button', 'aria-label': `${kindName}：${edge.source} ${edge.directed ? '到' : '关联'} ${edge.target}${edge.label ? `：${edge.label}` : ''}` });
     for (const points of edge.sections) {
-      const d = points.map((p, i) => `${i ? 'L' : 'M'}${p.x} ${p.y}`).join(' ');
+      const d = roundedEdgePath(points, routeObstacles);
       el.append(svgElement('path', { d, fill: 'none', stroke: 'transparent', 'stroke-width': 16, 'data-edge-hit': 'true' }));
-      el.append(svgElement('path', { d, fill: 'none', stroke: colour, 'stroke-width': main ? 2 : 1.5, 'stroke-dasharray': dash, 'stroke-linejoin': 'round', 'marker-end': edge.directed ? `url(#bp-arrow-${edge.kind === 'exception' ? 'exception' : main ? 'accent' : 'normal'})` : '', class: 'bp-edge-line' }));
+      el.append(svgElement('path', { d, fill: 'none', stroke: colour, 'stroke-width': main ? 2.2 : 1.5, 'stroke-dasharray': dash, 'stroke-linejoin': 'round', 'marker-end': edge.directed ? `url(#bp-arrow-${marker})` : '', class: 'bp-edge-line' }));
+      if (options.animateFlow && main && edge.directed) el.append(svgElement('path', { d, fill: 'none', stroke: theme.name === 'light' ? '#FFFFFF' : '#111827', 'stroke-width': 2, 'stroke-dasharray': '5 16', 'stroke-linecap': 'round', class: 'bp-edge-flow', 'aria-hidden': 'true' }));
     }
     root.append(el);
     if (edge.labelBox && edge.labelText.lines.length) {
@@ -57,7 +123,7 @@ export function renderGraph(graph: LayoutGraph, theme: ThemeTokens): SVGSVGEleme
     }
   }
   for (const node of graph.nodes) {
-    const el = svgElement('g', { class: 'bp-node', 'data-node-id': node.id, 'data-original-node-ids': JSON.stringify(node.originalNodeIds), tabindex: 0, role: 'button', 'aria-label': node.label, transform: `translate(${node.x} ${node.y})` });
+    const el = svgElement('g', { class: 'bp-node', 'data-node-id': node.id, 'data-node-kind': node.kind, 'data-original-node-ids': JSON.stringify(node.originalNodeIds), tabindex: 0, role: 'button', 'aria-label': node.label, transform: `translate(${node.x} ${node.y})` });
     if (node.isCollapsed) { el.setAttribute('data-group-toggle-node', node.originalGroupId!); el.setAttribute('aria-expanded', 'false'); }
     el.append(shape(node, theme));
     const centered = ['start', 'end', 'decision'].includes(node.kind);

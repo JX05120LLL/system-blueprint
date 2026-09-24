@@ -13,3 +13,4 @@ artifacts/browser-*.html
 artifacts/layouts/*.html
 artifacts/example-build/
 artifacts/performance/*.html
+.playwright-cli/

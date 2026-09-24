@@ -3,3 +3,97 @@
 @media(max-width:640px){header{padding:16px;align-items:flex-start;flex-direction:column;gap:12px}h1{font-size:20px}.eyebrow{font-size:9px}#description{font-size:12px}.actions{gap:8px}footer{padding:8px 10px;flex-direction:column;gap:4px;align-items:flex-start}#status{font-size:11px;text-align:left}.view-controls{gap:2px;width:100%;justify-content:space-between}.separator{margin:0 2px}.view-controls button{padding:8px}#details{left:8px;right:8px;top:auto;bottom:8px;max-height:55%;width:auto;padding:16px}#zoom-level{width:42px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 .legend{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:11px}.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:22px;border-top:1.5px solid currentColor}.legend .feedback{border-top-style:dashed}.legend .dependency{border-top-style:dotted}.legend .exception{color:#b91c1c}body[data-theme=dark] .legend .exception{color:#ffa3a3}
+
+/* The inspector participates in layout so selecting an item never covers the diagram. */
+.actions { flex-wrap: wrap; justify-content: flex-end; min-width: 0; max-width: min(55vw, 880px); }
+.actions button { white-space: nowrap; }
+footer { flex-wrap: wrap; }
+.view-controls { flex-wrap: wrap; min-width: 0; }
+.view-controls button { white-space: nowrap; }
+#workspace { display: flex; min-width: 0; }
+#canvas { flex: 1 1 0%; width: 0; min-width: 0; }
+#details {
+  position: relative;
+  inset: auto;
+  flex: 0 0 clamp(320px, 28vw, 420px);
+  width: clamp(320px, 28vw, 420px);
+  min-width: 0;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 22px 24px 28px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  border-radius: 0;
+}
+#details[hidden] { display: none; }
+#details:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+#details .close { margin-left: 8px; }
+
+/* Editable fields retain readable text and a visible save area while scrolling. */
+body[data-theme=dark] { --field: #172233; }
+#details form { display: grid; gap: 15px; margin-top: 16px; }
+#details .editor-field { display: grid; gap: 6px; min-width: 0; font-size: 12px; font-weight: 600; color: var(--muted); }
+#details .editor-field span { line-height: 1.5; }
+#details input:not([type=checkbox]), #details select, #details textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px 10px;
+  background: var(--field, var(--surface));
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+#details textarea { min-height: 82px; resize: vertical; }
+#details input:focus-visible, #details select:focus-visible, #details textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+#details .editor-checkbox { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; line-height: 1.5; }
+#details .editor-checkbox input { margin: 3px 0 0; accent-color: var(--accent); }
+#details .field-error { margin: 0; color: #b91c1c; font-size: 12px; line-height: 1.5; }
+body[data-theme=dark] #details .field-error { color: #ffaaa5; }
+#details .editor-status { margin: 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
+#details .form-actions {
+  position: sticky;
+  bottom: -28px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px -24px -28px;
+  padding: 12px 24px 16px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+#details .form-actions button[type=submit] { color: #fff; border-color: #1d4ed8; background: #1d4ed8; }
+body[data-theme=dark] #details .form-actions button[type=submit] { color: #111827; border-color: #83aeff; background: #83aeff; }
+
+@media (max-width: 920px) {
+  header { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .actions { justify-content: flex-start; max-width: 100%; }
+  #workspace { flex-direction: column; }
+  #canvas { flex: 1 1 0%; width: 100%; height: 0; min-height: 80px; }
+  #details {
+    flex: 0 1 auto;
+    width: 100%;
+    height: auto;
+    max-height: 48%;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+@media (max-width: 640px) {
+  .actions { gap: 6px; }
+  .actions button { min-height: 36px; padding: 6px 9px; font-size: 12px; }
+  .view-controls { justify-content: flex-start; gap: 2px 4px; }
+  .view-controls button { min-height: 36px; padding: 6px 9px; font-size: 12px; }
+  #details { padding: 16px 16px 22px; }
+  #details .form-actions { bottom: -22px; margin: 8px -16px -22px; padding: 10px 16px 12px; }
+}

@@ -10,7 +10,7 @@
         "edges": 4,
         "groups": 0
       },
-      "htmlBytes": 1753473,
+      "htmlBytes": 1775171,
       "geometry": [
         {
           "code": "LAYOUT_ELONGATED",
@@ -24,29 +24,29 @@
       "outputs": {
         "svg": {
           "width": 1632,
-          "height": 283,
+          "height": 321,
           "nodes": 5,
           "edges": 4,
           "titles": [
             "输入材料仓库 / 文档 / 系统描述↗",
             "Agent 按 Skill 建模边界、依赖与关键条件",
             "diagram.json可校验、可持续修改",
-            "离线 HTML测量 → 布局 → 交互阅读",
+            "离线 HTML测量 → 布局 → 审核修改",
             "SVG / PNG / JPEG全展开的完整静态图"
           ],
-          "bytes": 8065
+          "bytes": 11617
         },
         "png": {
           "width": 3264,
-          "height": 566,
-          "coloredPixels": 744,
-          "bytes": 111950
+          "height": 642,
+          "coloredPixels": 1366,
+          "bytes": 134702
         },
         "jpg": {
           "width": 3264,
-          "height": 566,
-          "coloredPixels": 752,
-          "bytes": 147027
+          "height": 642,
+          "coloredPixels": 1408,
+          "bytes": 177479
         }
       }
     },
@@ -57,13 +57,13 @@
         "edges": 10,
         "groups": 4
       },
-      "htmlBytes": 1756443,
+      "htmlBytes": 1778028,
       "geometry": [],
       "canvasRatio": 0.7539265950520834,
       "outputs": {
         "svg": {
-          "width": 647,
-          "height": 2264,
+          "width": 659,
+          "height": 2343,
           "nodes": 9,
           "edges": 10,
           "titles": [
@@ -77,19 +77,19 @@
             "需要调整？规划",
             "完成本次交付"
           ],
-          "bytes": 15389
+          "bytes": 21705
         },
         "png": {
-          "width": 1294,
-          "height": 4528,
-          "coloredPixels": 9589,
-          "bytes": 261175
+          "width": 1318,
+          "height": 4686,
+          "coloredPixels": 12136,
+          "bytes": 314762
         },
         "jpg": {
-          "width": 1294,
-          "height": 4528,
-          "coloredPixels": 10040,
-          "bytes": 386425
+          "width": 1318,
+          "height": 4686,
+          "coloredPixels": 12343,
+          "bytes": 455075
         }
       }
     },
@@ -100,13 +100,13 @@
         "edges": 9,
         "groups": 3
       },
-      "htmlBytes": 1755528,
+      "htmlBytes": 1777113,
       "geometry": [],
       "canvasRatio": 0.7539265950520834,
       "outputs": {
         "svg": {
-          "width": 565,
-          "height": 2009,
+          "width": 605,
+          "height": 2040,
           "nodes": 8,
           "edges": 9,
           "titles": [
@@ -119,19 +119,19 @@
             "组装相关上下文当前材料 + 必要记忆",
             "交给后续任务"
           ],
-          "bytes": 13447
+          "bytes": 18679
         },
         "png": {
-          "width": 1130,
-          "height": 4018,
-          "coloredPixels": 10720,
-          "bytes": 217354
+          "width": 1210,
+          "height": 4080,
+          "coloredPixels": 12804,
+          "bytes": 266965
         },
         "jpg": {
-          "width": 1130,
-          "height": 4018,
-          "coloredPixels": 10955,
-          "bytes": 292410
+          "width": 1210,
+          "height": 4080,
+          "coloredPixels": 13126,
+          "bytes": 355991
         }
       }
     },
@@ -142,13 +142,13 @@
         "edges": 10,
         "groups": 3
       },
-      "htmlBytes": 1756644,
+      "htmlBytes": 1778229,
       "geometry": [],
       "canvasRatio": 0.7539265950520834,
       "outputs": {
         "svg": {
-          "width": 2104,
-          "height": 1237,
+          "width": 2101,
+          "height": 1253,
           "nodes": 11,
           "edges": 10,
           "titles": [
@@ -164,19 +164,19 @@
             "Search外部搜索↗",
             "Messaging / TTS消息与语音↗"
           ],
-          "bytes": 17524
+          "bytes": 22373
         },
         "png": {
-          "width": 4208,
-          "height": 2474,
-          "coloredPixels": 1046,
-          "bytes": 244165
+          "width": 4202,
+          "height": 2506,
+          "coloredPixels": 1662,
+          "bytes": 314880
         },
         "jpg": {
-          "width": 4208,
-          "height": 2474,
-          "coloredPixels": 1098,
-          "bytes": 405866
+          "width": 4202,
+          "height": 2506,
+          "coloredPixels": 1806,
+          "bytes": 476823
         }
       }
     },
@@ -187,13 +187,13 @@
         "edges": 2,
         "groups": 0
       },
-      "htmlBytes": 1752086,
+      "htmlBytes": 1773671,
       "geometry": [],
       "canvasRatio": 0.7539265950520834,
       "outputs": {
         "svg": {
           "width": 480,
-          "height": 692,
+          "height": 708,
           "nodes": 3,
           "edges": 2,
           "titles": [
@@ -201,19 +201,19 @@
             "API应用处理",
             "数据库业务记录"
           ],
-          "bytes": 5494
+          "bytes": 8935
         },
         "png": {
           "width": 960,
-          "height": 1384,
-          "coloredPixels": 4171,
-          "bytes": 68838
+          "height": 1416,
+          "coloredPixels": 5617,
+          "bytes": 84407
         },
         "jpg": {
           "width": 960,
-          "height": 1384,
-          "coloredPixels": 4218,
-          "bytes": 89708
+          "height": 1416,
+          "coloredPixels": 5644,
+          "bytes": 110923
         }
       }
     },
@@ -224,13 +224,13 @@
         "edges": 4,
         "groups": 3
       },
-      "htmlBytes": 1753094,
+      "htmlBytes": 1774679,
       "geometry": [],
       "canvasRatio": 0.7539265950520834,
       "outputs": {
         "svg": {
           "width": 557,
-          "height": 1365,
+          "height": 1319,
           "nodes": 4,
           "edges": 4,
           "titles": [
@@ -239,26 +239,78 @@
             "数据库业务记录",
             "LLM 扩展新增模型能力规划↗"
           ],
-          "bytes": 9138
+          "bytes": 13465
         },
         "png": {
           "width": 1114,
-          "height": 2730,
-          "coloredPixels": 6190,
-          "bytes": 124830
+          "height": 2638,
+          "coloredPixels": 8223,
+          "bytes": 150285
         },
         "jpg": {
           "width": 1114,
-          "height": 2730,
-          "coloredPixels": 6399,
-          "bytes": 196563
+          "height": 2638,
+          "coloredPixels": 8347,
+          "bytes": 225651
+        }
+      }
+    },
+    {
+      "name": "traditional-microservices",
+      "model": {
+        "nodes": 18,
+        "edges": 21,
+        "groups": 5
+      },
+      "htmlBytes": 1782153,
+      "geometry": [],
+      "canvasRatio": 0.7268473307291666,
+      "outputs": {
+        "svg": {
+          "width": 1610,
+          "height": 3997,
+          "nodes": 18,
+          "edges": 21,
+          "titles": [
+            "用户发起下单Web / App 请求假设",
+            "CDN / WAF边缘接入与防护假设",
+            "API 网关鉴权 · 限流 · 路由假设",
+            "认证服务令牌校验假设",
+            "订单服务创建待支付订单假设",
+            "库存服务预留或释放库存假设",
+            "库存预留成功？订单服务接收结果假设",
+            "支付服务发起收单并记录流水假设",
+            "支付成功？假设",
+            "确认订单更新状态并发布事件假设",
+            "失败补偿取消订单 · 按需释放预留假设",
+            "返回订单结果成功 / 失败状态假设",
+            "第三方支付外部收单渠道假设↗",
+            "事件总线订单确认事件假设",
+            "通知服务消费事件并发送消息假设",
+            "订单库订单服务自有数据假设",
+            "库存库库存服务自有数据假设",
+            "支付库支付服务自有流水假设"
+          ],
+          "bytes": 46713
+        },
+        "png": {
+          "width": 3220,
+          "height": 7994,
+          "coloredPixels": 7274,
+          "bytes": 771454
+        },
+        "jpg": {
+          "width": 3220,
+          "height": 7994,
+          "coloredPixels": 7513,
+          "bytes": 1180469
         }
       }
     }
   ],
   "comparison": {
     "width": 1133,
-    "height": 1461,
+    "height": 1415,
     "uniqueIds": true,
     "missingRefs": [],
     "sides": [
@@ -267,7 +319,7 @@
         "x": 32,
         "y": 64,
         "width": 480,
-        "height": 692,
+        "height": 708,
         "transform": null
       },
       {
@@ -275,7 +327,7 @@
         "x": 544,
         "y": 64,
         "width": 557,
-        "height": 1365,
+        "height": 1319,
         "transform": null
       }
     ]

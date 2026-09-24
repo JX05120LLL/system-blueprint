@@ -1,6 +1,6 @@
 # 示例产物索引
 
-五类共六份独立模型。下载 HTML 后可直接离线打开；GitHub README 内的 SVG 是静态图。PNG/JPEG 使用默认 scale=2，完整展开，不受阅读器视角影响。
+基础五类共六份独立模型，另附一份传统微服务架构演示。下载 HTML 后可直接离线打开；GitHub README 内的 SVG 是静态图。PNG/JPEG 使用默认 scale=2，完整展开，不受阅读器视角影响。
 
 | 示例 | 可修改数据 | 交互阅读 | 静态图 |
 | --- | --- | --- | --- |
@@ -10,6 +10,7 @@
 | deployment-topology | [JSON](deployment-topology.diagram.json) | [离线 HTML](deployment-topology.html) | [SVG](../images/system-blueprint-deployment-topology.svg) · [PNG](../images/system-blueprint-deployment-topology.png) · [JPEG](../images/system-blueprint-deployment-topology.jpg) |
 | before | [JSON](before.diagram.json) | [离线 HTML](before.html) | [SVG](../images/system-blueprint-before.svg) · [PNG](../images/system-blueprint-before.png) · [JPEG](../images/system-blueprint-before.jpg) |
 | after | [JSON](after.diagram.json) | [离线 HTML](after.html) | [SVG](../images/system-blueprint-after.svg) · [PNG](../images/system-blueprint-after.png) · [JPEG](../images/system-blueprint-after.jpg) |
+| traditional-microservices | [JSON](traditional-microservices.diagram.json) | [离线 HTML](traditional-microservices.html) | [SVG](../images/system-blueprint-traditional-microservices.svg) · [PNG](../images/system-blueprint-traditional-microservices.png) · [JPEG](../images/system-blueprint-traditional-microservices.jpg) |
 
 Before / After 同尺度合成：[SVG](../images/system-blueprint-before-after.svg) · [PNG](../images/system-blueprint-before-after.png) · [JPEG](../images/system-blueprint-before-after.jpg)。
 

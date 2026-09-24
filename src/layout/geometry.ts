@@ -4,11 +4,15 @@ import type { Box, LayoutGraph, LayoutNode, Point } from './types.ts';
 const EPSILON = .01;
 const clamp = (value: number, minimum: number, maximum: number) => Math.max(minimum, Math.min(maximum, value));
 
-/** Move a rectangular ELK port onto the rendered outline along the final orthogonal segment. */
+/** Move an ELK port onto the rendered outline, preserving its assigned side even for diagonal routes. */
 export function shapeBoundaryPoint(node: LayoutNode, port: Point, adjacent: Point): Point {
   const w = node.width; const h = node.height;
   const x = clamp(port.x - node.x, 0, w); const y = clamp(port.y - node.y, 0, h);
-  const horizontal = Math.abs(port.y - adjacent.y) <= EPSILON;
+  const xSideDistance = Math.min(Math.abs(port.x - node.x), Math.abs(port.x - node.x - w));
+  const ySideDistance = Math.min(Math.abs(port.y - node.y), Math.abs(port.y - node.y - h));
+  const horizontal = xSideDistance + EPSILON < ySideDistance ? true
+    : ySideDistance + EPSILON < xSideDistance ? false
+      : Math.abs(port.x - adjacent.x) >= Math.abs(port.y - adjacent.y);
   const positiveSide = horizontal ? port.x > node.x + w / 2 : port.y > node.y + h / 2;
   if (node.kind === 'decision') {
     if (horizontal) {

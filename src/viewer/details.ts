@@ -3,7 +3,7 @@ import type { GraphIndex } from '../model/graph-index';
 import { isFlowEdge } from '../model/graph-index';
 export interface Selection { kind: 'node' | 'group' | 'edge'; id: string; originalEdgeIds?: string[]; }
 const el = <K extends keyof HTMLElementTagNameMap>(tag: K, text?: string) => { const element = document.createElement(tag); if (text !== undefined) element.textContent = text; return element; };
-export function showDetails(panel: HTMLElement, doc: DiagramDocument, index: GraphIndex, selection: Selection, actions: { close: () => void; highlight: (direction: HighlightDirection) => void; toggle: (id: string) => void; collapsed: ReadonlySet<string> }) {
+export function showDetails(panel: HTMLElement, doc: DiagramDocument, index: GraphIndex, selection: Selection, actions: { close: () => void; highlight: (direction: HighlightDirection) => void; toggle: (id: string) => void; edit: (target: Selection) => void; collapsed: ReadonlySet<string> }) {
   panel.replaceChildren(); panel.hidden = false;
   const close = el('button', '关闭 ×'); close.className = 'close'; close.setAttribute('aria-label', '关闭详情'); close.onclick = actions.close; panel.append(close);
   const relationText = (edge: DiagramEdge) => `${index.nodes.get(edge.source)?.label ?? edge.source} ${edge.directed ? '→' : '↔'} ${index.nodes.get(edge.target)?.label ?? edge.target} · ${edge.kind}${edge.label ? ` · ${edge.label}` : ''}`;
@@ -15,7 +15,7 @@ export function showDetails(panel: HTMLElement, doc: DiagramDocument, index: Gra
   if (selection.kind === 'edge') {
     panel.append(el('h2', '连接详情'));
     const edges = (selection.originalEdgeIds ?? [selection.id]).map(id => index.edges.get(id)).filter((x): x is DiagramEdge => !!x);
-    for (const edge of edges) { panel.append(el('h3', edge.id), el('p', relationText(edge))); if (edge.details) panel.append(el('p', edge.details)); evidence(edge); }
+    for (const edge of edges) { panel.append(el('h3', edge.id), el('p', relationText(edge))); if (edge.details) panel.append(el('p', edge.details)); const edit = el('button', '编辑详情'); edit.setAttribute('aria-label', edges.length > 1 ? `编辑 ${edge.id} 详情` : '编辑详情'); edit.onclick = () => actions.edit({ kind: 'edge', id: edge.id }); panel.append(edit); evidence(edge); }
     return;
   }
   const object = selection.kind === 'group' ? index.groups.get(selection.id) : index.nodes.get(selection.id);
@@ -24,6 +24,7 @@ export function showDetails(panel: HTMLElement, doc: DiagramDocument, index: Gra
   if ('summary' in object && object.summary) panel.append(el('p', object.summary));
   if (object.details) panel.append(el('p', object.details));
   const controls = el('div'); controls.className = 'detail-actions';
+  const edit = el('button', '编辑详情'); edit.onclick = () => actions.edit(selection); controls.append(edit);
   for (const [direction, label] of [['upstream', '上游'], ['downstream', '下游']] as const) { const button = el('button', label); button.dataset.highlight = direction; button.onclick = () => actions.highlight(direction); controls.append(button); }
   if (selection.kind === 'group') { const button = el('button', actions.collapsed.has(selection.id) ? '展开分组' : '折叠分组'); button.onclick = () => actions.toggle(selection.id); controls.append(button); }
   panel.append(controls);

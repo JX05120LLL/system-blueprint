@@ -2,11 +2,11 @@
   "status": "passed",
   "node": "v24.14.0",
   "platform": "win32",
-  "temp": "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD",
-  "copiedSkill": "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill",
-  "cwd": "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录",
+  "temp": "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp",
+  "copiedSkill": "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill",
+  "cwd": "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录",
   "playwright": "1.58.2",
-  "htmlBytes": 1751274,
+  "htmlBytes": 1772859,
   "repositoryDependenciesUsed": false,
   "browser": "installed Chromium cache; shared OS browser cache is permitted",
   "steps": [
@@ -14,46 +14,46 @@
       "label": "validate before npm install",
       "executable": "D:\\Node-JS\\node.exe",
       "args": [
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\\scripts\\validate.mjs",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.json"
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\\scripts\\validate.mjs",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.json"
       ],
       "expected": 0,
       "status": 0,
       "stdout": "{\n  \"valid\": true,\n  \"id\": \"package-check\",\n  \"diagnostics\": []\n}\n",
       "stderr": "",
-      "milliseconds": 116
+      "milliseconds": 123
     },
     {
       "label": "generate before npm install",
       "executable": "D:\\Node-JS\\node.exe",
       "args": [
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\\scripts\\generate.mjs",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.json",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\\scripts\\generate.mjs",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.json",
         "--output",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.html"
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.html"
       ],
       "expected": 0,
       "status": 0,
-      "stdout": "{\"output\":\"C:\\\\Users\\\\20526\\\\AppData\\\\Local\\\\Temp\\\\blueprint-package-xC8KgD\\\\仓库外 工作目录\\\\请求 流程.html\",\"bytes\":1751274,\"diagnostics\":[],\"status\":\"assembled; browser validation required\"}\n",
+      "stdout": "{\"output\":\"C:\\\\Users\\\\20526\\\\AppData\\\\Local\\\\Temp\\\\blueprint-package-l9FOtp\\\\仓库外 工作目录\\\\请求 流程.html\",\"bytes\":1772859,\"diagnostics\":[],\"status\":\"assembled; browser validation required\"}\n",
       "stderr": "",
-      "milliseconds": 6152
+      "milliseconds": 6093
     },
     {
       "label": "export refuses missing local Playwright",
       "executable": "D:\\Node-JS\\node.exe",
       "args": [
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\\scripts\\export.mjs",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.html",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\\scripts\\export.mjs",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.html",
         "--format",
         "svg",
         "--output",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\before-install.svg"
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\before-install.svg"
       ],
       "expected": 1,
       "status": 1,
       "stdout": "",
-      "stderr": "缺少 skill 内的 Playwright，不能借用仓库根目录依赖。请执行 npm ci --prefix \"C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\"，再执行 node \"C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\\node_modules\\playwright\\cli.js\" install chromium。\nENOENT: no such file or directory, realpath 'C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\\node_modules\\playwright'\n",
-      "milliseconds": 7084
+      "stderr": "缺少 skill 内的 Playwright，不能借用仓库根目录依赖。请执行 npm ci --prefix \"C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\"，再执行 node \"C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\\node_modules\\playwright\\cli.js\" install chromium。\nENOENT: no such file or directory, realpath 'C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\\node_modules\\playwright'\n",
+      "milliseconds": 6644
     },
     {
       "label": "npm ci using copied skill lockfile",
@@ -62,7 +62,7 @@
         "C:\\Users\\20526\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js",
         "ci",
         "--prefix",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill",
         "--no-audit",
         "--no-fund"
       ],
@@ -70,62 +70,62 @@
       "status": 0,
       "stdout": "\nadded 2 packages in 1s\n",
       "stderr": "",
-      "milliseconds": 1350
+      "milliseconds": 1479
     },
     {
       "label": "export svg from outside repository",
       "executable": "D:\\Node-JS\\node.exe",
       "args": [
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\\scripts\\export.mjs",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.html",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\\scripts\\export.mjs",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.html",
         "--format",
         "svg",
         "--output",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.svg"
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.svg"
       ],
       "expected": 0,
       "status": 0,
-      "stdout": "{\"output\":\"C:\\\\Users\\\\20526\\\\AppData\\\\Local\\\\Temp\\\\blueprint-package-xC8KgD\\\\仓库外 工作目录\\\\请求 流程.svg\",\"format\":\"svg\",\"bytes\":6097,\"mode\":\"v2\"}\n",
+      "stdout": "{\"output\":\"C:\\\\Users\\\\20526\\\\AppData\\\\Local\\\\Temp\\\\blueprint-package-l9FOtp\\\\仓库外 工作目录\\\\请求 流程.svg\",\"format\":\"svg\",\"bytes\":9726,\"mode\":\"v2\"}\n",
       "stderr": "",
-      "milliseconds": 13541
+      "milliseconds": 9933
     },
     {
       "label": "export png from outside repository",
       "executable": "D:\\Node-JS\\node.exe",
       "args": [
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\\scripts\\export.mjs",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.html",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\\scripts\\export.mjs",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.html",
         "--format",
         "png",
         "--output",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.png",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.png",
         "--scale",
         "1"
       ],
       "expected": 0,
       "status": 0,
-      "stdout": "{\"output\":\"C:\\\\Users\\\\20526\\\\AppData\\\\Local\\\\Temp\\\\blueprint-package-xC8KgD\\\\仓库外 工作目录\\\\请求 流程.png\",\"format\":\"png\",\"bytes\":25537,\"width\":544,\"height\":684,\"pixelWidth\":544,\"pixelHeight\":684,\"scale\":1,\"mode\":\"v2\"}\n",
+      "stdout": "{\"output\":\"C:\\\\Users\\\\20526\\\\AppData\\\\Local\\\\Temp\\\\blueprint-package-l9FOtp\\\\仓库外 工作目录\\\\请求 流程.png\",\"format\":\"png\",\"bytes\":34522,\"width\":544,\"height\":708,\"pixelWidth\":544,\"pixelHeight\":708,\"scale\":1,\"mode\":\"v2\"}\n",
       "stderr": "",
-      "milliseconds": 1462
+      "milliseconds": 1323
     },
     {
       "label": "export jpg from outside repository",
       "executable": "D:\\Node-JS\\node.exe",
       "args": [
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\独立 skill\\scripts\\export.mjs",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.html",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\独立 skill\\scripts\\export.mjs",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.html",
         "--format",
         "jpg",
         "--output",
-        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-xC8KgD\\仓库外 工作目录\\请求 流程.jpg",
+        "C:\\Users\\20526\\AppData\\Local\\Temp\\blueprint-package-l9FOtp\\仓库外 工作目录\\请求 流程.jpg",
         "--scale",
         "1"
       ],
       "expected": 0,
       "status": 0,
-      "stdout": "{\"output\":\"C:\\\\Users\\\\20526\\\\AppData\\\\Local\\\\Temp\\\\blueprint-package-xC8KgD\\\\仓库外 工作目录\\\\请求 流程.jpg\",\"format\":\"jpg\",\"bytes\":29537,\"width\":544,\"height\":684,\"pixelWidth\":544,\"pixelHeight\":684,\"scale\":1,\"mode\":\"v2\"}\n",
+      "stdout": "{\"output\":\"C:\\\\Users\\\\20526\\\\AppData\\\\Local\\\\Temp\\\\blueprint-package-l9FOtp\\\\仓库外 工作目录\\\\请求 流程.jpg\",\"format\":\"jpg\",\"bytes\":43119,\"width\":544,\"height\":708,\"pixelWidth\":544,\"pixelHeight\":708,\"scale\":1,\"mode\":\"v2\"}\n",
       "stderr": "",
-      "milliseconds": 1496
+      "milliseconds": 1343
     }
   ]
 }

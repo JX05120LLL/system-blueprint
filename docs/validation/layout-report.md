@@ -1,5 +1,7 @@
 # M2 ELK 布局与几何验证记录
 
+本页记录 2026-09-23 的 M2 正交布局快照。2026-09-24 的当前实现优先多段斜线路由，按碰撞诊断回退正交，并修正斜线端口贴边；实际产物与复验见[微服务连线报告](routing-colour-enhancement.md)。下文原始测试计数和当时未验证项仅作阶段记录。
+
 日期：2026-09-23。实现边界：`src/layout/elk.ts`、`src/layout/geometry.ts`；测试：`tests/unit/layout.test.ts`、`tests/unit/layout-geometry.test.ts`。测量、渲染、阅读器、构建与示例由主实现集成。
 
 ## 实现

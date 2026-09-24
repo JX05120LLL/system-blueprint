@@ -2,17 +2,28 @@ import { engine } from './engine';
 import type { ElkExtendedEdge, ElkNode, LayoutOptions } from 'elkjs/lib/elk-api';
 import type { DiagramView } from '../model/types.ts';
 import type { LayoutEdge, LayoutGraph, LayoutGroup, LayoutNode, MeasuredGraph, Point } from './types.ts';
-import { shapeBoundaryPoint } from './geometry.ts';
+import { checkGeometry, shapeBoundaryPoint } from './geometry.ts';
 
 // Browser build swaps only the engine for an inline Blob Worker; tests use identical ELK in Node.
 let layoutQueue: Promise<unknown> = Promise.resolve();
 const ROOT_ID = 'root';
 const FRAME = 32;
 
-/** Adapt measured compound data to ELK, then convert every result to canvas coordinates. */
+/** Prefer diagonal routes, but retry dense graphs when a straight ELK segment crosses content. */
 export async function layoutGraph(graph: MeasuredGraph, view: DiagramView): Promise<LayoutGraph> {
+  const polyline = await layoutGraphWithRouting(graph, view, 'POLYLINE');
+  const collisions = (result: LayoutGraph) => checkGeometry(result).filter(diagnostic =>
+    diagnostic.severity === 'error' && (diagnostic.code === 'EDGE_NODE_INTERSECTION' || diagnostic.code === 'EDGE_GROUP_TITLE_INTERSECTION')).length;
+  const initialCollisions = collisions(polyline);
+  if (!initialCollisions) return polyline;
+  const orthogonal = await layoutGraphWithRouting(graph, view, 'ORTHOGONAL');
+  return collisions(orthogonal) < initialCollisions ? orthogonal : polyline;
+}
+
+/** Adapt measured compound data to ELK, then convert every result to canvas coordinates. */
+async function layoutGraphWithRouting(graph: MeasuredGraph, view: DiagramView, routing: 'POLYLINE' | 'ORTHOGONAL'): Promise<LayoutGraph> {
   const options: LayoutOptions = {
-    'elk.algorithm': 'layered', 'elk.direction': view.direction, 'elk.edgeRouting': 'ORTHOGONAL',
+    'elk.algorithm': 'layered', 'elk.direction': view.direction, 'elk.edgeRouting': routing,
     'elk.hierarchyHandling': 'INCLUDE_CHILDREN', 'elk.spacing.nodeNode': '32',
     'elk.layered.spacing.nodeNodeBetweenLayers': '64', 'elk.spacing.edgeNode': '24',
     'elk.layered.spacing.edgeNodeBetweenLayers': '24', 'elk.spacing.edgeEdge': '16',

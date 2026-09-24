@@ -23,6 +23,14 @@ test('decision port follows diamond boundary while preserving orthogonal final s
   assert.deepEqual(shapeBoundaryPoint(diamond, { x: 250, y: 200 }, { x: 250, y: 250 }), { x: 250, y: 175 });
 });
 
+test('a diagonal route keeps the ELK port side when meeting rectangular and diamond outlines', () => {
+  const process = n('process', 100, 100);
+  assert.deepEqual(shapeBoundaryPoint(process, { x: 300, y: 150 }, { x: 340, y: 180 }), { x: 300, y: 150 });
+  assert.deepEqual(shapeBoundaryPoint(process, { x: 200, y: 100 }, { x: 240, y: 60 }), { x: 200, y: 100 });
+  const diamond = n('decision', 100, 100, 'decision');
+  assert.deepEqual(shapeBoundaryPoint(diamond, { x: 300, y: 125 }, { x: 340, y: 145 }), { x: 250, y: 125 });
+});
+
 test('capsule and store endpoints stop at their actual curved outline', () => {
   const capsule = n('end', 100, 100, 'end');
   const p = shapeBoundaryPoint(capsule, { x: 100, y: 110 }, { x: 50, y: 110 });

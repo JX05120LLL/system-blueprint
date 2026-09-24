@@ -21,7 +21,7 @@
   "files": {
     "src/model/diagram.generated.ts": "f4dff8d9f85f4ddf39d0478fffeaa9f1af5b6ff15c9be34a202c615de28088c5",
     "src/model/validator.generated.js": "b51e2f478bd7fabdd08f895fe7cdc9572dc25640fd5183e8f46280732f6a85cf",
-    "system-blueprint/assets/viewer.js": "cefbd2e135325df4e15d82176e8e1a55dcac2ac9962c3a737cf20365d076a4c5",
+    "system-blueprint/assets/viewer.js": "1263792aa060055205c2e2130e67abd00bc062ffb469ce069eecfc9a6d157979",
     "system-blueprint/scripts/generate.mjs": "f751e801638de73157d6606fb7ec5435502703ca1ea3e335d253e63e1da81214",
     "system-blueprint/scripts/validate.mjs": "fc43f48b709e326320a3e7b1fcfc0166da213567fc11e8160100b46fc18b4120",
     "system-blueprint/scripts/export.mjs": "230112df039fd2db89839e51b4c3026c6afe4e9805cd04732b8d681acf19c0c7",

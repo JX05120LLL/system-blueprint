@@ -1,17 +1,17 @@
 # System Blueprint v2 交付与验收
 
-2026-09-23，按设计 M0–M5 完成。实际执行环境为 Windows、Node 24.14.0、Chromium 145.0.7632.6、Playwright 1.58.2。未 commit、push、发布或部署；原有 `.idea/` 和设计文档保留。
+2026-09-23，按设计 M0–M5 完成的初始 v2 验收快照。实际执行环境为 Windows、Node 24.14.0、Chromium 145.0.7632.6、Playwright 1.58.2。初始 v2 后续按用户要求提交并同步远程；2026-09-24 的详情审核、配色、动效与连线升级见[本轮验收](editor-enhancement-results.md)和[微服务连线报告](routing-colour-enhancement.md)，尚未提交或推送。原有 `.idea/` 和设计文档保留。
 
 ## 直接使用与交付
 
-- [完整 Skill 目录](../../system-blueprint/SKILL.md)；[可安装 ZIP](../../artifacts/system-blueprint-v2.zip)，29 个文件，575,052 bytes，不包含 node_modules。ZIP 内容已逐文件与目录核对，CRC 检查通过，摘要见 [archive.json](../../artifacts/package/archive.json)。解压后将整个 system-blueprint 目录放到 Skills 目录。
-- [五类示例全部文件](../../examples/README.md)：6 份 JSON、6 份离线 HTML、各自 SVG/PNG/JPEG；另有同尺度 Before/After 三种静态格式，保留原 5 张 README SVG 路径。
+- [完整 Skill 目录](../../system-blueprint/SKILL.md)；[可安装 ZIP](../../artifacts/system-blueprint-v2.zip)已随 2026-09-24 升级重包，为 29 个文件、580,414 bytes，不包含 node_modules。ZIP 内容已逐文件与目录核对，摘要见 [archive.json](../../artifacts/package/archive.json)。解压后将整个 system-blueprint 目录放到 Skills 目录。
+- [示例全部文件](../../examples/README.md)：基础五类的 6 份模型加微服务演示，共 7 份 JSON、7 份离线 HTML、各自 SVG/PNG/JPEG；另有同尺度 Before/After 三种静态格式，保留原 5 张 README SVG 路径。
 - [新旧效果对照](../../artifacts/visual-comparison.html)：原始 v1 与实际 v2 浏览器截图，另含 1920 桌面、375 窄屏与深色链接。
 - [使用命令与依赖](../../README.md)、[性能实测](performance.md)、[语义迁移](example-migration.md)、[独立 Skill 使用评估](../../artifacts/agent-evaluation/EVALUATION_REPORT.md)。
 
 生成只需 Node 24 和完整 Skill 目录，阅读只需浏览器。自动导出需在 Skill 自身目录安装锁定的 Playwright/Chromium；旧 SVG 的 Python 位图路径仍需 CairoSVG/Pillow。首次准备依赖需要下载，完成后的单文件 HTML 在断网 file:// 环境工作。
 
-## 实际命令结果
+## 初始 v2 实际命令结果
 
 | 命令或检查 | 结果 |
 | --- | --- |
@@ -28,7 +28,7 @@
 | 独立 Agent 依 Skill 完成真实任务 | 13 节点 / 13 边 / 4 组交付；该任务 29 项检查通过 |
 | Git diff 审查 | 审查发现的 3 项 P2 已修复；`git diff --check` 通过 |
 
-机器记录：[浏览器](../../artifacts/browser-results.json)、[示例](../../artifacts/examples-report.json)、[构建](../../artifacts/build-consistency/report.json)、[分发](../../artifacts/package/report.json)、[性能](../../artifacts/performance/results.json)。阶段报告保留当时测试数量和失败历史，最终状态以本报告及上述最终记录为准。
+机器记录：[浏览器](../../artifacts/browser-results.json)、[示例](../../artifacts/examples-report.json)、[构建](../../artifacts/build-consistency/report.json)、[分发](../../artifacts/package/report.json)、[性能](../../artifacts/performance/results.json)已被 2026-09-24 复测覆盖。表内 47/32 项等数字是初始 v2 快照，当前结果以[本轮验收](editor-enhancement-results.md)为准。
 
 ## 22 项验收对应
 
@@ -75,7 +75,7 @@ M1 先用真实总览模型完成浅/深视觉样板，再接通 ELK 通用布�
 
 ## 剩余限制与未验证项
 
-- [性能报告](performance.md) 区分目标与本机实测：1.680 MiB、ready p95 232.2 ms、折叠 p95 50.4 ms；不是跨设备保证。100/300/20 的长链 SVG 完整，但最低位图倍率仍超尺寸限额，需拆图。
+- [性能报告](performance.md) 区分目标与 2026-09-24 当前源码的本机实测；不是跨设备保证。100/300/20 的长链 SVG 完整，但最低位图倍率仍超尺寸限额，需拆图。
 - 自动布局不保证任意拓扑都紧凑或零交叉。图过长是明确警告，节点/标签遮挡为错误，不能靠删边、缩字号或裁切交付。
 - [首次 GitHub Actions 运行](https://github.com/JX05120LLL/system-blueprint/actions/runs/35849383390) 在提交 `55d85de` 上通过 Ubuntu 24.04 与 Windows Server 2022 两个作业。Linux 执行 Cairo SVG 专项，Windows 执行中文路径、离线 `file://` 与 HTML 委派检查。详见 [构建与 CI](build-ci-report.md)。
 - Firefox/Safari、其他系统字体、触控硬件、屏幕阅读器与长期压力未实机验收。可用触控手势来自 d3-zoom，不能从鼠标测试宣称真实触控设备已验证。

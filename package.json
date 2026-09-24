@@ -12,6 +12,7 @@
     "check:build": "node scripts/check-build.mjs",
     "test:browser": "playwright test",
     "test:package": "node scripts/check-package.mjs",
+    "package:skill": "python scripts/package-skill.py",
     "examples:generate": "node scripts/examples.mjs",
     "examples:check": "node scripts/examples.mjs --check",
     "test:performance": "node --import tsx scripts/performance.mjs"

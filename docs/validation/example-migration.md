@@ -2,6 +2,8 @@
 
 日期：2026-09-23。旧图语义基线见 [acceptance-plan.md](acceptance-plan.md) 第 3 节，原 SVG 保存在 `tests/fixtures/legacy/`。此记录区分内容建模、实际实现与待核实关系，不把旧示意节点当成线上组件。
 
+本页只记录基础五类、六份模型的迁移；2026-09-24 新增的第七份传统微服务演示见[微服务连线报告](routing-colour-enhancement.md)。
+
 ## 模型交付
 
 | 类别 | JSON / HTML 名称 | 节点 / 边 / 组 | 关键表达 |

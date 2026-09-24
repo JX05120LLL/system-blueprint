@@ -2,7 +2,7 @@
 
 把代码仓库、设计文档或系统描述转成可阅读、可交互、可离线分享的技术图。默认浅色工程风，使用文字、形状、方向和克制的强调色表达关系。
 
-交付包含可继续修改的 `.diagram.json`、双击即可打开的单文件 HTML，以及按需导出的 SVG、PNG、JPEG。HTML 支持缩放、平移、节点与关系详情、上下游高亮、两层分组折叠；不需要账号、服务器或网络连接。
+交付包含可继续修改的 `.diagram.json`、双击即可打开的单文件 HTML，以及按需导出的 SVG、PNG、JPEG。HTML 支持缩放、平移、节点与关系详情、上下游高亮、两层分组折叠，以及详情板中的人工审核与修订；不需要账号、服务器或网络连接。
 
 [项目仓库](https://github.com/JX05120LLL/system-blueprint) · [Skill 入口](system-blueprint/SKILL.md) · [模型规则](system-blueprint/references/modeling.md) · [验证记录](docs/validation/)
 
@@ -29,6 +29,30 @@ node system-blueprint/scripts/export.mjs output/overview.html --format jpg --bac
 ```
 
 浏览器工具栏也可直接下载 SVG。PNG/JPEG 使用 CLI 的 Chromium 渲染；HTML 阅读者无需安装 Node 或 Playwright。
+
+## 在详情板审核与修订
+
+生成图可能遗漏条件或误判关系。打开新生成的 v2 HTML 后，点击节点、连接或分组，再点 **编辑详情**。修改表单并点 **保存修改**；通过 JSON Schema/Ajv 与语义校验后，阅读器会重新测量、布局，画布和详情随之更新。若条件重复、引用无效或方向违反模型规则，表单显示诊断，当前已接受的图保持不变。
+
+| 对象 | 可修改内容 |
+| --- | --- |
+| 节点 | 名称、摘要、说明、类型、所属分组、信息依据、来源 |
+| 连接 | 来源/目标节点、条件或标签、说明、关系类型、是否有方向、信息依据、来源 |
+| 分组 | 名称、说明、父分组 |
+
+来源字段每行填写一个路径。需要精确行号，或路径含有特殊字符时，用 JSON 引号包住路径并附加行号，例如 `"src/a.ts"#L12`；未修改的来源会保留原有数据。
+
+修改后可 **撤销修改 / 重做修改**。核对结果后，分别点击 **下载图数据** 和 **下载修订 HTML**，保留新的 `.diagram.json` 与可离线打开的单文件 HTML；浏览器 **下载 SVG** 使用当前已接受的数据，需要 CLI 导出 PNG/JPEG 时以修订 HTML 为输入。静态图仍完整展开。`file://` 页面不会自动覆盖原 JSON、HTML 或真实系统代码，请用下载的文件替换需要保存的版本。ID、节点/连接的增删、画布拖拽改拓扑和布局坐标不在详情板编辑范围；这一步只修订图的描述，不会自动修复被描述的系统。范围修订见 [详情审核与视觉增强记录](docs/validation/editor-enhancement.md)。
+
+## 传统微服务架构演示
+
+以电商下单为例，展示客户端与网关、订单/库存/支付服务、异步消息、服务自有数据库，以及支付失败后的补偿方向。它是通用架构示意，**不代表本仓库或任何实际系统的部署与运行状态**；注册配置、可观测和支付超时等外围能力未展开。图上保留主要方向与条件，点击节点、连接或分组可审核详情并修改已有字段。
+
+[可编辑图数据](examples/traditional-microservices.diagram.json) · [离线交互 HTML](examples/traditional-microservices.html) · [独立 SVG](images/system-blueprint-traditional-microservices.svg) · [PNG](images/system-blueprint-traditional-microservices.png) · [JPEG](images/system-blueprint-traditional-microservices.jpg) · [桌面截图](artifacts/screenshots/traditional-microservices-v2-desktop.png) · [窄屏截图](artifacts/screenshots/traditional-microservices-v2-narrow.png) · [深色截图](artifacts/screenshots/traditional-microservices-v2-dark.png) · [布局与配色复验](docs/validation/routing-colour-enhancement.md)
+
+下图是整条链路的缩略图；点击可打开完整尺寸的独立 SVG，或用交互 HTML 放大、平移查看文字。
+
+[![传统电商微服务架构与下单链路示意图](./images/system-blueprint-traditional-microservices.svg)](images/system-blueprint-traditional-microservices.svg)
 
 ## 五类示例
 
@@ -94,7 +118,7 @@ Before/After 使用相同前端、API、数据库基线与主题；新增 LLM �
 先核对实际模块与调用关系，区分已证实、假设和规划。
 输出可修改的图数据、离线交互 HTML，以及 README 可嵌入的 SVG。
 采用默认浅色工程风，保留关键条件、回路、边界和来源。
-请实际打开验证，并说明未验证的部分。
+请实际打开验证，并说明未验证的部分。请读者在详情板核对参数，必要时修订后下载新版 JSON 和 HTML。
 ```
 
 ```text
@@ -103,7 +127,7 @@ Before/After 使用相同前端、API、数据库基线与主题；新增 LLM �
 长说明放详情，关键条件保留在图上；不要用缩小字号解决溢出。
 ```
 
-用户明确要求 Mermaid 时尊重该格式。此工具不提供在线协作、账号服务、拖拽改图或图形编辑器；增量修改优先编辑原 JSON 并保留 ID。
+用户明确要求 Mermaid 时尊重该格式。此工具不提供在线协作、账号服务或拖拽式图形编辑器；可用详情板修订已存在对象的字段，批量增删和更大范围的结构变化仍编辑原 JSON 并保留 ID。
 
 ## 模型与交互约定
 
@@ -117,11 +141,13 @@ Before/After 使用相同前端、API、数据库基线与主题；新增 LLM �
 - Tab、Enter、Space 和 Escape 支持基本阅读操作。窄屏保留平移和可关闭详情；工具栏不会要求整图压缩到看不清。
 - 长图首次打开采用 80% 的可读起点视角。主动“适应画布”或“重置视图”显示完整图，必要时低于 25%；继续放大保持倍率连续。重置恢复初始折叠并清除选择，但保留主题。
 
+节点按处理蓝、判断琥珀、存储紫、外部青绿、起止绿等语义使用低饱和描边与浅填充；普通连接按来源节点着色，分支允许斜向，小圆弧柔化转折。异常、反馈仍有固定语义色，关系类型还由箭头、标签和线型共同表达。主路径上的有向线可显示缓慢流向，页脚可暂停/播放；系统启用“减少动态效果”时默认不播放。动效只是阅读辅助，不代表系统实时运行。
+
 HTML 内嵌的 details 也是分享内容；折叠不能脱敏。不要将密码、令牌、真实用户记录或整份私有配置放入模型。文本会转义并以文字渲染，不接受可执行 HTML。
 
 ## 导出与命令边界
 
-静态导出使用独立全展开视图，包含标题、说明、标签、箭头、背景和必要图例；不包含工具栏、详情面板或当前高亮。缩放、平移、折叠不会裁切导出内容，也不会因导出而改变阅读器状态。
+静态导出使用独立全展开视图，包含标题、说明、标签、箭头、背景和必要图例；不包含工具栏、详情面板、当前高亮或流向动画。缩放、平移、折叠不会裁切导出内容，也不会因导出而改变阅读器状态。
 
 ```powershell
 # 新命令默认不覆盖；确认替换时显式添加 --overwrite
@@ -175,6 +201,8 @@ npm run check:build
 npm run test:browser
 npm run test:package
 npm run examples:check
+npm run package:skill
+npm run package:skill -- --check
 
 # 重生成示例、测量性能
 npm run examples:generate
@@ -183,9 +211,9 @@ npm run test:performance
 
 Windows PowerShell 如果拦截 npm.ps1，可使用 `npm.cmd`。Linux CI 安装 Chromium 时还需准备系统依赖。修改源码后必须重新 build，避免预构建资源与源码脱节。
 
-`check:build` 在临时目录从源码重建，比对 20 个分发/生成文件、许可证、版本和 lockfile；不会先覆盖原产物来掩盖不一致。完整 skill 的本地安装包为 [system-blueprint-v2.zip](artifacts/system-blueprint-v2.zip)，不包含 node_modules。
+`check:build` 在临时目录从源码重建，比对 20 个分发/生成文件、许可证、版本和 lockfile；不会先覆盖原产物来掩盖不一致。源码和 Skill 文档更新后先运行 `npm run build`，再执行 `npm run package:skill`。打包脚本固定文件顺序与 ZIP 元数据，逐文件校验并记录 SHA-256；`--check` 可只读确认安装包与当前 Skill 目录一致。完整安装包为 [system-blueprint-v2.zip](artifacts/system-blueprint-v2.zip)，不包含 node_modules 或临时缓存。
 
-[完整验收结果](docs/validation/v2-validation-report.md) · [性能实测](docs/validation/performance.md) · [22 项验收计划](docs/validation/acceptance-plan.md) · [浏览器实测](docs/validation/browser-coverage.md) · [测试数据语义](docs/validation/fixture-report.md) · [布局检查](docs/validation/layout-report.md) · [示例迁移](docs/validation/example-migration.md)
+[本轮详情审核与动效验收](docs/validation/editor-enhancement-results.md) · [初始 v2 验收](docs/validation/v2-validation-report.md) · [性能实测](docs/validation/performance.md) · [22 项验收计划](docs/validation/acceptance-plan.md) · [浏览器实测](docs/validation/browser-coverage.md) · [测试数据语义](docs/validation/fixture-report.md) · [布局检查](docs/validation/layout-report.md) · [示例迁移](docs/validation/example-migration.md)
 
 性能目标与已测结果分开：30 节点 / 45 边 / 3 组的 HTML 目标不超过 3 MiB，首次就绪 p95 ≤1.5 秒，折叠/展开 p95 ≤500 毫秒；100 / 300 / 20 上沿要求完整完成并记录耗时和主线程阻塞。这些是方案目标，不能从构建通过或简单图推断全部达标；实际机器、浏览器、样本、时间和体积见 [性能实测记录](docs/validation/performance.md)。
 

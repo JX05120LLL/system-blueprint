@@ -47,8 +47,14 @@ export async function createExportSvg(doc: DiagramDocument, options: ExportOptio
   diagram.setAttribute('y', String(y + 8)); diagram.setAttribute('x', String((width - graph.width) / 2)); root.append(diagram);
   let height = y + 8 + graph.height + 16;
   const types = new Set(doc.edges.map(e => e.kind));
-  const legend = [...types].filter(k => ['exception', 'feedback', 'dependency'].includes(k));
-  if (legend.length) { const line = svgElement('text', { x: 32, y: height + 14, fill: theme.muted, 'font-size': 12 }); const names: Record<string, string> = { exception: '红色实线：异常', feedback: '长虚线：反馈', dependency: '短虚线：依赖' }; line.textContent = legend.map(k => names[k]).join('    '); root.append(line); height += 40; }
+  const legend = [
+    ...(doc.edges.some(e => e.kind !== 'exception' && e.kind !== 'feedback') ? ['普通连线按来源节点着色；同源同色，超出色板容量时颜色可能复用'] : []),
+    ...(types.has('exception') ? ['红色实线：异常'] : []),
+    ...(types.has('feedback') ? ['琥珀长虚线：反馈'] : []),
+    ...(types.has('dependency') ? ['短虚线：依赖'] : []),
+  ];
+  for (const item of legend) { const line = svgElement('text', { x: 32, y: height + 14, fill: theme.muted, 'font-size': 12 }); line.textContent = item; root.append(line); height += 18; }
+  if (legend.length) height += 20;
   root.setAttribute('height', String(height)); root.setAttribute('viewBox', `0 0 ${width} ${height}`);
   root.insertBefore(svgElement('rect', { width, height, fill: options.background ?? theme.background }), root.firstChild);
   return root;

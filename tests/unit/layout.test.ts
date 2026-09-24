@@ -60,7 +60,7 @@ test('V05 compound coordinates include parent and child offsets and reserve grou
   assert.deepEqual(checkGeometry(result).filter(d => d.severity === 'error'), []);
 });
 
-test('V03 V04 V06 preserves branches, loops and all original edge mappings with orthogonal routes', async () => {
+test('V03 V04 V06 preserves branches, loops and all original edge mappings with finite routes', async () => {
   const input = graph([node('start'), node('check', undefined, 'decision'), node('done')], [
     edge('in', 'start', 'check'), edge('yes', 'check', 'done', '通过'), edge('no', 'check', 'done', '不通过'),
     { ...edge('back', 'done', 'start', '重新处理'), kind: 'feedback' }, edge('self', 'done', 'done', '重试'),
@@ -72,13 +72,31 @@ test('V03 V04 V06 preserves branches, loops and all original edge mappings with 
     assert.ok(e.sections.length > 0 && e.sections.every(s => s.length >= 2), e.id);
     for (const section of e.sections) for (let i = 1; i < section.length; i++) {
       const a = section[i - 1]!; const b = section[i]!;
-      assert.ok(Math.abs(a.x - b.x) < .001 || Math.abs(a.y - b.y) < .001, `${e.id}: orthogonal`);
+      assert.ok([a.x, a.y, b.x, b.y].every(Number.isFinite), `${e.id}: finite route points`);
     }
   }
   const self = result.edges.find(e => e.id === 'self')!;
   assert.ok(self.sections[0]!.length >= 4, 'self loop must have a visible path outside its node');
   assert.notDeepEqual(result.edges[1]!.labelBox, result.edges[2]!.labelBox, 'parallel conditions need separate label positions');
   assert.deepEqual(checkGeometry(result).filter(d => d.severity === 'error'), []);
+});
+
+test('complex microservice branches have diagonal routes without losing original relations', async () => {
+  const document = JSON.parse(readFileSync(new URL('../../examples/traditional-microservices.diagram.json', import.meta.url), 'utf8')) as DiagramDocument;
+  const visible = projectVisibleGraph(document);
+  const measured: MeasuredGraph = {
+    ...visible,
+    nodes: visible.nodes.map(n => ({ ...node(n.id, n.groupId, n.kind), ...n, titleText: block(n.label, 120), summaryText: block(n.summary, 160) })),
+    groups: visible.groups.map(g => ({ ...g, titleText: block(g.label, 120) })),
+    edges: visible.edges.map(e => ({ ...e, labelText: block(e.label, 80) })),
+  };
+  const result = await layoutGraph(measured, document.view);
+  const diagonalSegments = result.edges.flatMap(e => e.sections.flatMap(section => section.slice(1).filter((point, i) => {
+    const previous = section[i]!;
+    return Math.abs(point.x - previous.x) > .01 && Math.abs(point.y - previous.y) > .01;
+  })));
+  assert.ok(diagonalSegments.length >= 3, `expected several diagonal branch segments, got ${diagonalSegments.length}`);
+  assert.deepEqual(result.edges.map(e => e.originalEdgeIds).flat().sort(), document.edges.map(e => e.id).sort());
 });
 
 test('parallel reader/export layouts keep independent results and a failure does not poison later layouts', async () => {
