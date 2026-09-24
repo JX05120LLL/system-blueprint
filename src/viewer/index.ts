@@ -68,6 +68,12 @@ const fileStem = () => doc.id.replace(/[^\p{L}\p{N}_.-]/gu, '_');
 function updateHistoryButtons() {
   (byId('undo-edit') as HTMLButtonElement).disabled = !!pendingDoc || !undoDocs.length;
   (byId('redo-edit') as HTMLButtonElement).disabled = !!pendingDoc || !redoDocs.length;
+  const direction = (pendingDoc ?? doc)?.view.direction;
+  for (const [id, value] of [['direction-right', 'RIGHT'], ['direction-down', 'DOWN']] as const) {
+    const button = byId(id) as HTMLButtonElement;
+    button.disabled = !!pendingDoc || !direction;
+    button.setAttribute('aria-pressed', String(direction === value));
+  }
 }
 function focusReviewAction(id?: string) {
   const buttons = [...details.querySelectorAll<HTMLButtonElement>('button')];
@@ -80,10 +86,11 @@ function diagnosticMessage(error: unknown): string { return error instanceof Err
 async function queueDocument(candidate: DiagramDocument, action: 'edit' | 'undo' | 'redo'): Promise<string | undefined> {
   if (pendingDoc) return '请等待当前图形更新完成。';
   if (JSON.stringify(candidate) === JSON.stringify(doc)) { if (editing) finishEditing(); return undefined; }
+  const directionChanged = candidate.view.direction !== doc.view.direction;
   pendingDoc = freezeDocument(candidate); pendingHistory = action; updateHistoryButtons();
   byId('status').textContent = '正在校验并重新布局…';
-  scheduler.request({ document: pendingDoc, collapsed: new Set(collapsed) });
-  try { await scheduler.whenIdle(); byId('status').textContent = '修改已保存；请下载修订文件。'; return undefined; }
+  scheduler.request({ document: pendingDoc, collapsed: new Set(collapsed), readableStart: directionChanged });
+  try { await scheduler.whenIdle(); byId('status').textContent = directionChanged ? '布局方向已更新；下载可保存当前方向。' : '修改已保存；请下载修订文件。'; return undefined; }
   catch (error) { return diagnosticMessage(error); }
 }
 async function saveEdit(edit: DocumentEdit): Promise<string | undefined> {
@@ -209,7 +216,7 @@ function paint() {
   byId('motion').textContent = animateFlow ? '暂停流向' : '播放流向'; byId('motion').setAttribute('aria-pressed', String(animateFlow));
   applyHighlight(); refreshDetails(); if (hadFocus) focusSelection();
 }
-interface LayoutRequest { document: DiagramDocument; collapsed: Set<string>; anchor?: { id: string; screen: Point }; reset?: boolean; }
+interface LayoutRequest { document: DiagramDocument; collapsed: Set<string>; anchor?: { id: string; screen: Point }; reset?: boolean; readableStart?: boolean; }
 const scheduler = new LayoutScheduler<LayoutRequest, LayoutGraph>(async state => {
   const start = performance.now();
   const measured = await measureGraph(projectVisibleGraph(state.document, state.collapsed), themes[theme]);
@@ -249,7 +256,11 @@ const scheduler = new LayoutScheduler<LayoutRequest, LayoutGraph>(async state =>
   }
   paint();
   if (editedFocusId) focusReviewAction(editedFocusId);
-  if (initialFit || request.reset) { fit(initialFit && !request.reset); initialFit = false; }
+  if (initialFit || request.reset || request.readableStart) {
+    fit((initialFit && !request.reset) || !!request.readableStart);
+    initialFit = false;
+    if (request.readableStart && selected) revealSelection(selected);
+  }
   else if (request.anchor) {
     const anchor = getGroupAnchor(request.anchor.id, graph);
     if (anchor) select(canvas).call(zoomer.transform, zoomIdentity.translate(request.anchor.screen.x - anchor.x * transform.k, request.anchor.screen.y - anchor.y * transform.k).scale(transform.k));
@@ -281,6 +292,14 @@ canvas.addEventListener('click', event => handleTarget(event.target));
 canvas.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleTarget(event.target); } });
 document.addEventListener('keydown', event => { if (event.key === 'Escape') { event.preventDefault(); if (pendingDoc) byId('status').textContent = '请等待当前图形更新完成。'; else if (editing && details.dataset.dirty === 'true') byId('status').textContent = '请先保存或点击取消修改。'; else if (editing) finishEditing(); else clearSelection(true); } });
 byId('fit').onclick = () => fit(); byId('reset').onclick = () => { if (pendingDoc) byId('status').textContent = '请等待当前图形更新完成。'; else if (editing && details.dataset.dirty === 'true') byId('status').textContent = '请先保存或取消详情修改。'; else reset(); };
+function chooseDirection(direction: DiagramDocument['view']['direction']) {
+  if (!doc || pendingDoc) return;
+  if (editing) { byId('status').textContent = '请先保存或取消详情修改。'; return; }
+  if (doc.view.direction === direction) return;
+  void queueDocument({ ...doc, view: { ...doc.view, direction } }, 'edit');
+}
+byId('direction-right').onclick = () => chooseDirection('RIGHT');
+byId('direction-down').onclick = () => chooseDirection('DOWN');
 byId('zoom-in').onclick = () => select(canvas).call(zoomer.scaleBy, 1.25);
 byId('zoom-out').onclick = () => select(canvas).call(zoomer.scaleBy, .8);
 byId('theme').onclick = () => { theme = theme === 'light' ? 'dark' : 'light'; paint(); };

@@ -31,6 +31,8 @@ test('RIGHT and DOWN follow requested flow direction without changing measured d
   assert.ok(down.nodes[1]!.y >= down.nodes[0]!.y + 84 + 60);
   assert.equal(down.nodes[0]!.width, 224);
   assert.equal(down.nodes[0]!.height, 84);
+  assert.ok(right.edges.every(edge => edge.routing === 'polyline' || edge.routing === 'spline'));
+  assert.ok(right.edges.every(edge => edge.routing !== 'spline' || edge.sections.every(section => (section.length - 1) % 3 === 0)));
 });
 
 test('V05 compound coordinates include parent and child offsets and reserve group titles', async () => {
@@ -81,8 +83,8 @@ test('V03 V04 V06 preserves branches, loops and all original edge mappings with 
   assert.deepEqual(checkGeometry(result).filter(d => d.severity === 'error'), []);
 });
 
-test('complex microservice branches have diagonal routes without losing original relations', async () => {
-  const document = JSON.parse(readFileSync(new URL('../../examples/traditional-microservices.diagram.json', import.meta.url), 'utf8')) as DiagramDocument;
+test('full microservice branches retain every original relation when routes are smoothed', async () => {
+  const document = JSON.parse(readFileSync(new URL('../fixtures/traditional-microservices-full.diagram.json', import.meta.url), 'utf8')) as DiagramDocument;
   const visible = projectVisibleGraph(document);
   const measured: MeasuredGraph = {
     ...visible,
@@ -91,11 +93,8 @@ test('complex microservice branches have diagonal routes without losing original
     edges: visible.edges.map(e => ({ ...e, labelText: block(e.label, 80) })),
   };
   const result = await layoutGraph(measured, document.view);
-  const diagonalSegments = result.edges.flatMap(e => e.sections.flatMap(section => section.slice(1).filter((point, i) => {
-    const previous = section[i]!;
-    return Math.abs(point.x - previous.x) > .01 && Math.abs(point.y - previous.y) > .01;
-  })));
-  assert.ok(diagonalSegments.length >= 3, `expected several diagonal branch segments, got ${diagonalSegments.length}`);
+  assert.ok(result.edges.some(edge => edge.routing === 'spline'), 'dense branches should permit at least one continuous arc');
+  assert.ok(result.edges.every(edge => edge.sections.every(section => section.length >= 2)), 'every edge remains drawable');
   assert.deepEqual(result.edges.map(e => e.originalEdgeIds).flat().sort(), document.edges.map(e => e.id).sort());
 });
 
@@ -178,7 +177,7 @@ test('incoming compound edge avoids a legal two-line Chinese group heading', asy
 });
 
 test('M5 deployment high fan-out keeps all seven labeled dependencies readable', async () => {
-  const document = JSON.parse(readFileSync(new URL('../../examples/deployment-topology.diagram.json', import.meta.url), 'utf8')) as DiagramDocument;
+  const document = JSON.parse(readFileSync(new URL('../fixtures/deployment-topology.diagram.json', import.meta.url), 'utf8')) as DiagramDocument;
   const visible = projectVisibleGraph(document);
   const measured: MeasuredGraph = {
     ...visible,
@@ -196,7 +195,7 @@ test('M5 deployment high fan-out keeps all seven labeled dependencies readable',
 });
 
 test('high fan-out labels remain distinct after target groups collapse in either direction', async () => {
-  const document = JSON.parse(readFileSync(new URL('../../examples/deployment-topology.diagram.json', import.meta.url), 'utf8')) as DiagramDocument;
+  const document = JSON.parse(readFileSync(new URL('../fixtures/deployment-topology.diagram.json', import.meta.url), 'utf8')) as DiagramDocument;
   for (const direction of ['RIGHT', 'DOWN'] as const) {
     for (const collapsed of [[], ['data-zone'], ['data-zone', 'external-zone']]) {
       const visible = projectVisibleGraph(document, new Set(collapsed));

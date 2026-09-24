@@ -1,4 +1,4 @@
-name: Verify System Blueprint
+name: Verify System-Flow
 
 on:
   pull_request:
@@ -81,7 +81,6 @@ jobs:
             artifacts/browser-results.json
             artifacts/test-results/
             artifacts/package/report.json
-            artifacts/examples-report.json
-            artifacts/screenshots/
+            artifacts/examples-check-report.json
           if-no-files-found: ignore
           retention-days: 14

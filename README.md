@@ -1,220 +1,124 @@
-# System Blueprint v2
+<div align="center">
 
-把代码仓库、设计文档或系统描述转成可阅读、可交互、可离线分享的技术图。默认浅色工程风，使用文字、形状、方向和克制的强调色表达关系。
+# System Flow
 
-交付包含可继续修改的 `.diagram.json`、双击即可打开的单文件 HTML，以及按需导出的 SVG、PNG、JPEG。HTML 支持缩放、平移、节点与关系详情、上下游高亮、两层分组折叠，以及详情板中的人工审核与修订；不需要账号、服务器或网络连接。
+**把软件系统的结构与运行路径，画成可核对、可修改的流程图。**
 
-[项目仓库](https://github.com/JX05120LLL/system-blueprint) · [Skill 入口](system-blueprint/SKILL.md) · [模型规则](system-blueprint/references/modeling.md) · [验证记录](docs/validation/)
+从代码、文档或系统描述提取节点与关系，生成可离线阅读的交互 HTML，以及适合放进 README、文档和汇报中的静态图。
+
+![Node.js 24](https://img.shields.io/badge/Node.js-24-339933?logo=nodedotjs&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white) ![ELK.js](https://img.shields.io/badge/Layout-ELK.js-6554C0) ![Playwright](https://img.shields.io/badge/Export-Playwright-45BA4B?logo=playwright&logoColor=white)
+
+[查看演示](#效果预览) · [快速开始](#快速开始) · [安装 Skill](#安装-skill) · [全部示例](examples/README.md)
+
+</div>
+
+## 项目简介
+
+System Flow 是一个面向**软件架构与运行流程**的本地绘图 Skill。Agent 先核对事实和来源，再把组件、调用、数据流、判断与分组写入 `.diagram.json`；程序负责校验、文字测量、布局、渲染和导出。它适合解释“系统由什么组成、请求如何流转、模块如何协作”，不以项目排期或甘特图为目标。
+
+每张图同时保留可继续修改的源数据、单文件交互 HTML 和按需生成的 SVG / PNG / JPEG。阅读 HTML 不需要账号、服务器或网络；生成所需的运行时已包含在 `system-blueprint/` 子目录中。
+
+## 效果预览
+
+### 静态示例 · 传统电商微服务架构
+
+这张预览由[架构总览交互 HTML](examples/traditional-microservices.html)在浏览器中截取。点击图片可查看原尺寸；下载 HTML 后可离线缩放、平移、切换横纵布局和审核节点详情。
+
+[![传统电商微服务架构总览，横向展示用户、网关、业务服务及存储](images/traditional-microservices-preview.png)](images/traditional-microservices-preview.png)
+
+[图数据](examples/traditional-microservices.diagram.json) · [交互 HTML](examples/traditional-microservices.html) · [预览 PNG](images/traditional-microservices-preview.png)
+
+### 动态示例 · 下单流程
+
+下载交互 HTML 后，可离线切换横向/纵向布局、查看分支详情、折叠分组并编辑审核。此示例默认横向布局。
+
+[![传统电商下单流程的动态流向演示](images/traditional-microservices-order-flow.gif)](images/traditional-microservices-order-flow.gif)
+
+[图数据](examples/traditional-microservices-order-flow.diagram.json) · [交互 HTML](examples/traditional-microservices-order-flow.html) · [演示 GIF](images/traditional-microservices-order-flow.gif)
+
+这两张图是教学示意，节点及连接中的“假设”需要按真实系统核查，不代表本仓库或任何实际系统的部署状态。[两份演示图](examples/README.md)另有索引。
+
+## 核心能力
+
+| 能力 | 说明 |
+| --- | --- |
+| 可读布局 | 先测量文字，再用 ELK.js 布局；复杂架构可横向，简单流程可纵向，并可在画布上手动切换方向。 |
+| 清晰关系 | 节点与连线按语义使用克制的多色系；简单连线为直线，适合平滑的避障路径使用连续曲线，箭头与标签保留方向和条件。 |
+| 交互阅读 | 缩放、平移、适应画布、节点和连接详情、上下游高亮、两层分组折叠；主路径可显示缓慢流向，也可暂停。 |
+| 人工审核 | 点击已有节点、连接或分组，在详情板修改名称、说明、来源、关系端点与条件等字段；校验通过后重新布局，支持撤销和重做。 |
+| 离线交付 | HTML 将图数据、样式和脚本封装在单文件中；静态 SVG 完整展开，PNG/JPEG 可由本地 Chromium 导出。 |
+
+详情板编辑的是**图的描述**，不会修改真实系统代码；增删对象或修改 ID 仍应编辑原始 JSON。审核后使用“下载图数据”和“下载修订 HTML”保存结果，`file://` 页面不会自动覆盖磁盘上的原文件。动效只辅助阅读，不表示实时监控；静态导出不含动效、当前缩放或选中状态。
 
 ## 快速开始
 
-生成者需要 **Node.js 24.x**。在仓库根目录运行：
+生成环境为 **Node.js 24.x**。克隆仓库后，无需安装根目录依赖即可校验并生成示例：
 
-```powershell
-node system-blueprint/scripts/validate.mjs examples/overview.diagram.json
-node system-blueprint/scripts/generate.mjs examples/overview.diagram.json --output output/overview.html
+```bash
+node system-blueprint/scripts/validate.mjs examples/traditional-microservices.diagram.json
+node system-blueprint/scripts/generate.mjs examples/traditional-microservices.diagram.json --output output/microservices.html
 ```
 
-用浏览器打开 `output/overview.html`。生成不需要 npm install、Playwright 或仓库根目录的开发依赖：已构建的运行时随 Skill 分发。HTML 已组装仍需实际打开，检查文字、关系、交互和导出效果。
+在浏览器中打开 `output/microservices.html`。如果需要自动导出静态图，先在 Skill 子目录安装 Playwright 和 Chromium：
 
-需要自动导出时再安装 Skill 内的依赖：
-
-```powershell
+```bash
 npm ci --prefix system-blueprint
 node system-blueprint/node_modules/playwright/cli.js install chromium
-
-node system-blueprint/scripts/export.mjs output/overview.html --format svg --output output/overview.svg
-node system-blueprint/scripts/export.mjs output/overview.html --format png --scale 2 --output output/overview.png
-node system-blueprint/scripts/export.mjs output/overview.html --format jpg --background "#FFFFFF" --output output/overview.jpg
+node system-blueprint/scripts/export.mjs output/microservices.html --format svg --output output/microservices.svg
+node system-blueprint/scripts/export.mjs output/microservices.html --format png --scale 2 --output output/microservices.png
+node system-blueprint/scripts/export.mjs output/microservices.html --format jpg --background "#FFFFFF" --output output/microservices.jpg
 ```
 
-浏览器工具栏也可直接下载 SVG。PNG/JPEG 使用 CLI 的 Chromium 渲染；HTML 阅读者无需安装 Node 或 Playwright。
+生成与导出默认不覆盖已有文件，确需替换时添加 `--overwrite`。浏览器工具栏也可直接下载 SVG；PNG/JPEG 的 CLI 导出需要本地 Chromium。更多字段、条件和分组规则见[建模说明](system-blueprint/references/modeling.md)。
 
-## 在详情板审核与修订
+## 安装 Skill
 
-生成图可能遗漏条件或误判关系。打开新生成的 v2 HTML 后，点击节点、连接或分组，再点 **编辑详情**。修改表单并点 **保存修改**；通过 JSON Schema/Ajv 与语义校验后，阅读器会重新测量、布局，画布和详情随之更新。若条件重复、引用无效或方向违反模型规则，表单显示诊断，当前已接受的图保持不变。
+将完整的 [`system-blueprint/`](system-blueprint/) 目录复制到你的 Codex Skills 目录，并命名为 `system-flow`，例如 `~/.codex/skills/system-flow/`。展示名和触发名是 **System Flow / `system-flow`**；当前仓库的运行时目录仍沿用 `system-blueprint/`，以保持已有脚本路径可用。复制时需保留 `SKILL.md`、`agents/`、`assets/`、`references/`、`scripts/` 与锁文件。生成只需要 Node.js 24；仅在需要 CLI 位图导出时，在复制后的目录中执行 `npm ci` 并安装 Chromium。
 
-| 对象 | 可修改内容 |
-| --- | --- |
-| 节点 | 名称、摘要、说明、类型、所属分组、信息依据、来源 |
-| 连接 | 来源/目标节点、条件或标签、说明、关系类型、是否有方向、信息依据、来源 |
-| 分组 | 名称、说明、父分组 |
-
-来源字段每行填写一个路径。需要精确行号，或路径含有特殊字符时，用 JSON 引号包住路径并附加行号，例如 `"src/a.ts"#L12`；未修改的来源会保留原有数据。
-
-修改后可 **撤销修改 / 重做修改**。核对结果后，分别点击 **下载图数据** 和 **下载修订 HTML**，保留新的 `.diagram.json` 与可离线打开的单文件 HTML；浏览器 **下载 SVG** 使用当前已接受的数据，需要 CLI 导出 PNG/JPEG 时以修订 HTML 为输入。静态图仍完整展开。`file://` 页面不会自动覆盖原 JSON、HTML 或真实系统代码，请用下载的文件替换需要保存的版本。ID、节点/连接的增删、画布拖拽改拓扑和布局坐标不在详情板编辑范围；这一步只修订图的描述，不会自动修复被描述的系统。范围修订见 [详情审核与视觉增强记录](docs/validation/editor-enhancement.md)。
-
-## 传统微服务架构演示
-
-以电商下单为例，展示客户端与网关、订单/库存/支付服务、异步消息、服务自有数据库，以及支付失败后的补偿方向。它是通用架构示意，**不代表本仓库或任何实际系统的部署与运行状态**；注册配置、可观测和支付超时等外围能力未展开。图上保留主要方向与条件，点击节点、连接或分组可审核详情并修改已有字段。
-
-[可编辑图数据](examples/traditional-microservices.diagram.json) · [离线交互 HTML](examples/traditional-microservices.html) · [独立 SVG](images/system-blueprint-traditional-microservices.svg) · [PNG](images/system-blueprint-traditional-microservices.png) · [JPEG](images/system-blueprint-traditional-microservices.jpg) · [桌面截图](artifacts/screenshots/traditional-microservices-v2-desktop.png) · [窄屏截图](artifacts/screenshots/traditional-microservices-v2-narrow.png) · [深色截图](artifacts/screenshots/traditional-microservices-v2-dark.png) · [布局与配色复验](docs/validation/routing-colour-enhancement.md)
-
-下图是整条链路的缩略图；点击可打开完整尺寸的独立 SVG，或用交互 HTML 放大、平移查看文字。
-
-[![传统电商微服务架构与下单链路示意图](./images/system-blueprint-traditional-microservices.svg)](images/system-blueprint-traditional-microservices.svg)
-
-## 五类示例
-
-README 中显示的是静态 SVG。交互请下载相应 HTML 后在浏览器打开；每份 HTML 独立、自包含，不依赖同目录文件。
-
-[全部 JSON / HTML / SVG / PNG / JPEG 产物](examples/README.md) · [新旧效果对照与截图](artifacts/visual-comparison.html)
-
-| 类型 | 源数据 | 交互阅读器 |
-| --- | --- | --- |
-| System Overview | [overview.diagram.json](examples/overview.diagram.json) | [overview.html](examples/overview.html) |
-| Runtime Flow | [runtime-flow.diagram.json](examples/runtime-flow.diagram.json) | [runtime-flow.html](examples/runtime-flow.html) |
-| Memory / Recall | [memory-recall.diagram.json](examples/memory-recall.diagram.json) | [memory-recall.html](examples/memory-recall.html) |
-| Deployment Topology | [deployment-topology.diagram.json](examples/deployment-topology.diagram.json) | [deployment-topology.html](examples/deployment-topology.html) |
-| Before / After | [before.diagram.json](examples/before.diagram.json)、[after.diagram.json](examples/after.diagram.json) | [before.html](examples/before.html)、[after.html](examples/after.html) |
-
-### System Overview
-
-![System Blueprint 总览图](./images/system-blueprint-overview.svg)
-
-### Runtime Flow
-
-![Runtime Flow 运行流程图](./images/system-blueprint-runtime-flow.svg)
-
-### Memory / Recall
-
-![Memory / Recall 流程图](./images/system-blueprint-memory-recall.svg)
-
-### Deployment Topology
-
-![Deployment Topology 拓扑图](./images/system-blueprint-deployment-topology.svg)
-
-### Before / After
-
-![Before / After 蓝图对比图](./images/system-blueprint-before-after.svg)
-
-Before/After 使用相同前端、API、数据库基线与主题；新增 LLM 能力明确标为规划。两份单图保持相同比例合成静态对比图，交互仍分别打开两份 HTML。迁移的保留项、简化项和假设见 [示例迁移说明](docs/validation/example-migration.md)。
-
-## 安装为 Skill
-
-将整个 `system-blueprint/` 复制到 Codex 的 Skills 目录，例如：
+可这样向 Agent 提出任务：
 
 ```text
-~/.codex/skills/system-blueprint/
-├── SKILL.md
-├── agents/
-├── references/
-├── assets/
-├── scripts/
-├── package.json
-└── package-lock.json
+使用 $system-flow，核对这个仓库的主要模块和调用关系，生成架构总览及关键请求流程。
+区分已证实、假设和规划，保留重要条件、回路、分组边界与来源。
+交付可修改的 .diagram.json、离线交互 HTML 和 README 可嵌入的 SVG，
+实际打开检查文字、连线和交互，并标明尚待人工核对的地方。
 ```
 
-复制的是子目录，不是整个仓库。保留所有这些资源及许可文件，不能只复制 SKILL.md。生成与阅读不需要源码或根目录 node_modules；安装到其他位置后，命令从脚本自身位置解析随包资源。使用绝对输入/输出路径可避免工作目录歧义。
+完整使用说明与约束见 [SKILL.md](system-blueprint/SKILL.md)。
 
-如需要自动导出，在**复制后的 Skill 目录**执行 `npm ci`，再运行 `node node_modules/playwright/cli.js install chromium`。仅传阅生成好的 HTML/SVG 时无需安装任何依赖。
+## 实现与目录
 
-也可以将这个完整子目录打包分发，或用于支持类似 SKILL.md 约定的其他 Agent；不同平台的触发元数据仍需自行核对。
-
-## 给 Agent 的请求示例
+`JSON Schema / Ajv` 校验输入，随后依次完成可见图投影、文字测量、`ELK.js` 布局、`SVG / CSS` 渲染和 `d3-zoom` 交互。`esbuild` 将阅读器与布局 Worker 打进单文件 HTML；`Playwright` 用于浏览器验证及 PNG/JPEG 导出。
 
 ```text
-使用 system-blueprint，为这个仓库生成系统总览。
-先核对实际模块与调用关系，区分已证实、假设和规划。
-输出可修改的图数据、离线交互 HTML，以及 README 可嵌入的 SVG。
-采用默认浅色工程风，保留关键条件、回路、边界和来源。
-请实际打开验证，并说明未验证的部分。请读者在详情板核对参数，必要时修订后下载新版 JSON 和 HTML。
+system-blueprint/   可独立复制的 Skill、已构建运行时和导出脚本
+src/                模型、投影、测量、布局、渲染、阅读器与 CLI 源码
+examples/           两份演示图的 JSON 与离线 HTML
+images/             README 使用的 PNG/GIF 预览
+tests/              单元和浏览器回归
+docs/               面向使用者的操作说明
 ```
 
-```text
-使用 system-blueprint，绘制请求处理或 Memory/Recall 流程。
-必须能看清需要检索、不检索、未命中和失败路径。
-长说明放详情，关键条件保留在图上；不要用缩小字号解决溢出。
-```
+## 开发与验证
 
-用户明确要求 Mermaid 时尊重该格式。此工具不提供在线协作、账号服务或拖拽式图形编辑器；可用详情板修订已存在对象的字段，批量增删和更大范围的结构变化仍编辑原 JSON 并保留 ID。
+修改 TypeScript 源码时，在仓库根目录安装开发依赖、重新构建并检查生成物：
 
-## 模型与交互约定
-
-图类型为 overview、flow、deployment；Memory 使用 flow；比较图使用两份独立文档。模型使用 JSON Schema / Ajv 结构校验，并另行检查引用、条件、方向、分组和主路径。详见 [建模规则与最小示例](system-blueprint/references/modeling.md)。
-
-- 首版上限：100 节点、300 边、20 组、最多两层分组；文件不超过 2 MiB，单个 details 不超过 8,000 字符。超限明确报错并建议总览加子图，不截断数据。
-- decision 至少两个带有不同非空条件的流程出口；control/exception/feedback 必须有向。普通回路、自环合法；data/dependency 不算判断分支。
-- 先用本机字体测量，再用 ELK 布局。节点标题与 summary 最多两行，边标签最多三行；超出时给出字段诊断，精简内容或拆图，不自动缩小或截断。
-- flow 上下游只沿流程边遍历；overview/deployment 遍历所有有向关系。无向依赖只显示直接关联。
-- 折叠不会修改原模型。隐藏判断与条件有摘要提示，组和聚合边详情可追溯原始内容；展开父组会恢复子组的折叠选择。
-- Tab、Enter、Space 和 Escape 支持基本阅读操作。窄屏保留平移和可关闭详情；工具栏不会要求整图压缩到看不清。
-- 长图首次打开采用 80% 的可读起点视角。主动“适应画布”或“重置视图”显示完整图，必要时低于 25%；继续放大保持倍率连续。重置恢复初始折叠并清除选择，但保留主题。
-
-节点按处理蓝、判断琥珀、存储紫、外部青绿、起止绿等语义使用低饱和描边与浅填充；普通连接按来源节点着色，分支允许斜向，小圆弧柔化转折。异常、反馈仍有固定语义色，关系类型还由箭头、标签和线型共同表达。主路径上的有向线可显示缓慢流向，页脚可暂停/播放；系统启用“减少动态效果”时默认不播放。动效只是阅读辅助，不代表系统实时运行。
-
-HTML 内嵌的 details 也是分享内容；折叠不能脱敏。不要将密码、令牌、真实用户记录或整份私有配置放入模型。文本会转义并以文字渲染，不接受可执行 HTML。
-
-## 导出与命令边界
-
-静态导出使用独立全展开视图，包含标题、说明、标签、箭头、背景和必要图例；不包含工具栏、详情面板、当前高亮或流向动画。缩放、平移、折叠不会裁切导出内容，也不会因导出而改变阅读器状态。
-
-```powershell
-# 新命令默认不覆盖；确认替换时显式添加 --overwrite
-node system-blueprint/scripts/generate.mjs examples/overview.diagram.json --output output/overview.html --overwrite
-node system-blueprint/scripts/export.mjs output/overview.html --format svg --theme dark --output output/overview-dark.svg
-node system-blueprint/scripts/export.mjs --help
-```
-
-路径支持空格和中文，输出目录按需创建。输入/参数错误退出 2，依赖、浏览器或渲染失败退出 1，成功退出 0。输出扩展名与真实格式必须一致，冲突会报错。
-
-SVG 是矢量格式，不接受 scale。PNG/JPEG 默认 scale=2，允许 0.5–4；任何边超过 16,000 px 或总像素超过 40,000,000 时停止，要求降低倍率或拆图，不悄悄裁切。JPEG 使用明确背景，例如 `#FFFFFF`。系统字体在不同平台可能不同，需要固定像素外观时提供位图。
-
-## 旧 HTML / SVG 与 Python 入口
-
-旧静态 HTML/SVG 仍能直接使用，原模板保留在 [legacy-template.html](system-blueprint/assets/legacy-template.html)。v1 文件没有完整模型，迁移按语义人工重建，不承诺自动无损还原。v2 HTML 的原数据位于 `script#blueprint-data`，也建议始终保留独立 JSON。
-
-```powershell
-# 旧 SVG 位图导出
-pip install cairosvg pillow
-python system-blueprint/scripts/export_diagram.py old-diagram.svg --format png --output output/legacy.png
-
-# 旧 HTML 与 v2 HTML 都转交 Node / Playwright
-python system-blueprint/scripts/export_diagram.py old-diagram.html --format jpg --background "#FFFFFF"
-
-# 旧 HTML 含多个 SVG 时明确选择，从 0 开始
-python system-blueprint/scripts/export_diagram.py multi.html --format png --svg-index 1
-```
-
-| 输入 / 入口 | 范围与依赖 |
-| --- | --- |
-| v2 HTML → Node export.mjs | SVG / PNG / JPEG；Skill 内 Playwright + Chromium |
-| v1 HTML → Node 或 Python | 仅 PNG / JPEG；静态自包含内联 SVG；不执行页面脚本，阻止远程资源；多图必须给索引 |
-| SVG → Python | PNG / JPEG；CairoSVG + Pillow；Windows 可能另需 Cairo 运行库 |
-| v1 HTML → 独立 SVG | 不在兼容范围；需要 v2 模型重新生成 |
-
-Python 兼容入口保留原来的**覆盖已有输出**行为和默认 `#08111E` 背景参数；新 Node 命令必须 `--overwrite`。旧 HTML 导出现在新增 Node/Playwright 依赖，不再依赖 BeautifulSoup 提取 SVG，也不再把浏览器 CSS 当成 CairoSVG 可完整复现的能力。旧 SVG 路径仍受 CairoSVG 支持范围限制，不能保证全部浏览器滤镜一致。
-
-## 维护与验证
-
-源码按 model / projection / layout / render / viewer / export / cli 分层；schema 生成 TypeScript 类型与独立校验器；esbuild 生成随 Skill 分发的 JS。ELK 布局 Worker 的源码内嵌到 HTML，再创建 Blob Worker，不需要相邻 Worker 文件。
-
-```powershell
+```bash
 npm ci
-npm ci --prefix system-blueprint
-node system-blueprint/node_modules/playwright/cli.js install chromium
-npm run check:build
 npm run typecheck
 npm run test:unit
 npm run build
 npm run check:build
 npm run test:browser
-npm run test:package
 npm run examples:check
-npm run package:skill
-npm run package:skill -- --check
-
-# 重生成示例、测量性能
-npm run examples:generate
-npm run test:performance
 ```
 
-Windows PowerShell 如果拦截 npm.ps1，可使用 `npm.cmd`。Linux CI 安装 Chromium 时还需准备系统依赖。修改源码后必须重新 build，避免预构建资源与源码脱节。
+`npm run examples:generate` 会重新生成两份演示 HTML 和 README 预览 PNG；`examples:check` 只读检查已有交付。两条命令都会在忽略的临时目录验证 SVG/PNG/JPEG 导出，不把这些格式作为仓库演示文件保存。浏览器测试需事先安装 Playwright Chromium。独立复制验证可运行 `npm run test:package`；打包与发布在图形验收后另行处理。
 
-`check:build` 在临时目录从源码重建，比对 20 个分发/生成文件、许可证、版本和 lockfile；不会先覆盖原产物来掩盖不一致。源码和 Skill 文档更新后先运行 `npm run build`，再执行 `npm run package:skill`。打包脚本固定文件顺序与 ZIP 元数据，逐文件校验并记录 SHA-256；`--check` 可只读确认安装包与当前 Skill 目录一致。完整安装包为 [system-blueprint-v2.zip](artifacts/system-blueprint-v2.zip)，不包含 node_modules 或临时缓存。
+[使用说明](docs/usage.md) · [演示文件索引](examples/README.md)
 
-[本轮详情审核与动效验收](docs/validation/editor-enhancement-results.md) · [初始 v2 验收](docs/validation/v2-validation-report.md) · [性能实测](docs/validation/performance.md) · [22 项验收计划](docs/validation/acceptance-plan.md) · [浏览器实测](docs/validation/browser-coverage.md) · [测试数据语义](docs/validation/fixture-report.md) · [布局检查](docs/validation/layout-report.md) · [示例迁移](docs/validation/example-migration.md)
+自动布局无法保证任意复杂图都没有交叉；生成后仍需检查事实、文字、方向和布局。旧 v1 HTML / SVG 可使用兼容入口导出位图，但不能无损转换为可编辑图数据；详细限制见 [SKILL.md](system-blueprint/SKILL.md)。
 
-性能目标与已测结果分开：30 节点 / 45 边 / 3 组的 HTML 目标不超过 3 MiB，首次就绪 p95 ≤1.5 秒，折叠/展开 p95 ≤500 毫秒；100 / 300 / 20 上沿要求完整完成并记录耗时和主线程阻塞。这些是方案目标，不能从构建通过或简单图推断全部达标；实际机器、浏览器、样本、时间和体积见 [性能实测记录](docs/validation/performance.md)。
+## 开源许可证
 
-自动布局不能保证任意复杂图零交叉。结构校验、几何检查与实际截图审查缺一不可；本机 Chromium 验证也不等于所有操作系统、浏览器或真实部署均已验证。浏览器不可用时可以先交付经过校验的数据和已组装 HTML，但必须明确视觉、交互或导出未验证。
+本项目的原创内容采用 [MIT License](LICENSE)。独立复制 `system-blueprint/` Skill 时，请一并保留其中的 [LICENSE](system-blueprint/LICENSE)；所含第三方组件仍遵循各自的许可证，详见[第三方声明](system-blueprint/THIRD_PARTY_NOTICES.md)。

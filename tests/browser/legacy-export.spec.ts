@@ -136,7 +136,7 @@ test('V12 Python applies bitmap limit to CSS-computed SVG dimensions before Cair
 
 test('V15 v2 CLI creates independently readable SVG, PNG and JPEG with matching dimensions', async ({ page }) => {
   const input = join(outputRoot, 'v2-format.html');
-  const generated = await invoke(process.execPath, [resolve('system-blueprint/scripts/generate.mjs'), resolve('examples/overview.diagram.json'), '--output', input, '--overwrite']);
+  const generated = await invoke(process.execPath, [resolve('system-blueprint/scripts/generate.mjs'), resolve('tests/fixtures/overview.diagram.json'), '--output', input, '--overwrite']);
   expect(generated.status, generated.stderr).toBe(0);
   const svgPath = join(outputRoot, 'v2-format.svg');
   const svgResult = await invoke(process.execPath, [nodeExporter, input, '--format', 'svg', '--output', svgPath, '--overwrite']);

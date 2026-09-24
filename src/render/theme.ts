@@ -27,8 +27,8 @@ export const themes: Record<'light' | 'dark', ThemeTokens> = {
   light: {
     name: 'light', background: '#F8FAFC', surface: '#FFFFFF', group: '#F1F5F9', text: '#172033', muted: '#526176', border: '#CBD5E1', edge: '#64748B', accent: '#2563EB', exception: '#B91C1C', fontFamily,
     sourceEdgePalette: [
-      '#225BB2', '#0A737E', '#6E53A7', '#286B4D', '#9C3B73', '#475569', '#795548', '#55700D',
-      '#822B2B', '#167E16', '#953295', '#6F5625', '#326395', '#25256F', '#11799C', '#6F3E25', '#572B82', '#6F253E',
+      '#225DB2', '#D3208A', '#1C8515', '#6B201F', '#181376', '#A85F25', '#8D1FCC', '#651978',
+      '#236761', '#201EC4', '#973168', '#234268', '#704E21', '#C225CB', '#5B35AE', '#73711F', '#1F7C9C', '#A31B9A',
     ],
     semantic: {
       process: { stroke: '#456BB0', fill: '#F1F6FE' },
@@ -42,8 +42,8 @@ export const themes: Record<'light' | 'dark', ThemeTokens> = {
   dark: {
     name: 'dark', background: '#111827', surface: '#1C2738', group: '#162132', text: '#EDF2F7', muted: '#B7C3D4', border: '#536278', edge: '#9AAAC0', accent: '#83AEFF', exception: '#FFA3A3', fontFamily,
     sourceEdgePalette: [
-      '#8FB4FF', '#6AD1CE', '#BFA8EC', '#91D5AD', '#F3A5D1', '#C4D0E0', '#D4B9A8', '#C4D68A',
-      '#E18E8E', '#8EE18E', '#E18EE1', '#E1C58E', '#8EB8E1', '#8E8EE1', '#8ECCE1', '#E1AA8E', '#B88EE1', '#E18EAA',
+      '#709DDF', '#EC6798', '#A4EC73', '#C38C80', '#BECCFC', '#FE9819', '#D28BFB', '#FAAFFB',
+      '#27C8AF', '#A2AEFA', '#FC84D1', '#63B5FB', '#EDD0A0', '#B38AC0', '#9886FD', '#97A61C', '#69D9F7', '#D56FCB',
     ],
     semantic: {
       process: { stroke: '#8BAEFF', fill: '#22314A' },

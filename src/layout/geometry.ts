@@ -76,6 +76,32 @@ function segmentIntersectsBox(a: Point, b: Point, box: Box): boolean {
   return true;
 }
 
+/** Curved routes store cubic controls, so geometry checks must follow the drawn curve. */
+export function drawnSection(points: Point[], spline: boolean): Point[] {
+  if (!spline || points.length < 4 || (points.length - 1) % 3 !== 0) return points;
+  const drawn = [points[0]!];
+  for (let i = 0; i + 3 < points.length; i += 3) {
+    const a = points[i]!; const b = points[i + 1]!; const c = points[i + 2]!; const d = points[i + 3]!;
+    const controlLength = Math.hypot(b.x - a.x, b.y - a.y) + Math.hypot(c.x - b.x, c.y - b.y) + Math.hypot(d.x - c.x, d.y - c.y);
+    const steps = Math.max(8, Math.min(512, Math.ceil(controlLength / 6)));
+    for (let step = 1; step <= steps; step++) {
+      const t = step / steps; const u = 1 - t;
+      drawn.push({
+        x: u ** 3 * a.x + 3 * u ** 2 * t * b.x + 3 * u * t ** 2 * c.x + t ** 3 * d.x,
+        y: u ** 3 * a.y + 3 * u ** 2 * t * b.y + 3 * u * t ** 2 * c.y + t ** 3 * d.y,
+      });
+    }
+  }
+  return drawn;
+}
+
+export function routeIntersectsBoxes(sections: Point[][], spline: boolean, boxes: Box[]): boolean {
+  return sections.some(points => {
+    const drawn = drawnSection(points, spline);
+    return boxes.some(box => drawn.slice(1).some((point, i) => segmentIntersectsBox(drawn[i]!, point, box)));
+  });
+}
+
 /** Report geometric defects without treating ordinary edge crossings as invalid topology. */
 export function checkGeometry(graph: LayoutGraph): Diagnostic[] {
   const diagnostics: Diagnostic[] = [];
@@ -125,15 +151,17 @@ export function checkGeometry(graph: LayoutGraph): Diagnostic[] {
   });
   graph.edges.forEach((edge, i) => {
     if (!edge.sections.length) add('EDGE_ROUTE_MISSING', `/edges/${i}`, [edge.id], '边没有可绘制的路径。');
+    const drawn = edge.sections.map(section => drawnSection(section, edge.routing === 'spline'));
     for (const section of edge.sections) {
       if (section.length < 2) add('EDGE_ROUTE_MISSING', `/edges/${i}`, [edge.id], '连线路径至少需要两个端点。');
+      if (edge.routing === 'spline' && (section.length - 1) % 3 !== 0) add('EDGE_ROUTE_INVALID', `/edges/${i}`, [edge.id], '样条控制点必须构成完整三次曲线。');
       if (section.some(p => !Number.isFinite(p.x) || !Number.isFinite(p.y) || p.x < -EPSILON || p.y < -EPSILON || p.x > graph.width + EPSILON || p.y > graph.height + EPSILON)) add('EDGE_OUT_OF_BOUNDS', `/edges/${i}`, [edge.id], '边折点超出画布或包含非有限坐标。');
     }
     for (const node of graph.nodes) {
       if (node.id === edge.source || node.id === edge.target) continue;
-      if (edge.sections.some(section => section.slice(1).some((point, k) => segmentIntersectsBox(section[k]!, point, node)))) add('EDGE_NODE_INTERSECTION', `/edges/${i}`, [edge.id, node.id], '连线穿过了非端点节点。');
+      if (drawn.some(section => section.slice(1).some((point, k) => segmentIntersectsBox(section[k]!, point, node)))) add('EDGE_NODE_INTERSECTION', `/edges/${i}`, [edge.id, node.id], '连线穿过了非端点节点。');
     }
-    for (const title of titles) if (edge.sections.some(section => section.slice(1).some((point, k) => segmentIntersectsBox(section[k]!, point, title)))) add('EDGE_GROUP_TITLE_INTERSECTION', `/edges/${i}`, [edge.id, title.id], '连线穿过了分组标题。');
+    for (const title of titles) if (drawn.some(section => section.slice(1).some((point, k) => segmentIntersectsBox(section[k]!, point, title)))) add('EDGE_GROUP_TITLE_INTERSECTION', `/edges/${i}`, [edge.id, title.id], '连线穿过了分组标题。');
     if (edge.labelText.lines.length && !edge.labelBox) add('LABEL_MISSING', `/edges/${i}/label`, [edge.id], '非空边标签没有布局位置。');
     if (edge.labelBox) {
       const label = { x: edge.labelBox.x - 5, y: edge.labelBox.y - 2, width: edge.labelBox.width + 10, height: edge.labelBox.height + 4 };

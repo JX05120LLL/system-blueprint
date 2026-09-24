@@ -23,4 +23,4 @@ The optional export dependency is Playwright 1.58.2 (Apache-2.0). Its license an
 
 Build-only dependencies (TypeScript, esbuild, json-schema-to-typescript, tsx and test tools) are locked in the repository package-lock.json. They are not needed to generate HTML from an installed skill.
 
-The drawio-skill repository was consulted for workflow and review ideas only; no upstream implementation code was copied. Reference decisions are recorded in the repository docs/validation/drawio-reference.md.
+The drawio-skill repository was consulted for workflow and review ideas only; no upstream implementation code was copied.

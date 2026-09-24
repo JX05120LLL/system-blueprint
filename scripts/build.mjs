@@ -45,7 +45,16 @@ export async function buildProject({ outputRoot = repositoryRoot, logLevel = 'in
     playwright: skill.dependencies.playwright, buildDependencies: pkg.devDependencies, files: hashes,
   };
   await mkdir(join(outputRoot, 'system-blueprint/assets'), { recursive: true });
-  await writeFile(join(outputRoot, manifestPath), `${JSON.stringify(manifest, null, 2)}\n`);
+  const manifestFile = join(outputRoot, manifestPath);
+  const manifestText = `${JSON.stringify(manifest, null, 2)}\n`;
+  // Windows may briefly deny truncating this generated file while another process reads it.
+  for (let attempt = 0; ; attempt++) {
+    try { await writeFile(manifestFile, manifestText); break; }
+    catch (error) {
+      if (process.platform !== 'win32' || attempt === 4 || !['UNKNOWN', 'EBUSY', 'EPERM'].includes(error.code)) throw error;
+      await new Promise(resolve => setTimeout(resolve, 100 * (attempt + 1)));
+    }
+  }
   return [...schemaOutputs, ...bundleOutputs, ...notices, manifestPath];
 }
 

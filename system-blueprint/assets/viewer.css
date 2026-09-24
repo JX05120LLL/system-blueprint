@@ -10,6 +10,11 @@
 footer { flex-wrap: wrap; }
 .view-controls { flex-wrap: wrap; min-width: 0; }
 .view-controls button { white-space: nowrap; }
+.direction-controls { display: inline-flex; align-items: stretch; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.view-controls .direction-controls button { min-height: 38px; border: 0; border-radius: 0; }
+.view-controls .direction-controls button + button { border-left: 1px solid var(--line); }
+.view-controls .direction-controls button[aria-pressed=true] { color: var(--accent); background: #eff6ff; }
+body[data-theme=dark] .view-controls .direction-controls button[aria-pressed=true] { background: #263a57; }
 #workspace { display: flex; min-width: 0; }
 #canvas { flex: 1 1 0%; width: 0; min-width: 0; }
 #details {

@@ -39,7 +39,7 @@ export async function generateNotices({ outputRoot = root } = {}) {
     `ELK is upstream code distributed under EPL-2.0. The corresponding elkjs wrapper and build sources are available at [elkjs ${versions.elkjs}](https://github.com/kieler/elkjs/tree/${versions.elkjs}); its [build definition](https://raw.githubusercontent.com/kieler/elkjs/${versions.elkjs}/build.gradle) identifies the Eclipse Layout Kernel modules incorporated into the worker. The underlying Java layout sources are in the [Eclipse Layout Kernel repository](https://github.com/eclipse-elk/elk). The application embeds the installed upstream \`elk-worker.min.js\` without changing its layout algorithms.`, '',
     `The optional export dependency is Playwright ${exporter.dependencies.playwright} (Apache-2.0). Its license and third-party notices are installed by \`npm ci\` in the skill directory; Chromium carries its own notices in the installed browser distribution.`, '',
     'Build-only dependencies (TypeScript, esbuild, json-schema-to-typescript, tsx and test tools) are locked in the repository package-lock.json. They are not needed to generate HTML from an installed skill.', '',
-    'The drawio-skill repository was consulted for workflow and review ideas only; no upstream implementation code was copied. Reference decisions are recorded in the repository docs/validation/drawio-reference.md.',
+    'The drawio-skill repository was consulted for workflow and review ideas only; no upstream implementation code was copied.',
   );
   const path = 'system-blueprint/THIRD_PARTY_NOTICES.md';
   await writeFile(join(outputRoot, path), `${lines.join('\n')}\n`); outputs.push(path);

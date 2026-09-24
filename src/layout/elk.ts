@@ -3,20 +3,21 @@ import type { ElkExtendedEdge, ElkNode, LayoutOptions } from 'elkjs/lib/elk-api'
 import type { DiagramView } from '../model/types.ts';
 import type { LayoutEdge, LayoutGraph, LayoutGroup, LayoutNode, MeasuredGraph, Point } from './types.ts';
 import { checkGeometry, shapeBoundaryPoint } from './geometry.ts';
+import { smoothGraphRoutes } from './curves.ts';
 
 // Browser build swaps only the engine for an inline Blob Worker; tests use identical ELK in Node.
 let layoutQueue: Promise<unknown> = Promise.resolve();
 const ROOT_ID = 'root';
 const FRAME = 32;
 
-/** Prefer diagonal routes, but retry dense graphs when a straight ELK segment crosses content. */
+/** Use ELK to avoid obstacles, then turn safe multi-segment routes into continuous curves. */
 export async function layoutGraph(graph: MeasuredGraph, view: DiagramView): Promise<LayoutGraph> {
-  const polyline = await layoutGraphWithRouting(graph, view, 'POLYLINE');
+  const polyline = smoothGraphRoutes(await layoutGraphWithRouting(graph, view, 'POLYLINE'));
   const collisions = (result: LayoutGraph) => checkGeometry(result).filter(diagnostic =>
     diagnostic.severity === 'error' && (diagnostic.code === 'EDGE_NODE_INTERSECTION' || diagnostic.code === 'EDGE_GROUP_TITLE_INTERSECTION')).length;
   const initialCollisions = collisions(polyline);
   if (!initialCollisions) return polyline;
-  const orthogonal = await layoutGraphWithRouting(graph, view, 'ORTHOGONAL');
+  const orthogonal = smoothGraphRoutes(await layoutGraphWithRouting(graph, view, 'ORTHOGONAL'));
   return collisions(orthogonal) < initialCollisions ? orthogonal : polyline;
 }
 
@@ -126,7 +127,7 @@ async function layoutGraphWithRouting(graph: MeasuredGraph, view: DiagramView, r
     last[last.length - 1] = shapeBoundaryPoint(byId.get(edge.target)!, last.at(-1)!, last.at(-2)!);
     const label = entry.edge.labels?.[0];
     return {
-      ...edge, sections,
+      ...edge, sections, routing: 'polyline',
       ...(label ? { labelBox: { x: (label.x ?? 0) + origin.x + 5, y: (label.y ?? 0) + origin.y + 2, width: edge.labelText.width, height: edge.labelText.height } } : {}),
     };
   });

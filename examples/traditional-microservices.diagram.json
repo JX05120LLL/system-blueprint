@@ -1,85 +1,40 @@
 {
   "schemaVersion": "2.0",
   "id": "traditional-microservices",
-  "title": "传统电商微服务架构 · 下单链路示意",
-  "description": "用于展示典型分层与下单主链的教学示意，不代表本仓库或任何真实系统的部署。支付采用立即返回确定结果的同步场景；异步回调、处理中、超时、注册配置和可观测能力未展开。所有节点及连接均为假设，需按实际系统审核修改。",
+  "title": "传统电商微服务架构 · 服务协作总览",
+  "description": "用户经 API 网关进入订单服务；业务服务与支撑能力分区展示。所有关系均为假设，需按真实系统核查。",
   "view": {
     "kind": "overview",
-    "direction": "DOWN",
+    "direction": "RIGHT",
     "theme": "light",
     "primaryPath": [
-      "request-edge",
-      "edge-gateway",
-      "gateway-order",
-      "order-inventory",
-      "inventory-reservation-result",
-      "reservation-result-payment",
-      "payment-result",
-      "result-confirm",
-      "confirm-response"
+      "request-gateway",
+      "gateway-order"
     ]
   },
-  "groups": [
-    {
-      "id": "access",
-      "label": "接入层",
-      "details": "边缘防护和 API 网关是概念边界；鉴权发生在业务请求进入订单服务之前。"
-    },
-    {
-      "id": "business",
-      "label": "业务微服务",
-      "details": "各服务按业务能力划分。子组只表达责任域，不表示共用进程或数据库。"
-    },
-    {
-      "id": "trade-domain",
-      "label": "交易域",
-      "parentId": "business",
-      "details": "订单、库存与支付之间的顺序及补偿只作教学示意；真实系统需要另行确定幂等、超时和一致性策略。"
-    },
-    {
-      "id": "data",
-      "label": "服务自有数据库",
-      "details": "订单、库存与支付服务各有自己的持久化边界；这些存储不是跨服务共享库。"
-    },
-    {
-      "id": "events",
-      "label": "异步事件",
-      "details": "订单确认事件由通知服务消费；此支路不阻塞接口返回。图中不指定消息中间件、投递语义或通知渠道。"
-    }
-  ],
+  "groups": [],
   "nodes": [
     {
       "id": "customer",
       "kind": "start",
       "label": "用户发起下单",
-      "summary": "Web / App 请求",
+      "summary": "Web / App",
       "details": "演示客户端提交下单请求，不对应真实产品入口。",
-      "evidenceStatus": "assumed"
-    },
-    {
-      "id": "edge",
-      "kind": "process",
-      "label": "CDN / WAF",
-      "summary": "边缘接入与防护",
-      "groupId": "access",
-      "details": "典型公网入口；具体 CDN、WAF 和 TLS 终止位置因部署而异。",
       "evidenceStatus": "assumed"
     },
     {
       "id": "gateway",
       "kind": "process",
       "label": "API 网关",
-      "summary": "鉴权 · 限流 · 路由",
-      "groupId": "access",
-      "details": "校验身份后将下单请求转发给订单服务。",
+      "summary": "边缘防护 · 鉴权 · 路由",
+      "details": "接收 HTTPS 下单请求；CDN/WAF、限流、认证接入均为典型能力，真实网关部署方式和调用顺序需核查。",
       "evidenceStatus": "assumed"
     },
     {
       "id": "auth",
       "kind": "process",
       "label": "认证服务",
-      "summary": "令牌校验",
-      "groupId": "access",
+      "summary": "提供身份校验",
       "details": "向网关提供身份校验能力。图中不指定 OAuth、会话或令牌实现。",
       "evidenceStatus": "assumed"
     },
@@ -87,70 +42,45 @@
       "id": "order",
       "kind": "process",
       "label": "订单服务",
-      "summary": "创建待支付订单",
-      "groupId": "trade-domain",
-      "details": "建立待支付订单并调用库存服务。收到预留结果后由订单服务判断是否发起支付。跨服务一致性属于具体实现选择。",
+      "summary": "编排下单并汇总结果",
+      "details": "订单服务创建待支付订单，按预留结果决定是否请求支付，并向客户端返回最终同步结果。库存不足或支付失败时走补偿；详见配套下单流程图。",
       "evidenceStatus": "assumed"
     },
     {
       "id": "inventory",
       "kind": "process",
       "label": "库存服务",
-      "summary": "预留或释放库存",
-      "groupId": "trade-domain",
+      "summary": "预留 / 释放库存",
       "details": "向订单服务返回预留成功或库存不足；支付失败时可收到释放预留请求。锁粒度、幂等和超时回收未在图中指定。",
-      "evidenceStatus": "assumed"
-    },
-    {
-      "id": "reservation-result",
-      "kind": "decision",
-      "label": "库存预留成功？",
-      "summary": "订单服务接收结果",
-      "groupId": "trade-domain",
-      "details": "订单服务检查库存服务返回的预留结果；成功才发起支付，库存不足则取消订单。该判断属于订单编排步骤，不是库存服务直接调用支付服务。",
       "evidenceStatus": "assumed"
     },
     {
       "id": "payment",
       "kind": "process",
       "label": "支付服务",
-      "summary": "发起收单并记录流水",
-      "groupId": "trade-domain",
+      "summary": "同步收单与流水",
       "details": "关联订单与第三方支付渠道。本示意限定为收单请求立即返回确定成功或失败的同步场景；异步回调、处理中和超时不在图内。",
       "evidenceStatus": "assumed"
     },
     {
-      "id": "payment-result",
-      "kind": "decision",
-      "label": "支付成功？",
-      "groupId": "trade-domain",
-      "details": "订单服务接收支付服务返回的同步收单结果，再分为成功和失败。处理中、超时和重复回调等状态在真实系统中必须单独设计。",
+      "id": "order-db",
+      "kind": "store",
+      "label": "订单库",
+      "summary": "订单服务自有数据",
       "evidenceStatus": "assumed"
     },
     {
-      "id": "confirm",
-      "kind": "process",
-      "label": "确认订单",
-      "summary": "更新状态并发布事件",
-      "groupId": "trade-domain",
-      "details": "订单服务内部的确认步骤：支付成功后更新订单状态，再发布订单确认事件。状态更新与事件发布的可靠性策略未指定。",
+      "id": "inventory-db",
+      "kind": "store",
+      "label": "库存库",
+      "summary": "库存服务自有数据",
       "evidenceStatus": "assumed"
     },
     {
-      "id": "compensate",
-      "kind": "process",
-      "label": "失败补偿",
-      "summary": "取消订单 · 按需释放预留",
-      "groupId": "trade-domain",
-      "details": "订单服务内部的补偿步骤：库存不足时取消待支付订单；支付失败时取消订单并释放已预留库存。这是业务补偿，不等于跨库事务回滚。",
-      "evidenceStatus": "assumed"
-    },
-    {
-      "id": "response",
-      "kind": "end",
-      "label": "返回订单结果",
-      "summary": "成功 / 失败状态",
-      "details": "成功和失败支路在响应处汇合。异步通知独立于接口响应。",
+      "id": "payment-db",
+      "kind": "store",
+      "label": "支付库",
+      "summary": "支付服务自有流水",
       "evidenceStatus": "assumed"
     },
     {
@@ -166,7 +96,6 @@
       "kind": "store",
       "label": "事件总线",
       "summary": "订单确认事件",
-      "groupId": "events",
       "details": "代表异步消息传递能力，不指定 Kafka、RabbitMQ 等产品，也不承诺具体投递语义。",
       "evidenceStatus": "assumed"
     },
@@ -175,51 +104,19 @@
       "kind": "process",
       "label": "通知服务",
       "summary": "消费事件并发送消息",
-      "groupId": "events",
       "details": "订阅订单确认事件并异步向用户发送通知。渠道、重试和去重机制由真实系统决定。",
-      "evidenceStatus": "assumed"
-    },
-    {
-      "id": "order-db",
-      "kind": "store",
-      "label": "订单库",
-      "summary": "订单服务自有数据",
-      "groupId": "data",
-      "evidenceStatus": "assumed"
-    },
-    {
-      "id": "inventory-db",
-      "kind": "store",
-      "label": "库存库",
-      "summary": "库存服务自有数据",
-      "groupId": "data",
-      "evidenceStatus": "assumed"
-    },
-    {
-      "id": "payment-db",
-      "kind": "store",
-      "label": "支付库",
-      "summary": "支付服务自有流水",
-      "groupId": "data",
       "evidenceStatus": "assumed"
     }
   ],
   "edges": [
     {
-      "id": "request-edge",
+      "id": "request-gateway",
       "source": "customer",
-      "target": "edge",
-      "kind": "control",
-      "directed": true,
-      "label": "HTTPS 下单"
-    },
-    {
-      "id": "edge-gateway",
-      "source": "edge",
       "target": "gateway",
       "kind": "control",
       "directed": true,
-      "label": "转发请求"
+      "label": "HTTPS 下单",
+      "evidenceStatus": "assumed"
     },
     {
       "id": "gateway-order",
@@ -227,88 +124,8 @@
       "target": "order",
       "kind": "control",
       "directed": true,
-      "label": "鉴权通过后创建订单"
-    },
-    {
-      "id": "order-inventory",
-      "source": "order",
-      "target": "inventory",
-      "kind": "control",
-      "directed": true,
-      "label": "预留库存"
-    },
-    {
-      "id": "inventory-reservation-result",
-      "source": "inventory",
-      "target": "reservation-result",
-      "kind": "feedback",
-      "directed": true,
-      "label": "返回预留结果"
-    },
-    {
-      "id": "reservation-result-payment",
-      "source": "reservation-result",
-      "target": "payment",
-      "kind": "control",
-      "directed": true,
-      "label": "成功：订单发起支付"
-    },
-    {
-      "id": "payment-result",
-      "source": "payment",
-      "target": "payment-result",
-      "kind": "control",
-      "directed": true,
-      "label": "同步结果"
-    },
-    {
-      "id": "result-confirm",
-      "source": "payment-result",
-      "target": "confirm",
-      "kind": "control",
-      "directed": true,
-      "label": "成功"
-    },
-    {
-      "id": "confirm-response",
-      "source": "confirm",
-      "target": "response",
-      "kind": "control",
-      "directed": true,
-      "label": "成功响应"
-    },
-    {
-      "id": "result-compensate",
-      "source": "payment-result",
-      "target": "compensate",
-      "kind": "exception",
-      "directed": true,
-      "label": "支付失败"
-    },
-    {
-      "id": "reservation-result-compensate",
-      "source": "reservation-result",
-      "target": "compensate",
-      "kind": "exception",
-      "directed": true,
-      "label": "不足：取消订单"
-    },
-    {
-      "id": "compensate-response",
-      "source": "compensate",
-      "target": "response",
-      "kind": "control",
-      "directed": true,
-      "label": "失败响应"
-    },
-    {
-      "id": "compensate-inventory",
-      "source": "compensate",
-      "target": "inventory",
-      "kind": "feedback",
-      "directed": true,
-      "label": "已预留则释放",
-      "details": "仅支付失败且已有预留时执行；库存不足分支无需释放。"
+      "label": "鉴权后路由",
+      "evidenceStatus": "assumed"
     },
     {
       "id": "gateway-auth",
@@ -316,7 +133,28 @@
       "target": "auth",
       "kind": "dependency",
       "directed": true,
-      "label": "鉴权"
+      "label": "校验身份",
+      "evidenceStatus": "assumed"
+    },
+    {
+      "id": "order-inventory",
+      "source": "order",
+      "target": "inventory",
+      "kind": "dependency",
+      "directed": true,
+      "label": "预留库存",
+      "details": "库存服务返回预留结果；支付失败后，订单服务还会请求库存服务释放已预留库存。",
+      "evidenceStatus": "assumed"
+    },
+    {
+      "id": "order-payment",
+      "source": "order",
+      "target": "payment",
+      "kind": "dependency",
+      "directed": true,
+      "label": "预留成功后收单",
+      "details": "仅库存预留成功时发起支付。此教学示意限定第三方渠道同步返回确定结果。",
+      "evidenceStatus": "assumed"
     },
     {
       "id": "order-order-db",
@@ -324,7 +162,8 @@
       "target": "order-db",
       "kind": "data",
       "directed": true,
-      "label": "订单状态"
+      "label": "订单状态",
+      "evidenceStatus": "assumed"
     },
     {
       "id": "inventory-inventory-db",
@@ -332,7 +171,8 @@
       "target": "inventory-db",
       "kind": "data",
       "directed": true,
-      "label": "预留 / 释放"
+      "label": "库存状态",
+      "evidenceStatus": "assumed"
     },
     {
       "id": "payment-payment-db",
@@ -340,7 +180,8 @@
       "target": "payment-db",
       "kind": "data",
       "directed": true,
-      "label": "支付流水"
+      "label": "支付流水",
+      "evidenceStatus": "assumed"
     },
     {
       "id": "payment-provider",
@@ -349,24 +190,18 @@
       "kind": "dependency",
       "directed": true,
       "label": "收单请求",
-      "details": "外部渠道在本示意中立即返回确定结果；异步回调不在图内。"
+      "details": "支付渠道的同步返回结果详见下单流程图；本图只展示依赖方向。",
+      "evidenceStatus": "assumed"
     },
     {
-      "id": "provider-payment",
-      "source": "payment-provider",
-      "target": "payment",
-      "kind": "feedback",
-      "directed": true,
-      "label": "同步返回收单结果",
-      "details": "仅代表本教学示意的同步成功或失败结果；真实支付渠道还可能返回处理中、超时或异步通知。"
-    },
-    {
-      "id": "confirm-event-bus",
-      "source": "confirm",
+      "id": "order-event-bus",
+      "source": "order",
       "target": "event-bus",
       "kind": "data",
       "directed": true,
-      "label": "订单确认事件"
+      "label": "确认后发布",
+      "details": "仅成功确认订单后发布事件；发布可靠性策略未指定。",
+      "evidenceStatus": "assumed"
     },
     {
       "id": "event-bus-notify",
@@ -374,7 +209,8 @@
       "target": "notify",
       "kind": "data",
       "directed": true,
-      "label": "异步消费"
+      "label": "异步消费",
+      "evidenceStatus": "assumed"
     }
   ]
 }

@@ -2,15 +2,15 @@ import { test, expect } from '@playwright/test';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
-async function open(page: import('@playwright/test').Page, name: string, example = false) {
+async function open(page: import('@playwright/test').Page, name: string) {
   const output = resolve(`artifacts/browser-${name}.html`);
-  execFileSync(process.execPath, ['system-blueprint/scripts/generate.mjs', `${example ? 'examples' : 'tests/fixtures'}/${name}.diagram.json`, '--output', output, '--overwrite']);
+  execFileSync(process.execPath, ['system-blueprint/scripts/generate.mjs', `tests/fixtures/${name}.diagram.json`, '--output', output, '--overwrite']);
   await page.context().setOffline(true);
   await page.goto(pathToFileURL(output).href);
   await page.evaluate(() => (window as any).blueprint.ready);
 }
 test('V14 V16 offline node details, keyboard and theme', async ({ page }) => {
-  await open(page, 'overview', true);
+  await open(page, 'overview');
   await page.locator('[data-node-id="input"]').focus(); await page.keyboard.press('Enter');
   await expect(page.locator('#details')).toBeVisible();
   await expect(page.locator('#details')).toContainText('仓库');
@@ -21,7 +21,7 @@ test('V14 V16 offline node details, keyboard and theme', async ({ page }) => {
 });
 
 test('V14 without JavaScript shows model summary without inactive reader controls', async ({ page, browser }) => {
-  await open(page, 'overview', true);
+  await open(page, 'overview');
   const context = await browser.newContext({ javaScriptEnabled: false, offline: true });
   try {
     const disabled = await context.newPage();

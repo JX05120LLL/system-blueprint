@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { checkGeometry, shapeBoundaryPoint } from '../../src/layout/geometry.ts';
+import { checkGeometry, routeIntersectsBoxes, shapeBoundaryPoint } from '../../src/layout/geometry.ts';
+import { smoothGraphRoutes } from '../../src/layout/curves.ts';
 import type { LayoutGraph, LayoutNode, TextBlock } from '../../src/layout/types.ts';
 
 const text: TextBlock = { lines: ['label'], width: 60, height: 20, fontSize: 14, lineHeight: 20 };
@@ -65,6 +66,46 @@ test('geometry detects edge crossing a non-endpoint node and label clipping but 
   g.edges.push({ id: 'other', source: 'a', target: 'b', kind: 'feedback', directed: true, originalEdgeIds: ['other'], labelText: empty, sections: [[{ x: 400, y: 0 }, { x: 400, y: 500 }]] });
   assert.ok(!checkGeometry(g).some(d => d.code === 'EDGE_NODE_INTERSECTION'));
   assert.ok(!checkGeometry(g).some(d => /CROSS/.test(d.code) && d.severity === 'error'));
+});
+
+test('geometry checks the drawn cubic curve rather than its control polygon', () => {
+  const g = base([n('a', 0, 200), n('blocker', 300, 200), n('b', 600, 200)]);
+  g.edges = [{
+    id: 'ab', source: 'a', target: 'b', kind: 'control', directed: true,
+    originalEdgeIds: ['ab'], labelText: empty, routing: 'spline',
+    sections: [[{ x: 200, y: 250 }, { x: 320, y: 250 }, { x: 480, y: 250 }, { x: 600, y: 250 }]],
+  }];
+  assert.ok(checkGeometry(g).some(d => d.code === 'EDGE_NODE_INTERSECTION' && d.ids.includes('blocker')));
+  g.nodes[1]!.y = 330;
+  g.edges[0]!.sections = [[{ x: 200, y: 250 }, { x: 320, y: 350 }, { x: 480, y: 350 }, { x: 600, y: 250 }]];
+  assert.ok(!checkGeometry(g).some(d => d.code === 'EDGE_NODE_INTERSECTION'));
+});
+
+test('curved route collision follows its painted arc even when all controls avoid the obstacle', () => {
+  const cubic = [[
+    { x: 0, y: 0 }, { x: 0, y: 100 }, { x: 100, y: 100 }, { x: 100, y: 0 },
+  ]];
+  const obstacle = { x: 45, y: 65, width: 10, height: 10 };
+  assert.ok(cubic[0]!.every(point => point.x < obstacle.x || point.x > obstacle.x + obstacle.width || point.y < obstacle.y || point.y > obstacle.y + obstacle.height));
+  assert.equal(routeIntersectsBoxes(cubic, true, [obstacle]), true);
+  assert.equal(routeIntersectsBoxes(cubic, true, [{ ...obstacle, y: 80 }]), false);
+});
+
+test('smoothing preserves the original straight route when every curve would enter a nearby node', () => {
+  const source = n('source', 0, 0);
+  const target = n('target', 200, 200);
+  const blocker = { ...n('blocker', 85, 140), width: 14, height: 50, titleText: empty };
+  const graph = base([source, target, blocker]);
+  graph.edges = [{
+    id: 'route', source: source.id, target: target.id, kind: 'control', directed: true,
+    originalEdgeIds: ['route'], labelText: empty, routing: 'polyline',
+    sections: [[{ x: 100, y: 100 }, { x: 100, y: 200 }, { x: 200, y: 200 }]],
+  }];
+  const before = structuredClone(graph.edges[0]!.sections);
+  const result = smoothGraphRoutes(graph);
+  assert.equal(result.edges[0]!.routing, 'polyline');
+  assert.deepEqual(result.edges[0]!.sections, before);
+  assert.deepEqual(graph.edges[0]!.sections, before, 'the original layout is immutable');
 });
 
 test('geometry checks measured text and separate labels without manufacturing errors for valid spacing', () => {

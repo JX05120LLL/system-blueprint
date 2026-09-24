@@ -1,44 +1,24 @@
-import type { Box, LayoutGraph, LayoutNode, Point, TextBlock } from '../layout/types';
+import type { LayoutGraph, LayoutNode, Point, TextBlock } from '../layout/types';
 import { assignSourceEdgeColours, type ThemeTokens } from './theme';
 export const SVG_NS = 'http://www.w3.org/2000/svg';
 export interface RenderOptions { animateFlow?: boolean; overrideReducedMotion?: boolean; }
 const cornerCoordinate = (value: number) => Number(value.toFixed(3));
 const pointCommand = (command: 'M' | 'L', point: Point) => `${command}${point.x} ${point.y}`;
 
-/** Keep ELK's routed endpoints and waypoints while easing bends that have room to turn. */
-export function roundedEdgePath(points: Point[], obstacles: Box[] = []): string {
+/** ELK waypoints converted by the layout layer into complete cubic control triplets. */
+export function splineEdgePath(points: Point[]): string {
+  if (points.length < 4 || (points.length - 1) % 3 !== 0) throw new Error('Spline path needs complete cubic control points.');
+  const xy = (point: Point) => `${cornerCoordinate(point.x)} ${cornerCoordinate(point.y)}`;
+  const commands = [`M${xy(points[0]!)}`];
+  for (let i = 1; i < points.length; i += 3) commands.push(`C${xy(points[i]!)} ${xy(points[i + 1]!)} ${xy(points[i + 2]!)}`);
+  return commands.join(' ');
+}
+
+/** Keep explicit straight segments only when a continuous curve cannot clear obstacles. */
+export function polylineEdgePath(points: Point[]): string {
   const route = points.filter((point, index) => index === 0 ||
     Math.hypot(point.x - points[index - 1]!.x, point.y - points[index - 1]!.y) > 1e-6);
-  if (!route.length) return '';
-  const commands = [pointCommand('M', route[0]!)];
-  for (let i = 1; i < route.length - 1; i++) {
-    const before = route[i - 1]!; const bend = route[i]!; const after = route[i + 1]!;
-    const incoming = { x: bend.x - before.x, y: bend.y - before.y };
-    const outgoing = { x: after.x - bend.x, y: after.y - bend.y };
-    const incomingLength = Math.hypot(incoming.x, incoming.y);
-    const outgoingLength = Math.hypot(outgoing.x, outgoing.y);
-    const turnSin = Math.abs(incoming.x * outgoing.y - incoming.y * outgoing.x) / (incomingLength * outgoingLength);
-    const turnCos = (incoming.x * outgoing.x + incoming.y * outgoing.y) / (incomingLength * outgoingLength);
-    const radius = Math.min(10, incomingLength * .45, outgoingLength * .45);
-    if (radius < 3 || turnSin < .1 || turnCos < -.94) {
-      commands.push(pointCommand('L', bend));
-      continue;
-    }
-    const entry = { x: cornerCoordinate(bend.x - incoming.x / incomingLength * radius), y: cornerCoordinate(bend.y - incoming.y / incomingLength * radius) };
-    const exit = { x: cornerCoordinate(bend.x + outgoing.x / outgoingLength * radius), y: cornerCoordinate(bend.y + outgoing.y / outgoingLength * radius) };
-    // The quadratic stays within this box; if it might enter content, retain ELK's original corner.
-    const left = Math.min(entry.x, bend.x, exit.x) - 1.5;
-    const right = Math.max(entry.x, bend.x, exit.x) + 1.5;
-    const top = Math.min(entry.y, bend.y, exit.y) - 1.5;
-    const bottom = Math.max(entry.y, bend.y, exit.y) + 1.5;
-    if (obstacles.some(box => left < box.x + box.width && right > box.x && top < box.y + box.height && bottom > box.y)) {
-      commands.push(pointCommand('L', bend));
-      continue;
-    }
-    commands.push(pointCommand('L', entry), `Q${bend.x} ${bend.y} ${exit.x} ${exit.y}`);
-  }
-  if (route.length > 1) commands.push(pointCommand('L', route[route.length - 1]!));
-  return commands.join(' ');
+  return route.map((point, index) => pointCommand(index ? 'L' : 'M', point)).join(' ');
 }
 export function svgElement<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number> = {}): SVGElementTagNameMap[K] {
   const element = document.createElementNS(SVG_NS, tag);
@@ -90,13 +70,6 @@ export function renderGraph(graph: LayoutGraph, theme: ThemeTokens, options: Ren
   const labels = svgElement('g', { 'data-edge-labels': 'true' });
   const nodeById = new Map(graph.nodes.map(node => [node.id, node]));
   const sourceColours = assignSourceEdgeColours(graph.nodes.flatMap(node => node.originalNodeIds), theme);
-  const routeObstacles: Box[] = [
-    ...graph.nodes.map(({ x, y, width, height }) => ({ x, y, width, height })),
-    ...graph.groups.filter(group => group.titleText.lines.length).map(group => ({
-      x: group.x + 20, y: group.y + 14, width: group.titleText.width, height: group.titleText.height,
-    })),
-    ...graph.edges.flatMap(edge => edge.labelBox ? [{ x: edge.labelBox.x - 5, y: edge.labelBox.y - 2, width: edge.labelBox.width + 10, height: edge.labelBox.height + 4 }] : []),
-  ];
   for (const edge of graph.edges) {
     const main = !!(edge as typeof edge & { primary?: boolean }).primary;
     const sourceNode = nodeById.get(edge.source);
@@ -109,9 +82,9 @@ export function renderGraph(graph: LayoutGraph, theme: ThemeTokens, options: Ren
     const kindName = { control: '流程', data: '数据', dependency: '依赖', exception: '异常', feedback: '反馈' }[edge.kind];
     const el = svgElement('g', { class: 'bp-edge', 'data-edge-id': edge.id, 'data-edge-kind': edge.kind, tabindex: 0, role: 'button', 'aria-label': `${kindName}：${edge.source} ${edge.directed ? '到' : '关联'} ${edge.target}${edge.label ? `：${edge.label}` : ''}` });
     for (const points of edge.sections) {
-      const d = roundedEdgePath(points, routeObstacles);
+      const d = edge.routing === 'spline' ? splineEdgePath(points) : polylineEdgePath(points);
       el.append(svgElement('path', { d, fill: 'none', stroke: 'transparent', 'stroke-width': 16, 'data-edge-hit': 'true' }));
-      el.append(svgElement('path', { d, fill: 'none', stroke: colour, 'stroke-width': main ? 2.2 : 1.5, 'stroke-dasharray': dash, 'stroke-linejoin': 'round', 'marker-end': edge.directed ? `url(#bp-arrow-${marker})` : '', class: 'bp-edge-line' }));
+      el.append(svgElement('path', { d, fill: 'none', stroke: colour, 'stroke-width': main ? 2.8 : 2, 'stroke-dasharray': dash, 'stroke-linejoin': 'round', 'marker-end': edge.directed ? `url(#bp-arrow-${marker})` : '', class: 'bp-edge-line' }));
       if (options.animateFlow && main && edge.directed) el.append(svgElement('path', { d, fill: 'none', stroke: theme.name === 'light' ? '#FFFFFF' : '#111827', 'stroke-width': 2, 'stroke-dasharray': '5 16', 'stroke-linecap': 'round', class: 'bp-edge-flow', 'aria-hidden': 'true' }));
     }
     root.append(el);

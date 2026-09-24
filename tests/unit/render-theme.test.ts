@@ -14,6 +14,24 @@ function contrast(first: string, second: string): number {
   return (lighter! + .05) / (darker! + .05);
 }
 
+function oklab(hex: string): [number, number, number] {
+  const [red, green, blue] = [1, 3, 5].map(index => Number.parseInt(hex.slice(index, index + 2), 16) / 255)
+    .map(value => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4);
+  const l = Math.cbrt(.4122214708 * red! + .5363325363 * green! + .0514459929 * blue!);
+  const m = Math.cbrt(.2119034982 * red! + .6806995451 * green! + .1073969566 * blue!);
+  const s = Math.cbrt(.0883024619 * red! + .2817188376 * green! + .6299787005 * blue!);
+  return [
+    .2104542553 * l + .793617785 * m - .0040720468 * s,
+    1.9779984951 * l - 2.428592205 * m + .4505937099 * s,
+    .0259040371 * l + .7827717662 * m - .808675766 * s,
+  ];
+}
+
+function perceptualDistance(first: string, second: string): number {
+  const a = oklab(first); const b = oklab(second);
+  return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+}
+
 test('semantic node and relation colors remain distinguishable in light and dark themes', () => {
   for (const theme of Object.values(themes)) {
     assert.equal(new Set(theme.sourceEdgePalette).size, theme.sourceEdgePalette.length, `${theme.name}: duplicate palette colour`);
@@ -51,8 +69,21 @@ test('source colours are deterministic, distinct within the palette, and preserv
   }
 });
 
-test('all sources in the README microservice diagram receive distinct arrow colours', () => {
-  const document = JSON.parse(readFileSync(new URL('../../examples/traditional-microservices.diagram.json', import.meta.url), 'utf8')) as { nodes: { id: string }[] };
+test('source palette separates dense relations and keeps error red reserved', () => {
+  for (const theme of Object.values(themes)) {
+    const colors = theme.sourceEdgePalette;
+    for (let i = 0; i < colors.length; i++) {
+      assert.ok(perceptualDistance(colors[i]!, theme.exception) >= .1, `${theme.name}: source ${i} resembles an exception`);
+      for (let j = i + 1; j < colors.length; j++) {
+        const floor = i < 8 && j < 8 ? .1 : .065;
+        assert.ok(perceptualDistance(colors[i]!, colors[j]!) >= floor, `${theme.name}: sources ${i} and ${j} blend together`);
+      }
+    }
+  }
+});
+
+test('all sources in the full microservice diagram receive distinct arrow colours', () => {
+  const document = JSON.parse(readFileSync(new URL('../fixtures/traditional-microservices-full.diagram.json', import.meta.url), 'utf8')) as { nodes: { id: string }[] };
   const ids = document.nodes.map(node => node.id);
   for (const theme of Object.values(themes)) {
     const assignments = assignSourceEdgeColours(ids, theme);

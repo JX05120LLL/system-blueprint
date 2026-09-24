@@ -1,9 +1,0 @@
-{
-  "stage": "First actual performance run, before inline Worker",
-  "source": "Console results from scripts/performance.mjs on this workspace",
-  "browser": "145.0.7632.6",
-  "machine": "Windows 10.0.26200, Intel i7-12700H, Node 24.14.0",
-  "standard": { "nodes": 30, "edges": 45, "groups": 3, "bytes": 1613942, "readyP95Ms": 314.19999998807907, "collapseP95Ms": 46.29999998211861 },
-  "upper": { "nodes": 100, "edges": 300, "groups": 20, "readyMs": 572.3000000119209, "longTasksMs": [204, 364] },
-  "decision": "Use a self-contained Blob Worker to remove main-thread layout work; rerun current bundle metrics separately."
-}

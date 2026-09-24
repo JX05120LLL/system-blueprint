@@ -1,19 +1,10 @@
-# 示例产物索引
+# 演示图
 
-基础五类共六份独立模型，另附一份传统微服务架构演示。下载 HTML 后可直接离线打开；GitHub README 内的 SVG 是静态图。PNG/JPEG 使用默认 scale=2，完整展开，不受阅读器视角影响。
+这里仅保留 README 展示的两张教学示意图。图中的组件、关系与“假设”均需按实际系统审核；JSON 是可修改的源数据，HTML 可离线打开并在详情板修订已有对象。两图均可在画布底栏切换横向 / 纵向。
 
-| 示例 | 可修改数据 | 交互阅读 | 静态图 |
+| 演示 | 图数据 | 离线交互 | README 预览 |
 | --- | --- | --- | --- |
-| overview | [JSON](overview.diagram.json) | [离线 HTML](overview.html) | [SVG](../images/system-blueprint-overview.svg) · [PNG](../images/system-blueprint-overview.png) · [JPEG](../images/system-blueprint-overview.jpg) |
-| runtime-flow | [JSON](runtime-flow.diagram.json) | [离线 HTML](runtime-flow.html) | [SVG](../images/system-blueprint-runtime-flow.svg) · [PNG](../images/system-blueprint-runtime-flow.png) · [JPEG](../images/system-blueprint-runtime-flow.jpg) |
-| memory-recall | [JSON](memory-recall.diagram.json) | [离线 HTML](memory-recall.html) | [SVG](../images/system-blueprint-memory-recall.svg) · [PNG](../images/system-blueprint-memory-recall.png) · [JPEG](../images/system-blueprint-memory-recall.jpg) |
-| deployment-topology | [JSON](deployment-topology.diagram.json) | [离线 HTML](deployment-topology.html) | [SVG](../images/system-blueprint-deployment-topology.svg) · [PNG](../images/system-blueprint-deployment-topology.png) · [JPEG](../images/system-blueprint-deployment-topology.jpg) |
-| before | [JSON](before.diagram.json) | [离线 HTML](before.html) | [SVG](../images/system-blueprint-before.svg) · [PNG](../images/system-blueprint-before.png) · [JPEG](../images/system-blueprint-before.jpg) |
-| after | [JSON](after.diagram.json) | [离线 HTML](after.html) | [SVG](../images/system-blueprint-after.svg) · [PNG](../images/system-blueprint-after.png) · [JPEG](../images/system-blueprint-after.jpg) |
-| traditional-microservices | [JSON](traditional-microservices.diagram.json) | [离线 HTML](traditional-microservices.html) | [SVG](../images/system-blueprint-traditional-microservices.svg) · [PNG](../images/system-blueprint-traditional-microservices.png) · [JPEG](../images/system-blueprint-traditional-microservices.jpg) |
+| 传统电商微服务架构总览 | [JSON](traditional-microservices.diagram.json) | [HTML](traditional-microservices.html) | [PNG](../images/traditional-microservices-preview.png) |
+| 传统电商下单流程 | [JSON](traditional-microservices-order-flow.diagram.json) | [HTML](traditional-microservices-order-flow.html) | [GIF](../images/traditional-microservices-order-flow.gif) |
 
-Before / After 同尺度合成：[SVG](../images/system-blueprint-before-after.svg) · [PNG](../images/system-blueprint-before-after.png) · [JPEG](../images/system-blueprint-before-after.jpg)。
-
-[新旧效果与桌面/窄屏/深色截图](../artifacts/visual-comparison.html) · [语义迁移说明](../docs/validation/example-migration.md) · [完整验证](../docs/validation/v2-validation-report.md)
-
-重新生成：在仓库根目录执行 `npm run examples:generate`。检查已有交付：`npm run examples:check`。
+重新生成：在仓库根目录执行 `npm run examples:generate`。只读检查现有交付：`npm run examples:check`。两张图的默认方向都是横向。SVG/PNG/JPEG 不随仓库预存；需要时按[使用说明](../docs/usage.md)从 HTML 导出，静态图始终完整展开，不受当前缩放、折叠与选中状态影响。
